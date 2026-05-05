@@ -1,0 +1,13 @@
+node_modules
+dist
+dist-ssr
+*.local
+npm-install.log
+dev.log
+
+# Vite env files (.env / .env.example are committed; .env.local holds secrets)
+.env.local
+.env.*.local
+
+*.bak
+.claude/settings.local.json

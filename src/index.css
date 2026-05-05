@@ -1,0 +1,102 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply font-sans text-ink-800 bg-white overflow-x-hidden;
+  }
+
+  ::selection {
+    @apply bg-brand-blue text-white;
+  }
+
+  input:focus,
+  textarea:focus,
+  select:focus {
+    outline: none;
+    box-shadow: none;
+    @apply border-amber-600;
+  }
+}
+
+@layer components {
+  /* Fade-in-up driven by IntersectionObserver */
+  .ds-fade {
+    opacity: 0;
+    transform: translateY(30px);
+    transition:
+      opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+      transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .ds-fade.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Hero cinematic crossfade layer.
+     32s cycle, 4 images at 8s steps. Each layer overlaps its neighbours by ~1.3s
+     for a smooth crossfade and gently zooms out (Ken Burns) while visible. */
+  .ds-hero-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    will-change: opacity, transform;
+    animation: heroCrossfade 32s infinite linear;
+  }
+
+  /* Floating CTA hover menu — only opens when the trigger button (or the menu
+     itself) is hovered, never the empty area where the menu will appear. */
+  .ds-cta-menu {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+  }
+  /* Invisible bridge over the 16px gap so the cursor can move from the button
+     to the menu without losing :hover. */
+  .ds-cta-menu::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    height: 1rem;
+  }
+  .ds-cta-group:hover .ds-cta-menu,
+  .ds-cta-group:focus-within .ds-cta-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+}
+
+@keyframes heroCrossfade {
+  0% {
+    opacity: 0;
+    transform: scale(1.08);
+  }
+  4% {
+    opacity: 1;
+    transform: scale(1.07);
+  }
+  25% {
+    opacity: 1;
+    transform: scale(1.02);
+  }
+  29% {
+    opacity: 0;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.08);
+  }
+}
