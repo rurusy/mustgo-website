@@ -1,0 +1,27 @@
+Copyright (c) 2026 MustGo. All Rights Reserved.
+
+이 저장소에 포함된 모든 소스 코드, 디자인, 문서, 이미지, 카피라이트(이하 "본 자산")는
+머스트고(MustGo)의 독점 자산입니다.
+
+머스트고의 사전 서면 동의 없이는 본 자산의 전부 또는 일부를 다음 행위에 사용할 수
+없습니다:
+
+  - 복제, 수정, 배포, 공개, 전송, 전시
+  - 파생 저작물 작성
+  - 상업적·비상업적 목적의 재사용
+  - 리버스 엔지니어링 및 디컴파일
+
+본 저장소가 공개되어 있다는 사실이 위 권리에 대한 묵시적 허락을 의미하지 않습니다.
+
+문의: 머스트고 (MustGo)
+
+---
+
+All source code, designs, documents, images, and copy contained in this repository
+are the proprietary assets of MustGo. No part of these assets may be reproduced,
+modified, distributed, publicly displayed, transmitted, used to create derivative
+works, or reverse engineered — for any commercial or non-commercial purpose —
+without the prior written consent of MustGo.
+
+Public visibility of this repository does not constitute a license or implied
+permission to use these assets.

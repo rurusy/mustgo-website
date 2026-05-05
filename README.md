@@ -59,3 +59,7 @@ src/
 ## 스택
 
 React 18 · React Router 6 · Vite 5 · Tailwind CSS 3
+
+## 라이선스
+
+© 2026 MustGo. All Rights Reserved. 자세한 내용은 [LICENSE](./LICENSE) 참조.
