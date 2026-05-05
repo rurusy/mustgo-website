@@ -100,3 +100,35 @@
     transform: scale(1.08);
   }
 }
+
+/* WCAG 2.3.3 (AAA) — respect users' OS-level reduced-motion preference.
+   Disables the 30px slide-up of .ds-fade and the Ken-Burns zoom of the hero
+   crossfade. We keep a brief opacity transition so on-scroll reveals remain
+   discoverable; without any transition the IntersectionObserver-driven
+   reveal would produce visible "popping" instead. */
+@media (prefers-reduced-motion: reduce) {
+  .ds-fade {
+    transform: none;
+    transition: opacity 0.3s ease;
+  }
+  .ds-fade.is-visible {
+    transform: none;
+  }
+  .ds-hero-bg {
+    animation: none !important;
+    transform: none !important;
+  }
+  /* Show only the first hero layer when motion is reduced, so the page still
+     has a hero background but doesn't crossfade. */
+  .ds-hero-bg:first-child {
+    opacity: 1;
+  }
+  .ds-cta-menu {
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+    transform: none;
+  }
+  .ds-cta-group:hover .ds-cta-menu,
+  .ds-cta-group:focus-within .ds-cta-menu {
+    transform: none;
+  }
+}

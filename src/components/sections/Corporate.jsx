@@ -1,4 +1,4 @@
-import { Fade, Button } from '../ui'
+import { Section, Fade, Button } from '../ui'
 import { ServiceCard } from '../marketing/ServiceCard'
 import { ProcessSteps } from '../marketing/ProcessSteps'
 
@@ -36,23 +36,14 @@ const steps = ['요청', '제안', '확정', '진행', '정산']
 
 export function Corporate() {
   return (
-    <section
+    <Section
       id="corporate"
-      className="py-24 lg:py-32 bg-ink-800 text-white relative overflow-hidden"
+      tone="charcoal"
+      bgImage="https://images.unsplash.com/photo-1556388158-158ea5ccacbd?auto=format&fit=crop&q=80&w=1920"
+      bgImageAlt="Aircraft landing on a runway with city skyline in the background"
+      overlay="bg-gradient-to-b from-ink-900/95 via-ink-900/80 to-ink-900/95"
     >
-      <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{
-          backgroundImage:
-            "url('https://images.unsplash.com/photo-1556388158-158ea5ccacbd?auto=format&fit=crop&q=80&w=1920')",
-        }}
-        role="img"
-        aria-label="Aircraft landing on a runway with city skyline in the background"
-      />
-      <div className="absolute inset-0 bg-gradient-to-b from-ink-900/95 via-ink-900/80 to-ink-900/95" />
-
-      <div className="max-w-layout mx-auto px-6 lg:px-12 relative z-10">
-        <Fade className="max-w-3xl mx-auto text-center">
+      <Fade className="max-w-3xl mx-auto text-center">
         <h2 className="text-3xl lg:text-4xl font-bold mb-6 tracking-tight">
           기업 해외출장, 항공권부터 정산까지 한 번에
         </h2>
@@ -78,7 +69,6 @@ export function Corporate() {
           무료 견적 요청하기 →
         </Button>
       </Fade>
-      </div>
-    </section>
+    </Section>
   )
 }

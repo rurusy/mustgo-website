@@ -6,8 +6,11 @@ const reasons = [
   {
     icon: <GlobeIcon />,
     title: '양방향 전문성',
-    description:
-      'Outbound와 Inbound를 동시에 운영하는 기업 전문 여행사 Mustgo는 고객사의 든든한 파트너입니다.',
+    description: (
+      <>
+        Outbound와 Inbound를 동시에 운영하는 기업 전문 여행사 <BrandText />는 고객사의 든든한 파트너입니다.
+      </>
+    ),
     badgeTone: 'blueSoft',
   },
   {
@@ -17,7 +20,7 @@ const reasons = [
       <>
         임원 출장과 해외 의전 투어로 다져진 디테일.
         <br />
-        '디테일이 신뢰를 만든다' — Mustgo의 운영 철학입니다.
+        '디테일이 신뢰를 만든다' — <BrandText />의 운영 철학입니다.
       </>
     ),
     badgeTone: 'blueSoft',
@@ -44,9 +47,9 @@ export function About() {
           기업 출장의 양방향 전문가, <BrandText />입니다.
         </h2>
         <p className="text-gray-600 text-base lg:text-lg leading-[1.8] text-justify">
-          Mustgo는 국내 기업의 해외 출장과, 기업들의 외국 VIP 고객의 한국 방문을 전문적으로 다루는
-          기업 전문 여행사입니다. 해외출장항공 발권부터 호텔, 의전, Inbound tour까지 비즈니스
-          여정의 모든 단계에서 가장 신뢰할 수 있는 파트너가 되겠습니다.
+          <BrandText />는 국내 기업의 해외 출장과, 기업들의 외국 VIP 고객의 한국 방문을 전문적으로
+          다루는 기업 전문 여행사입니다. 해외출장항공 발권부터 호텔, 의전, Inbound tour까지
+          비즈니스 여정의 모든 단계에서 가장 신뢰할 수 있는 파트너가 되겠습니다.
         </p>
       </Fade>
 

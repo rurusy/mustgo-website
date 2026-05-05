@@ -1,24 +1,36 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Section, Fade, FormLabel, Input, Textarea, Radio, Checkbox, Button, Card, BrandText } from '../ui'
 import { ContactInfoItem } from '../marketing/ContactInfoItem'
 import { PhoneIcon, AlertIcon, MailIcon, PinIcon } from '../icons.jsx'
 import { supabase } from '../../lib/supabase'
 
-const HQ_ADDRESS = '대구광역시 수성구 알파시티1로31길 19'
+// Single source of truth for the HQ address: keep display copy and the
+// map-search query in sync (otherwise pin/marker drifts from what the user reads).
+const HQ = {
+  display: '(42250) 대구광역시 수성구 알파시티 1로 31길 19, 5F',
+  mapQuery: '대구광역시 수성구 알파시티1로31길 19',
+  building: 'MG 뉴턴 알파시티',
+}
 
 // Use the official Maps Embed API when a key is configured; fall back to the
 // keyless ?output=embed URL so dev still works without provisioning a key.
 function getMapsEmbedSrc() {
   const key = import.meta.env.VITE_GOOGLE_MAPS_API_KEY
-  const q = encodeURIComponent(HQ_ADDRESS)
+  const q = encodeURIComponent(HQ.mapQuery)
   if (key) {
     return `https://www.google.com/maps/embed/v1/place?key=${key}&q=${q}&zoom=16&language=ko&region=KR`
   }
   return `https://www.google.com/maps?q=${q}&z=16&output=embed`
 }
 
+// Lightweight client-side validation. We use loose patterns intentionally —
+// strict regexes give false negatives on legitimate inputs and are user-hostile.
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+const PHONE_DIGITS_MIN = 9 // 02-XXX-XXXX (서울 9자리) 이상 허용
+
 export function Contact() {
-  const mapsSrc = getMapsEmbedSrc()
+  // env 값은 빌드 타임에 고정되므로 한 번만 계산.
+  const mapsSrc = useMemo(() => getMapsEmbedSrc(), [])
   const [status, setStatus] = useState('idle') // idle | submitting | success | error
   const [errorMsg, setErrorMsg] = useState('')
 
@@ -43,6 +55,19 @@ export function Contact() {
     if (!payload.consent) {
       setStatus('error')
       setErrorMsg('개인정보 수집·이용에 동의해주세요.')
+      return
+    }
+
+    if (!EMAIL_RE.test(payload.email)) {
+      setStatus('error')
+      setErrorMsg('이메일 형식을 확인해주세요. (예: name@example.com)')
+      return
+    }
+
+    const phoneDigits = payload.phone.replace(/\D/g, '')
+    if (phoneDigits.length < PHONE_DIGITS_MIN) {
+      setStatus('error')
+      setErrorMsg('연락처를 다시 한 번 확인해주세요.')
       return
     }
 
@@ -73,7 +98,7 @@ export function Contact() {
     <Section id="contact" tone="soft">
       <Fade className="max-w-3xl mx-auto mb-16 text-center">
         <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4 tracking-tight">
-          가장 빠른 답변, <BrandText />가 드립니다.
+          빠른 회신, <BrandText />가 드립니다.
         </h2>
         <p className="text-gray-600 text-[15px]">
           영업일 기준 1일 이내, 담당 컨설턴트가 직접 회신해 드립니다.
@@ -204,13 +229,11 @@ export function Contact() {
               </ContactInfoItem>
 
               <ContactInfoItem icon={<PinIcon />} eyebrow="Address" grow>
-                <p className="text-[15px] font-medium text-gray-900 mb-1">
-                  (42250) 대구광역시 수성구 알파시티 1로 31길 19, 5F
-                </p>
-                <p className="text-xs text-gray-500 mb-4">MG 뉴턴 알파시티</p>
+                <p className="text-[15px] font-medium text-gray-900 mb-1">{HQ.display}</p>
+                <p className="text-xs text-gray-500 mb-4">{HQ.building}</p>
                 <div className="w-full flex-grow min-h-[200px] rounded overflow-hidden border border-gray-200">
                   <iframe
-                    title="MG 뉴턴 알파시티 위치"
+                    title={`${HQ.building} 위치`}
                     src={mapsSrc}
                     className="w-full h-full border-0"
                     loading="lazy"

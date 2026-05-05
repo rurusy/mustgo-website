@@ -67,7 +67,7 @@ export default function StyleguidePage() {
       <Container className="py-16">
         <header className="mb-20 max-w-3xl">
           <p className="text-xs font-eng font-bold uppercase tracking-wide2 text-amber-600 mb-4">
-            Mustgo Design System v0.1
+            <BrandText /> Design System v0.1
           </p>
           <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 tracking-tight mb-6">
             <BrandText />의 시각 언어
@@ -133,7 +133,7 @@ export default function StyleguidePage() {
                 Caption · 0.75rem / 500 / wide2
               </p>
               <p className="text-sm font-eng font-bold text-gray-400 uppercase tracking-wide2">
-                숫자로 보는 Mustgo
+                숫자로 보는 <BrandText />
               </p>
             </div>
           </div>
@@ -218,7 +218,7 @@ export default function StyleguidePage() {
 
         <Block title="Section Heading">
           <SectionHeading
-            title="가장 빠른 답변, MustGo가 드립니다."
+            title="빠른 회신, MustGo가 드립니다."
             subtitle="Premium Inbound Experience"
             description="영업일 기준 1일 이내, 담당 컨설턴트가 직접 회신해 드립니다."
           />
@@ -321,7 +321,7 @@ export default function StyleguidePage() {
             </Card>
             <Card>
               <p className="font-bold text-gray-900 mb-2">hero-crossfade</p>
-              <p>4장의 풀블리드 이미지를 6초씩 24초 루프로 크로스페이드.</p>
+              <p>4장의 풀블리드 이미지를 8초씩 32초 루프로 크로스페이드.</p>
             </Card>
             <Card>
               <p className="font-bold text-gray-900 mb-2">ds-cta-menu</p>

@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { BrandText } from '../ui'
 
 export function Footer() {
   return (
@@ -9,7 +10,9 @@ export function Footer() {
             <div className="inline-flex items-center bg-white rounded px-3 py-2 mb-4">
               <img src="/logo.gif" alt="Mustgo" className="h-10 w-auto object-contain" />
             </div>
-            <p className="text-sm text-gray-400 mb-1">Mustgo — 비즈니스 출장의 양방향 전문가</p>
+            <p className="text-sm text-gray-400 mb-1">
+              <BrandText /> — 비즈니스 출장의 양방향 전문가
+            </p>
             <p className="text-sm text-gray-500 font-eng">
               Your Trusted Partner in Two-Way Business Travel.
             </p>

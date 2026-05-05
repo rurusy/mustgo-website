@@ -39,6 +39,8 @@ export const radius = {
 
 // Hero cinematic 4-shot sequence (Unsplash License — free for commercial use).
 // Order: airport runway → business class seat → Seoul night skyline → VIP chauffeur.
+// IMPORTANT: 첫 항목의 src 는 LCP 후보이며 index.html 의 <link rel="preload" as="image">
+// 와 반드시 동일하게 유지하세요. 순서를 바꾸거나 URL 을 교체하면 index.html 도 함께 수정.
 export const heroImages = [
   {
     src: 'https://images.unsplash.com/photo-1608601006827-c052e2358d6d?auto=format&fit=crop&q=80&w=1920',

@@ -30,15 +30,6 @@ export default {
         surface: {
           soft: '#F8F9FA',
         },
-        // Legacy tokens kept for parity with the original design config
-        mustgo: {
-          navy: '#D97706',
-          'navy-light': '#F59E0B',
-          green: '#4B5563',
-          'green-light': '#9CA3AF',
-          dark: '#2C2C2C',
-          text: '#374151',
-        },
       },
       fontFamily: {
         sans: ['"Noto Sans KR"', 'sans-serif'],
@@ -55,19 +46,14 @@ export default {
       },
       animation: {
         'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
-        'hero-crossfade': 'heroCrossfade 24s infinite linear',
       },
       keyframes: {
         fadeInUp: {
           '0%': { opacity: '0', transform: 'translateY(30px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
-        heroCrossfade: {
-          '0%, 20%': { opacity: '1', transform: 'scale(1.0)' },
-          '25%': { opacity: '0', transform: 'scale(1.05)' },
-          '95%': { opacity: '0', transform: 'scale(1.05)' },
-          '100%': { opacity: '1', transform: 'scale(1.0)' },
-        },
+        // 히어로 크로스페이드(@keyframes heroCrossfade)는 src/index.css 에 정의되어
+        // 있습니다. Tailwind 쪽에 중복 정의를 두면 두 값이 어긋나기 쉬워 의도적으로 제거.
       },
     },
   },

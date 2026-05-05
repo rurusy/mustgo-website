@@ -1,18 +1,42 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { supabase, ADMIN_EMAIL } from '../lib/supabase'
-import { Button, BrandText } from '../components/ui'
+import { Button, BrandText, FormLabel, Input } from '../components/ui'
 
 export default function AdminLoginPage() {
+  const [authChecked, setAuthChecked] = useState(false)
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
 
+  // Admin 라우트는 검색엔진에 노출되지 않아야 함.
   useEffect(() => {
+    const meta = document.createElement('meta')
+    meta.name = 'robots'
+    meta.content = 'noindex,nofollow'
+    document.head.appendChild(meta)
+    const prevTitle = document.title
+    document.title = 'MustGo Admin · Sign in'
+    return () => {
+      document.head.removeChild(meta)
+      document.title = prevTitle
+    }
+  }, [])
+
+  useEffect(() => {
+    let cancelled = false
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate('/admin', { replace: true })
+      if (cancelled) return
+      if (data.session) {
+        navigate('/admin', { replace: true })
+        return
+      }
+      setAuthChecked(true)
     })
+    return () => {
+      cancelled = true
+    }
   }, [navigate])
 
   const onSubmit = async (e) => {
@@ -31,6 +55,9 @@ export default function AdminLoginPage() {
     navigate('/admin', { replace: true })
   }
 
+  // 세션 확인 전엔 폼을 노출하지 않음 (이미 로그인 상태에서 폼 깜빡임 방지).
+  if (!authChecked) return null
+
   return (
     <main className="min-h-screen bg-surface-soft flex items-center justify-center px-6">
       <div className="w-full max-w-md">
@@ -38,26 +65,26 @@ export default function AdminLoginPage() {
           <Link to="/" className="inline-block text-2xl font-bold tracking-tight">
             <BrandText />
           </Link>
-          <p className="text-sm text-gray-500 mt-2">Admin Console</p>
+          <p className="text-sm text-gray-500 mt-2 font-eng">Admin Console</p>
         </div>
 
         <form
           onSubmit={onSubmit}
           className="bg-white p-8 rounded-lg border border-gray-200 shadow-sm"
         >
-          <label htmlFor="admin-password" className="block text-sm font-bold text-gray-900 mb-2">
+          <FormLabel htmlFor="admin-password" required>
             비밀번호
-          </label>
-          <input
+          </FormLabel>
+          <Input
             id="admin-password"
             type="password"
             autoComplete="current-password"
             autoFocus
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full bg-gray-50 border border-gray-200 rounded-sm px-4 py-3 text-sm text-gray-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-600 transition-colors mb-4"
             placeholder="••••••"
             required
+            className="mb-4"
           />
 
           {error && (

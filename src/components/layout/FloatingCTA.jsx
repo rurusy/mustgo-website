@@ -1,6 +1,30 @@
+import { useEffect, useState } from 'react'
+import { cn } from '../../design/cn'
+
 export function FloatingCTA() {
+  // Contact 섹션이 화면에 보이면 floating CTA 숨김 — 사용자가 이미 Contact 에
+  // 도달했으므로 같은 곳을 가리키는 버튼은 중복.
+  const [hidden, setHidden] = useState(false)
+
+  useEffect(() => {
+    const target = document.getElementById('contact')
+    if (!target) return
+    const observer = new IntersectionObserver(
+      ([entry]) => setHidden(entry.isIntersecting),
+      { threshold: 0.15 },
+    )
+    observer.observe(target)
+    return () => observer.disconnect()
+  }, [])
+
   return (
-    <div className="fixed bottom-8 right-6 lg:right-12 z-50 ds-cta-group">
+    <div
+      className={cn(
+        'fixed bottom-8 right-6 lg:right-12 z-50 ds-cta-group transition-opacity duration-300',
+        hidden && 'opacity-0 pointer-events-none',
+      )}
+      aria-hidden={hidden}
+    >
       <div className="ds-cta-menu absolute bottom-full right-0 mb-4 bg-white rounded-lg shadow-2xl border border-gray-100 overflow-hidden w-64">
         <div className="bg-gray-50 px-4 py-3 border-b border-gray-100">
           <span className="text-xs font-bold text-gray-500">어떤 도움이 필요하세요?</span>
