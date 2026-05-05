@@ -1,0 +1,3 @@
+- [Bundle baseline (post 2026-05-06 cleanup)](baseline_bundle.md) — index-*.js 421.33 kB / 124.59 kB gzip; CSS 29.20 kB / 5.56 kB gzip. Reference for future diffs.
+- [Paired constants that must stay synced](paired_constants.md) — heroImages[0]↔index.html preload, hero timing JS↔CSS keyframe, brand colors tokens.js↔tailwind.config.js. Edit-one-side bugs.
+- [Single shared IntersectionObserver for Fade/Stat](fade_observer_pattern.md) — useFadeIn shares one IO module-scope; do not re-introduce threshold/rootMargin args without justification.

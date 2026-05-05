@@ -1,0 +1,5 @@
+- [Trust-First voice corrections](trust-first-copy.md) — Mustgo의 Trust-First 보이스 적용 사례 (sales-y → measured)
+- [Section primitive bgImage extension](section-primitive-bgimage.md) — Corporate/Inbound가 raw section을 쓰던 이유와 Section.jsx의 bgImage/overlay prop 추가
+- [Button variant catalog](button-variants.md) — Admin/utility variant 추가 내역 (pillFilter, chipPrimary 등)
+- [BrandText usage policy](brandtext-policy.md) — `<BrandText />` 적용 범위와 예외 (alt, copyright, 한글 "머스트고")
+- [Header non-functional UI hidden](header-nonfunctional-ui.md) — KOR/ENG 토글 + 모바일 햄버거를 미구현 상태로 노출하던 문제 처리
