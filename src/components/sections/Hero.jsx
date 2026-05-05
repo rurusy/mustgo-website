@@ -1,9 +1,25 @@
 import { Button, Fade, BrandText } from '../ui'
 import { heroImages, heroStepSeconds } from '../../design/tokens'
 
+// Contact 섹션으로 부드럽게 스크롤하면서 문의 유형 라디오를 미리 선택.
+// scrollTo 만 하면 sticky header 높이만큼 가려지므로 동일한 오프셋 보정 적용.
+function goToContactWithType(type) {
+  return (e) => {
+    e.preventDefault()
+    const target = document.getElementById('contact')
+    if (target) {
+      const headerEl = document.getElementById('main-header')
+      const offset = headerEl ? headerEl.offsetHeight : 0
+      const top = target.getBoundingClientRect().top + window.pageYOffset - offset
+      window.scrollTo({ top, behavior: 'smooth' })
+    }
+    window.dispatchEvent(new CustomEvent('mustgo:prefill-inquiry', { detail: { type } }))
+  }
+}
+
 export function Hero() {
   return (
-    <section className="relative w-full h-screen min-h-[700px] flex items-center justify-center overflow-hidden bg-ink-900 mt-20 lg:mt-0">
+    <section id="hero" className="relative w-full h-screen min-h-[700px] flex items-center justify-center overflow-hidden bg-ink-900 mt-20 lg:mt-0">
       <div className="absolute inset-0 z-0">
         {heroImages.map((img, idx) => (
           <div
@@ -34,10 +50,22 @@ export function Hero() {
           <br className="hidden md:block" /> 양방향 비즈니스 트래블의 모든 디테일을 책임지는 기업 전문 여행사, 머스트고
         </Fade>
         <Fade delay={0.3} className="flex flex-col sm:flex-row items-center gap-4">
-          <Button as="a" href="#corporate" variant="blue" className="w-full sm:w-auto">
+          <Button
+            as="a"
+            href="#contact"
+            variant="blue"
+            className="w-full sm:w-auto"
+            onClick={goToContactWithType('corporate')}
+          >
             출장 항공 견적 받기
           </Button>
-          <Button as="a" href="#inbound" variant="outlineLight" className="w-full sm:w-auto">
+          <Button
+            as="a"
+            href="#contact"
+            variant="outlineLight"
+            className="w-full sm:w-auto"
+            onClick={goToContactWithType('inbound')}
+          >
             Inbound Tour 문의
           </Button>
         </Fade>

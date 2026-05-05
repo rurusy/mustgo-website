@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Section, Fade, FormLabel, Input, Textarea, Radio, Checkbox, Button, Card, BrandText } from '../ui'
 import { ContactInfoItem } from '../marketing/ContactInfoItem'
 import { PhoneIcon, AlertIcon, MailIcon, PinIcon } from '../icons.jsx'
@@ -33,6 +33,21 @@ export function Contact() {
   const mapsSrc = useMemo(() => getMapsEmbedSrc(), [])
   const [status, setStatus] = useState('idle') // idle | submitting | success | error
   const [errorMsg, setErrorMsg] = useState('')
+  const [inquiryType, setInquiryType] = useState('corporate')
+
+  // Hero CTA 등 외부에서 dispatch 한 prefill 이벤트를 수신해서 문의 유형 자동 선택.
+  // 이전 제출이 success 상태였다면 폼을 다시 보여주도록 idle 로 리셋.
+  useEffect(() => {
+    const handler = (e) => {
+      const type = e.detail?.type
+      if (type !== 'corporate' && type !== 'inbound' && type !== 'other') return
+      setInquiryType(type)
+      setStatus('idle')
+      setErrorMsg('')
+    }
+    window.addEventListener('mustgo:prefill-inquiry', handler)
+    return () => window.removeEventListener('mustgo:prefill-inquiry', handler)
+  }, [])
 
   const onSubmit = async (e) => {
     e.preventDefault()
@@ -142,14 +157,23 @@ export function Contact() {
                     name="inquiry_type"
                     value="corporate"
                     label="Corporate Travel — 해외 출장 문의"
-                    defaultChecked
+                    checked={inquiryType === 'corporate'}
+                    onChange={() => setInquiryType('corporate')}
                   />
                   <Radio
                     name="inquiry_type"
                     value="inbound"
                     label="Inbound Tour — 해외 VIP 한국 방문 문의"
+                    checked={inquiryType === 'inbound'}
+                    onChange={() => setInquiryType('inbound')}
                   />
-                  <Radio name="inquiry_type" value="other" label="기타 — 제휴 또는 기타 문의" />
+                  <Radio
+                    name="inquiry_type"
+                    value="other"
+                    label="기타 — 제휴 또는 기타 문의"
+                    checked={inquiryType === 'other'}
+                    onChange={() => setInquiryType('other')}
+                  />
                 </div>
               </div>
 

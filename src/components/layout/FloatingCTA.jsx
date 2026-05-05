@@ -2,18 +2,30 @@ import { useEffect, useState } from 'react'
 import { cn } from '../../design/cn'
 
 export function FloatingCTA() {
-  // Contact 섹션이 화면에 보이면 floating CTA 숨김 — 사용자가 이미 Contact 에
-  // 도달했으므로 같은 곳을 가리키는 버튼은 중복.
+  // Hero 또는 Contact 섹션이 화면에 보이면 floating CTA 숨김.
+  //   - Hero: 자체 CTA 두 개("출장 항공 견적 받기" / "Inbound Tour 문의")가 있어
+  //     동일한 액션을 floating으로 또 노출하면 중복.
+  //   - Contact: 사용자가 이미 도달했으므로 같은 곳을 가리키는 버튼은 무의미.
   const [hidden, setHidden] = useState(false)
 
   useEffect(() => {
-    const target = document.getElementById('contact')
-    if (!target) return
+    const targets = ['hero', 'contact']
+      .map((id) => document.getElementById(id))
+      .filter(Boolean)
+    if (targets.length === 0) return
+
+    const intersecting = new Set()
     const observer = new IntersectionObserver(
-      ([entry]) => setHidden(entry.isIntersecting),
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) intersecting.add(entry.target.id)
+          else intersecting.delete(entry.target.id)
+        }
+        setHidden(intersecting.size > 0)
+      },
       { threshold: 0.15 },
     )
-    observer.observe(target)
+    targets.forEach((t) => observer.observe(t))
     return () => observer.disconnect()
   }, [])
 
