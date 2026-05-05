@@ -1,6 +1,8 @@
+import { useState } from 'react'
 import { Section, Fade, FormLabel, Input, Textarea, Radio, Checkbox, Button, Card, BrandText } from '../ui'
 import { ContactInfoItem } from '../marketing/ContactInfoItem'
 import { PhoneIcon, AlertIcon, MailIcon, PinIcon } from '../icons.jsx'
+import { supabase } from '../../lib/supabase'
 
 const HQ_ADDRESS = '대구광역시 수성구 알파시티1로31길 19'
 
@@ -17,6 +19,56 @@ function getMapsEmbedSrc() {
 
 export function Contact() {
   const mapsSrc = getMapsEmbedSrc()
+  const [status, setStatus] = useState('idle') // idle | submitting | success | error
+  const [errorMsg, setErrorMsg] = useState('')
+
+  const onSubmit = async (e) => {
+    e.preventDefault()
+    if (status === 'submitting') return
+
+    const form = e.currentTarget
+    const fd = new FormData(form)
+
+    const payload = {
+      inquiry_type: fd.get('inquiry_type') || 'other',
+      company: (fd.get('company') || '').toString().trim(),
+      name: (fd.get('name') || '').toString().trim(),
+      position: (fd.get('position') || '').toString().trim() || null,
+      phone: (fd.get('phone') || '').toString().trim(),
+      email: (fd.get('email') || '').toString().trim(),
+      message: (fd.get('message') || '').toString().trim() || null,
+      consent: fd.get('consent') === 'on',
+    }
+
+    if (!payload.consent) {
+      setStatus('error')
+      setErrorMsg('개인정보 수집·이용에 동의해주세요.')
+      return
+    }
+
+    setStatus('submitting')
+    setErrorMsg('')
+
+    // submit_inquiry 는 SECURITY DEFINER 함수로, anon 키로 호출 가능하지만
+    // SELECT/UPDATE 는 인증된 관리자만 가능하도록 RLS 로 차단되어 있습니다.
+    const { error } = await supabase.rpc('submit_inquiry', { payload })
+
+    if (error) {
+      console.error('[contact] submit_inquiry failed:', error)
+      setStatus('error')
+      setErrorMsg('전송에 실패했습니다. 잠시 후 다시 시도해주세요.')
+      return
+    }
+
+    form.reset()
+    setStatus('success')
+  }
+
+  const sendAnother = () => {
+    setStatus('idle')
+    setErrorMsg('')
+  }
+
   return (
     <Section id="contact" tone="soft">
       <Fade className="max-w-3xl mx-auto mb-16 text-center">
@@ -30,7 +82,32 @@ export function Contact() {
 
       <div className="grid lg:grid-cols-2 gap-16 lg:gap-24">
         <Fade>
-          <form className="bg-white p-8 rounded-lg border border-gray-200 shadow-sm">
+          {status === 'success' ? (
+            <div className="bg-white p-10 rounded-lg border border-gray-200 shadow-sm text-center">
+              <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-brand-green/10 text-brand-green mb-6">
+                <svg
+                  className="w-7 h-7"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">문의가 정상적으로 접수되었습니다.</h3>
+              <p className="text-sm text-gray-600 mb-8">
+                영업일 기준 1일 이내, 담당 컨설턴트가 직접 회신드립니다.
+              </p>
+              <Button type="button" variant="ghost" size="sm" onClick={sendAnother}>
+                다른 문의 추가로 보내기
+              </Button>
+            </div>
+          ) : (
+            <form
+              onSubmit={onSubmit}
+              className="bg-white p-8 rounded-lg border border-gray-200 shadow-sm"
+            >
               <div className="mb-8">
                 <label className="block text-sm font-bold text-gray-900 mb-4">
                   문의 유형 <span className="text-amber-600">*</span>
@@ -53,43 +130,51 @@ export function Contact() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
                 <div>
-                  <FormLabel required>회사명</FormLabel>
-                  <Input type="text" placeholder="소속 회사명" />
+                  <FormLabel htmlFor="company" required>회사명</FormLabel>
+                  <Input id="company" name="company" type="text" placeholder="소속 회사명" required />
                 </div>
                 <div>
-                  <FormLabel required>담당자 성명</FormLabel>
-                  <Input type="text" placeholder="성함" />
+                  <FormLabel htmlFor="name" required>담당자 성명</FormLabel>
+                  <Input id="name" name="name" type="text" placeholder="성함" required />
                 </div>
                 <div>
-                  <FormLabel>직책</FormLabel>
-                  <Input type="text" placeholder="직책 (선택)" />
+                  <FormLabel htmlFor="position">직책</FormLabel>
+                  <Input id="position" name="position" type="text" placeholder="직책 (선택)" />
                 </div>
                 <div>
-                  <FormLabel required>연락처</FormLabel>
-                  <Input type="tel" placeholder="휴대폰 또는 내선번호" />
+                  <FormLabel htmlFor="phone" required>연락처</FormLabel>
+                  <Input id="phone" name="phone" type="tel" placeholder="휴대폰 또는 내선번호" required />
                 </div>
               </div>
 
               <div className="mb-6">
-                <FormLabel required>이메일</FormLabel>
-                <Input type="email" placeholder="업무용 이메일 주소" />
+                <FormLabel htmlFor="email" required>이메일</FormLabel>
+                <Input id="email" name="email" type="email" placeholder="업무용 이메일 주소" required />
               </div>
 
               <div className="mb-8">
-                <FormLabel>문의 내용</FormLabel>
-                <Textarea placeholder="출장 인원, 일정, 특이사항 등을 자유롭게 남겨주세요." />
+                <FormLabel htmlFor="message">문의 내용</FormLabel>
+                <Textarea id="message" name="message" placeholder="출장 인원, 일정, 특이사항 등을 자유롭게 남겨주세요." />
               </div>
 
               <Checkbox
                 id="consent"
+                name="consent"
                 label="개인정보 수집 및 이용에 동의합니다. (필수)"
-                className="mb-8"
+                className="mb-6"
               />
 
-              <Button type="button" className="w-full">
-                문의 보내기
+              {status === 'error' && errorMsg && (
+                <p className="text-sm text-red-600 mb-4" role="alert">
+                  {errorMsg}
+                </p>
+              )}
+
+              <Button type="submit" className="w-full" disabled={status === 'submitting'}>
+                {status === 'submitting' ? '전송 중…' : '문의 보내기'}
               </Button>
-          </form>
+            </form>
+          )}
         </Fade>
 
         <Fade>

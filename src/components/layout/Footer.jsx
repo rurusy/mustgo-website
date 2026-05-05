@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 export function Footer() {
   return (
     <footer className="bg-ink-900 pt-16 pb-8 border-t border-white/10">
@@ -26,8 +28,15 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="text-center text-xs text-gray-600 font-eng">
-          © 2026 Mustgo Co., Ltd. All Rights Reserved.
+        <div className="flex items-center justify-center gap-4 text-xs text-gray-600 font-eng">
+          <span>© 2026 Mustgo Co., Ltd. All Rights Reserved.</span>
+          <span className="text-gray-700">·</span>
+          <Link
+            to="/admin/login"
+            className="text-gray-600 hover:text-amber-500 transition-colors"
+          >
+            Admin
+          </Link>
         </div>
       </div>
     </footer>
