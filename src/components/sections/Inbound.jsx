@@ -10,7 +10,7 @@ const audiences = [
     accent: 'green',
   },
   {
-    title: '해외 연사·VIP 게스트의 한국 체류 담당자',
+    title: '해외 연사·VIP 고객의 한국 체류 담당자',
     subtitle: 'For staff coordinating international speakers and VIP guests in Korea',
     quote: '참가자 만족도가 행사의 성공을 결정합니다.',
     accent: 'green',
@@ -53,8 +53,8 @@ export function Inbound() {
       bgImageAlt="Haeundae Beach skyline at night, Busan"
       bgImageClassName="opacity-10 mix-blend-luminosity"
     >
-      <Fade className="max-w-4xl mx-auto text-center">
-        <h2 className="text-3xl lg:text-4xl font-bold mb-4 tracking-tight text-white">
+      <Fade className="max-w-4xl mx-auto text-left sm:text-center">
+        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 tracking-tight text-white">
           한국을 찾는 글로벌 VIP를 위한 프리미엄 의전 투어
         </h2>
         <h3 className="font-eng font-medium text-amber-500 text-lg lg:text-xl mb-8">
@@ -86,7 +86,7 @@ export function Inbound() {
 
       <Fade className="mt-24 pt-16 border-t border-white/10">
         <h3 className="text-xl font-bold text-center mb-16 text-white">
-          3가지 영역에서 모든 것을 준비합니다
+          3가지 영역에서<br className="sm:hidden" /> 모든 것을 준비합니다
         </h3>
         <div className="grid md:grid-cols-3 gap-4 lg:gap-6">
           {services.map((s) => (
@@ -97,7 +97,7 @@ export function Inbound() {
 
       <Fade className="mt-24 text-center">
         <p className="text-gray-300 mb-6 text-lg">
-          해외 VIP의 한국 방문, <BrandText />와 상담하세요.
+          해외 VIP의 한국 방문,<br className="sm:hidden" /> <BrandText />와 상담하세요.
         </p>
         <Button as="a" href="#contact" variant="outlineLight" font="eng">
           Plan Your VIP Experience →

@@ -42,8 +42,8 @@ const reasons = [
 export function About() {
   return (
     <Section id="about" tone="light">
-      <Fade className="max-w-3xl mx-auto text-center">
-        <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-8 tracking-tight">
+      <Fade className="max-w-3xl mx-auto text-left sm:text-center">
+        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-8 tracking-tight">
           기업 출장의 양방향 전문가, <BrandText />입니다.
         </h2>
         <p className="text-gray-600 text-base lg:text-lg leading-[1.8] text-justify">

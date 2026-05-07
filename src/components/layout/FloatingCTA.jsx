@@ -9,6 +9,11 @@ export function FloatingCTA() {
   const [hidden, setHidden] = useState(false)
 
   useEffect(() => {
+    // Below sm the CTA is hidden via Tailwind's `hidden sm:block`, so the
+    // observer would just be doing wasted work on the most constrained device.
+    // We don't add a resize listener — phones don't cross this breakpoint.
+    if (window.matchMedia('(max-width: 639px)').matches) return
+
     const targets = ['hero', 'contact']
       .map((id) => document.getElementById(id))
       .filter(Boolean)
@@ -32,7 +37,7 @@ export function FloatingCTA() {
   return (
     <div
       className={cn(
-        'fixed bottom-8 right-6 lg:right-12 z-50 ds-cta-group transition-opacity duration-300',
+        'hidden sm:block fixed bottom-8 right-6 lg:right-12 z-50 ds-cta-group transition-opacity duration-300',
         hidden && 'opacity-0 pointer-events-none',
       )}
       aria-hidden={hidden}

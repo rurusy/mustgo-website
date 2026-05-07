@@ -158,7 +158,7 @@ export function Header() {
               key={item.href}
               href={item.href}
               onClick={(e) => handleAnchor(e, item.href)}
-              className="py-4 text-lg font-medium text-brand-blue hover:text-brand-blue-dark border-b border-gray-100 transition-colors"
+              className="py-4 text-lg font-medium text-ink-800 hover:text-brand-blue active:text-brand-blue border-b border-gray-100 transition-colors"
             >
               {item.label}
             </a>

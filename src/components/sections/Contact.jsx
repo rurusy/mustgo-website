@@ -28,6 +28,30 @@ function getMapsEmbedSrc() {
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const PHONE_DIGITS_MIN = 9 // 02-XXX-XXXX (서울 9자리) 이상 허용
 
+// Hoisted to module scope so re-renders (status / inquiryType changes) don't
+// re-allocate fragments + spans for static label markup.
+const corporateLabel = (
+  <>
+    Corporate Travel
+    <span className="hidden sm:inline"> — 해외 출장 문의</span>
+    <span className="sm:hidden"> (해외 출장 문의)</span>
+  </>
+)
+const inboundLabel = (
+  <>
+    Inbound Tour
+    <span className="hidden sm:inline"> — 해외 VIP 한국 방문 문의</span>
+    <span className="sm:hidden"> (해외 VIP 한국 방문 문의)</span>
+  </>
+)
+const otherLabel = (
+  <>
+    기타
+    <span className="hidden sm:inline"> — 제휴 또는 기타 문의</span>
+    <span className="sm:hidden"> (제휴 또는 기타 문의)</span>
+  </>
+)
+
 export function Contact() {
   // env 값은 빌드 타임에 고정되므로 한 번만 계산.
   const mapsSrc = useMemo(() => getMapsEmbedSrc(), [])
@@ -111,9 +135,9 @@ export function Contact() {
 
   return (
     <Section id="contact" tone="soft">
-      <Fade className="max-w-3xl mx-auto mb-16 text-center">
-        <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4 tracking-tight">
-          빠른 회신, <BrandText />가 드립니다.
+      <Fade className="max-w-3xl mx-auto mb-16 text-left sm:text-center">
+        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4 tracking-tight">
+          빠른 회신,<br className="sm:hidden" /> <BrandText />가 드립니다.
         </h2>
         <p className="text-gray-600 text-[15px]">
           영업일 기준 1일 이내, 담당 컨설턴트가 직접 회신해 드립니다.
@@ -149,28 +173,26 @@ export function Contact() {
               className="bg-white p-8 rounded-lg border border-gray-200 shadow-sm"
             >
               <div className="mb-8">
-                <label className="block text-sm font-bold text-gray-900 mb-4">
-                  문의 유형 <span className="text-amber-600">*</span>
-                </label>
+                <FormLabel size="md" required className="mb-4">문의 유형</FormLabel>
                 <div className="space-y-3">
                   <Radio
                     name="inquiry_type"
                     value="corporate"
-                    label="Corporate Travel — 해외 출장 문의"
+                    label={corporateLabel}
                     checked={inquiryType === 'corporate'}
                     onChange={() => setInquiryType('corporate')}
                   />
                   <Radio
                     name="inquiry_type"
                     value="inbound"
-                    label="Inbound Tour — 해외 VIP 한국 방문 문의"
+                    label={inboundLabel}
                     checked={inquiryType === 'inbound'}
                     onChange={() => setInquiryType('inbound')}
                   />
                   <Radio
                     name="inquiry_type"
                     value="other"
-                    label="기타 — 제휴 또는 기타 문의"
+                    label={otherLabel}
                     checked={inquiryType === 'other'}
                     onChange={() => setInquiryType('other')}
                   />
@@ -248,7 +270,7 @@ export function Contact() {
 
               <ContactInfoItem icon={<MailIcon />} eyebrow="Email">
                 <p className="text-[15px] font-medium text-gray-900 font-eng">
-                  jhlee@mustgokorea.com
+                  wemustgo@mustgokorea.com
                 </p>
               </ContactInfoItem>
 

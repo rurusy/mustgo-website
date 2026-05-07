@@ -37,7 +37,7 @@ export function Hero() {
       </div>
 
       <div className="relative z-10 max-w-layout w-full mx-auto px-6 lg:px-12 text-center flex flex-col items-center">
-        <Fade as="h1" className="text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight leading-[1.35] mb-6">
+        <Fade as="h1" className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight leading-[1.35] mb-6">
           비즈니스 출장의 모든 길,
           <br />
           <BrandText />가 함께합니다

@@ -43,8 +43,8 @@ export function Corporate() {
       bgImageAlt="Aircraft landing on a runway with city skyline in the background"
       overlay="bg-gradient-to-b from-ink-900/95 via-ink-900/80 to-ink-900/95"
     >
-      <Fade className="max-w-3xl mx-auto text-center">
-        <h2 className="text-3xl lg:text-4xl font-bold mb-6 tracking-tight">
+      <Fade className="max-w-3xl mx-auto text-left sm:text-center">
+        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-6 tracking-tight">
           기업 해외출장, 항공권부터 정산까지 한 번에
         </h2>
         <p className="text-amber-500 text-lg opacity-90 leading-relaxed">
@@ -64,7 +64,7 @@ export function Corporate() {
       </Fade>
 
       <Fade className="mt-24 text-center">
-        <p className="text-gray-400 mb-6 text-lg">우리 회사에 맞는 출장 솔루션이 궁금하신가요?</p>
+        <p className="text-gray-400 mb-6 text-sm sm:text-lg">우리 회사에 맞는 출장 솔루션이 궁금하신가요?</p>
         <Button as="a" href="#contact" variant="outlineLight">
           무료 견적 요청하기 →
         </Button>
