@@ -70,8 +70,8 @@ export function About() {
         </h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 text-center">
           <Stat target={15} suffix="년+" label="Outbound, Inbound 현장 경험" color="green" />
-          <Stat target={1800} suffix="+" label="누적 기업 출장 건수" color="green" />
-          <Stat target={3500} suffix="+" label="Inbound Tour 이용 해외VIP 고객수" color="green" />
+          <Stat target={50000} suffix="+" label="누적 기업 출장 건수" color="green" />
+          <Stat target={10000} suffix="+" label="Inbound Tour 이용 해외VIP 고객수" color="green" />
           <Stat staticValue="24h" label="긴급 대응 체계 가동" color="green" />
         </div>
       </Fade>

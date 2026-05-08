@@ -451,8 +451,8 @@ const TOTAL = 13
 
   const stats = [
     { val: '15', sfx: '년+', lbl: 'Outbound · Inbound 현장 경험' },
-    { val: '1,800', sfx: '+', lbl: '누적 기업 출장 건수' },
-    { val: '3,500', sfx: '+', lbl: 'Inbound Tour 이용 해외 VIP 고객수' },
+    { val: '50,000', sfx: '+', lbl: '누적 기업 출장 건수' },
+    { val: '10,000', sfx: '+', lbl: 'Inbound Tour 이용 해외 VIP 고객수' },
     { val: '24h', sfx: '', lbl: '긴급 대응 체계 가동' },
   ]
   const cellW = 2.95

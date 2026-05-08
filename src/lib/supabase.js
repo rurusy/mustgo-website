@@ -62,4 +62,4 @@ export const supabase = isConfigured
 
 // 관리자 계정 이메일은 Supabase Authentication → Users 에 등록된 값과 일치해야 합니다.
 // 비밀번호는 코드에 두지 않고 로그인 화면에서 입력받아 Supabase Auth 가 검증합니다.
-export const ADMIN_EMAIL = 'rurusy@naver.com'
+export const ADMIN_EMAIL = 'wemustgo@mustgokorea.com'
