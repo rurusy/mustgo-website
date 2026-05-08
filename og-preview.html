@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<title>OG Image Preview — 1200×630</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap"
+  rel="stylesheet"
+/>
+<style>
+  html, body { margin: 0; padding: 0; background: #2a2a2a; }
+  body {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    padding: 40px;
+    font-family: "Noto Sans KR", sans-serif;
+  }
+  .og {
+    width: 1200px;
+    height: 630px;
+    background: #1A1A1A;
+    color: #ffffff;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  }
+  /* Subtle dual-tone glow — green from top-left (Outbound), blue from bottom-right (Inbound) */
+  .og::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 600px 400px at 15% 10%, rgba(108, 189, 69, 0.18) 0%, transparent 65%),
+      radial-gradient(ellipse 600px 400px at 85% 90%, rgba(66, 178, 230, 0.18) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  /* Faint grid texture for premium feel */
+  .og::after {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+  }
+  /* Wordmark is the visual anchor — centered absolutely on the canvas;
+     other lines are positioned relative to its center line (50%). */
+  .stage {
+    position: relative;
+    height: 100%;
+    text-align: center;
+    z-index: 2;
+  }
+  .eyebrow {
+    position: absolute;
+    bottom: calc(50% + 110px);
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex; align-items: center; gap: 22px;
+    font-family: "Inter", sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .eyebrow .line {
+    width: 70px; height: 1px;
+    background: rgba(255, 255, 255, 0.25);
+  }
+  .eyebrow .out { color: #82c95f; }   /* brand-green-light */
+  .eyebrow .in  { color: #5ac4f0; }   /* brand-blue-light */
+  .eyebrow .dot { color: rgba(255, 255, 255, 0.35); margin: 0 -6px; }
+
+  .wordmark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: "Inter", sans-serif;
+    font-size: 168px;
+    font-weight: 700;
+    letter-spacing: -0.045em;
+    line-height: 0.95;
+    white-space: nowrap;
+  }
+  .wordmark .m { color: #6cbd45; }
+  .wordmark .g { color: #42b2e6; }
+
+  .tagline-ko {
+    position: absolute;
+    top: calc(50% + 110px);
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: "Noto Sans KR", sans-serif;
+    font-size: 40px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+    white-space: nowrap;
+  }
+  .tagline-en {
+    position: absolute;
+    top: calc(50% + 178px);
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: "Inter", sans-serif;
+    font-size: 19px;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    color: rgba(255, 255, 255, 0.5);
+    white-space: nowrap;
+  }
+
+  .meta-bottom {
+    position: absolute;
+    bottom: 30px; left: 0; right: 0;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 44px;
+    font-family: "Inter", sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    color: rgba(255, 255, 255, 0.4);
+    z-index: 3;
+  }
+  .meta-bottom .domain { letter-spacing: 0.05em; }
+
+  /* Helper note (not part of OG image) */
+  .note {
+    position: fixed; top: 12px; left: 12px;
+    font-family: "Inter", sans-serif; font-size: 12px;
+    color: #888; background: rgba(0,0,0,0.6); padding: 6px 10px; border-radius: 4px;
+  }
+</style>
+</head>
+<body>
+  <div class="note">OG Image Preview · 1200 × 630 · 캡처 영역은 검은 박스 내부만</div>
+  <div class="og" id="og-canvas">
+    <div class="stage">
+      <div class="eyebrow">
+        <span class="line"></span>
+        <span class="out">Outbound</span>
+        <span class="dot">·</span>
+        <span class="in">Inbound</span>
+        <span class="line"></span>
+      </div>
+      <div class="wordmark">
+        <span class="m">M</span>ust<span class="g">g</span>o
+      </div>
+      <div class="tagline-ko">비즈니스 출장의 양방향 전문가, 머스트고</div>
+      <div class="tagline-en">Your Trusted Partner in Two-Way Business Travel</div>
+    </div>
+    <div class="meta-bottom">
+      <span>CORPORATE TRAVEL · INBOUND TOUR</span>
+      <span class="domain">mustgokorea.co.kr</span>
+    </div>
+  </div>
+</body>
+</html>
