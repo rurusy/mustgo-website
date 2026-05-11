@@ -11,3 +11,8 @@ dev.log
 
 *.bak
 .claude/settings.local.json
+
+# Local-only marketing asset tooling (banner generator, etc.)
+tools/
+for_powerlink.jpg
+supabase/.temp/
