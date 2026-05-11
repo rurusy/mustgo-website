@@ -22,7 +22,7 @@ export function Footer() {
 
           <div className="lg:text-right">
             <p className="text-sm text-gray-400 mb-2">
-              (주)머스트고 | 사업자등록번호: 618-81-35992
+              (주)머스트고 | 대표자: 이종화 | 사업자등록번호: 618-81-35992
             </p>
             <p className="text-xs text-gray-600 font-eng mb-1">
               © 2026 Mustgo Co., Ltd. All Rights Reserved.
