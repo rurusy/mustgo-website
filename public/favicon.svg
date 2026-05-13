@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <text
+    x="32"
+    y="42"
+    text-anchor="middle"
+    font-family="Inter, 'Helvetica Neue', Arial, sans-serif"
+    font-weight="800"
+    font-size="44"
+    letter-spacing="-2"
+  ><tspan fill="#6cbd45">m</tspan><tspan fill="#42b2e6">g</tspan></text>
+</svg>
