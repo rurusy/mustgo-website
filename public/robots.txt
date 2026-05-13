@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /styleguide
+
+Sitemap: https://mustgokorea.co.kr/sitemap.xml
