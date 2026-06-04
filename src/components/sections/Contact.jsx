@@ -3,14 +3,17 @@ import { Section, Fade, FormLabel, Input, Textarea, Radio, Checkbox, Button, Car
 import { ContactInfoItem } from '../marketing/ContactInfoItem'
 import { PhoneIcon, AlertIcon, MailIcon, PinIcon } from '../icons.jsx'
 import { supabase } from '../../lib/supabase'
+import { cn } from '../../design/cn'
 
 // Single source of truth for each office address: keep display copy and the
 // map-search query in sync (otherwise pin/marker drifts from what the user reads).
 const OFFICES = [
   {
     key: 'hq',
-    label: '본사',
+    label: '대구사무소',
     region: '대구',
+    tradeName: '(주)머스트고',
+    tradeNameColor: 'text-brand-blue', // 로고의 'g' 색상
     display: '(42250) 대구광역시 수성구 알파시티 1로 31길 19, 5F',
     mapQuery: '대구광역시 수성구 알파시티1로31길 19',
     building: 'MG 뉴턴 알파시티',
@@ -303,7 +306,9 @@ export function Contact() {
                         </span>
                       </p>
                       {office.tradeName && (
-                        <p className="text-[15px] font-medium text-brand-green mb-1">{office.tradeName}</p>
+                        <p className={cn('text-[15px] font-medium mb-1', office.tradeNameColor || 'text-brand-green')}>
+                          {office.tradeName}
+                        </p>
                       )}
                       <p className="text-[15px] font-medium text-gray-900 mb-1">{office.display}</p>
                       <p className="text-xs text-gray-500">{office.building}</p>
