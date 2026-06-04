@@ -4,19 +4,34 @@ import { ContactInfoItem } from '../marketing/ContactInfoItem'
 import { PhoneIcon, AlertIcon, MailIcon, PinIcon } from '../icons.jsx'
 import { supabase } from '../../lib/supabase'
 
-// Single source of truth for the HQ address: keep display copy and the
+// Single source of truth for each office address: keep display copy and the
 // map-search query in sync (otherwise pin/marker drifts from what the user reads).
-const HQ = {
-  display: '(42250) 대구광역시 수성구 알파시티 1로 31길 19, 5F',
-  mapQuery: '대구광역시 수성구 알파시티1로31길 19',
-  building: 'MG 뉴턴 알파시티',
-}
+const OFFICES = [
+  {
+    key: 'hq',
+    label: '본사',
+    region: '대구',
+    display: '(42250) 대구광역시 수성구 알파시티 1로 31길 19, 5F',
+    mapQuery: '대구광역시 수성구 알파시티1로31길 19',
+    building: 'MG 뉴턴 알파시티',
+  },
+  {
+    key: 'seoul',
+    label: '서울사무소',
+    region: '서울',
+    tradeName: '(주)위머스트고',
+    display: '서울특별시 종로구 창경궁로 256, 4층 에이치-19호',
+    mapQuery: '서울특별시 종로구 창경궁로 256',
+    building: '명륜2가, 선남빌딩',
+    businessNumber: '156-88-03929',
+  },
+]
 
 // Use the official Maps Embed API when a key is configured; fall back to the
 // keyless ?output=embed URL so dev still works without provisioning a key.
-function getMapsEmbedSrc() {
+function getMapsEmbedSrc(mapQuery) {
   const key = import.meta.env.VITE_GOOGLE_MAPS_API_KEY
-  const q = encodeURIComponent(HQ.mapQuery)
+  const q = encodeURIComponent(mapQuery)
   if (key) {
     return `https://www.google.com/maps/embed/v1/place?key=${key}&q=${q}&zoom=16&language=ko&region=KR`
   }
@@ -54,7 +69,10 @@ const otherLabel = (
 
 export function Contact() {
   // env 값은 빌드 타임에 고정되므로 한 번만 계산.
-  const mapsSrc = useMemo(() => getMapsEmbedSrc(), [])
+  const officesWithMaps = useMemo(
+    () => OFFICES.map((o) => ({ ...o, mapsSrc: getMapsEmbedSrc(o.mapQuery) })),
+    [],
+  )
   const [status, setStatus] = useState('idle') // idle | submitting | success | error
   const [errorMsg, setErrorMsg] = useState('')
   const [inquiryType, setInquiryType] = useState('corporate')
@@ -275,17 +293,39 @@ export function Contact() {
               </ContactInfoItem>
 
               <ContactInfoItem icon={<PinIcon />} eyebrow="Address" grow>
-                <p className="text-[15px] font-medium text-gray-900 mb-1">{HQ.display}</p>
-                <p className="text-xs text-gray-500 mb-4">{HQ.building}</p>
-                <div className="w-full flex-grow min-h-[200px] rounded overflow-hidden border border-gray-200">
-                  <iframe
-                    title={`${HQ.building} 위치`}
-                    src={mapsSrc}
-                    className="w-full h-full border-0"
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                    allowFullScreen
-                  />
+                <div className="flex flex-col gap-6 flex-grow">
+                  {officesWithMaps.map((office) => (
+                    <div key={office.key} className="flex flex-col">
+                      <p className="text-xs font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                        <span>{office.label}</span>
+                        <span className="text-[11px] font-normal text-gray-400 font-eng tracking-wider uppercase">
+                          {office.region}
+                        </span>
+                      </p>
+                      {office.tradeName && (
+                        <p className="text-[15px] font-medium text-brand-green mb-1">{office.tradeName}</p>
+                      )}
+                      <p className="text-[15px] font-medium text-gray-900 mb-1">{office.display}</p>
+                      <p className="text-xs text-gray-500">{office.building}</p>
+                      {office.businessNumber && (
+                        <p className="text-xs text-gray-500 mt-1">
+                          <span className="text-gray-400 mr-1">사업자등록번호</span>
+                          <span className="font-eng">{office.businessNumber}</span>
+                        </p>
+                      )}
+                      <div className="mb-3" />
+                      <div className="w-full min-h-[180px] rounded overflow-hidden border border-gray-200">
+                        <iframe
+                          title={`${office.building} 위치`}
+                          src={office.mapsSrc}
+                          className="w-full h-full border-0"
+                          loading="lazy"
+                          referrerPolicy="no-referrer-when-downgrade"
+                          allowFullScreen
+                        />
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </ContactInfoItem>
             </div>
