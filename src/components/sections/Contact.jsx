@@ -277,7 +277,7 @@ export function Contact() {
               <ContactInfoItem
                 icon={<PhoneIcon />}
                 eyebrow="Phone"
-                label="053-255-5992"
+                label="1551-5992"
                 helper="평일 09:00 - 18:00"
               />
 
