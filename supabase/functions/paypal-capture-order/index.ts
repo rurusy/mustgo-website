@@ -19,11 +19,32 @@ Deno.serve(async (req) => {
 
   try {
     const body = await req.json().catch(() => null)
-    const orderID = (body?.orderID ?? '').toString().trim()
+    const orderID = (body?.orderID ?? '').toString().trim().slice(0, 64)
     if (!orderID) return jsonResponse({ error: 'orderID required' }, 400)
 
+    const db = admin()
+
+    // 이미 완료로 기록된 주문이면 재캡처/중복 알림 없이 그대로 반환(앱 레벨 멱등).
+    const { data: existing, error: readError } = await db
+      .from('payments')
+      .select('status, amount, currency, paypal_capture_id')
+      .eq('paypal_order_id', orderID)
+      .maybeSingle()
+    if (!readError && existing?.status === 'completed') {
+      return jsonResponse(
+        {
+          status: 'completed',
+          order_id: orderID,
+          capture_id: existing.paypal_capture_id ?? null,
+          amount: existing.amount != null ? Number(existing.amount) : null,
+          currency: existing.currency ?? null,
+        },
+        200,
+      )
+    }
+
     const token = await getAccessToken()
-    const res = await fetch(`${paypalBase()}/v2/checkout/orders/${orderID}/capture`, {
+    const capRes = await fetch(`${paypalBase()}/v2/checkout/orders/${orderID}/capture`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -32,18 +53,36 @@ Deno.serve(async (req) => {
         'PayPal-Request-Id': orderID,
       },
     })
-    const data = await res.json()
+    let data = await capRes.json()
 
+    // 이미 캡처된 주문(멱등 창 만료 후 재시도 등): 에러 본문을 주문으로 오독하지 말고
+    // 실제 주문을 다시 조회해 캡처 세부정보를 얻는다.
     const alreadyCaptured = Array.isArray(data?.details)
       && data.details.some((d: { issue?: string }) => d?.issue === 'ORDER_ALREADY_CAPTURED')
-
-    if ((!res.ok && !alreadyCaptured) || (res.ok && data?.status !== 'COMPLETED')) {
-      console.error('[paypal-capture-order] capture failed:', res.status, JSON.stringify(data))
-      await markFailed(orderID, data)
-      return jsonResponse({ status: 'failed' }, 502)
+    if (!capRes.ok && alreadyCaptured) {
+      const getRes = await fetch(`${paypalBase()}/v2/checkout/orders/${orderID}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      if (getRes.ok) data = await getRes.json()
     }
 
     const capture = data?.purchase_units?.[0]?.payments?.captures?.[0]
+    const captureStatus = capture?.status // COMPLETED | PENDING | DECLINED | ...
+    const completed = captureStatus === 'COMPLETED'
+    const pending = captureStatus === 'PENDING'
+
+    if (!completed && !pending) {
+      console.error(
+        '[paypal-capture-order] capture failed:',
+        capRes.status,
+        data?.name,
+        data?.debug_id,
+        captureStatus,
+      )
+      await markFailed(db, orderID, data)
+      return jsonResponse({ status: 'failed' }, 502)
+    }
+
     const amount = capture?.amount?.value != null ? Number(capture.amount.value) : null
     const currency = capture?.amount?.currency_code ?? null
     const payer = data?.payer
@@ -51,12 +90,13 @@ Deno.serve(async (req) => {
       ? `${payer.name.given_name ?? ''} ${payer.name.surname ?? ''}`.trim() || null
       : null
     const payerEmail = payer?.email_address ?? null
+    const status = completed ? 'completed' : 'pending'
 
-    // 기록 갱신. 캡처에서 확인된 값만 덮어써서 create 단계의 고객 입력값을 보존.
+    // 캡처에서 확인된 값만 덮어써서 create 단계의 고객 입력값(reference 등)을 보존.
     const record: Record<string, unknown> = {
       paypal_order_id: orderID,
       paypal_capture_id: capture?.id ?? null,
-      status: 'completed',
+      status,
       raw: data,
       updated_at: new Date().toISOString(),
     }
@@ -65,17 +105,16 @@ Deno.serve(async (req) => {
     if (payerName) record.payer_name = payerName
     if (payerEmail) record.payer_email = payerEmail
 
-    try {
-      await admin().from('payments').upsert(record, { onConflict: 'paypal_order_id' })
-    } catch (e) {
-      console.error('[paypal-capture-order] db upsert failed:', e)
-    }
+    const { error: upsertError } = await db
+      .from('payments')
+      .upsert(record, { onConflict: 'paypal_order_id' })
+    if (upsertError) console.error('[paypal-capture-order] db upsert failed:', upsertError.message)
 
     // 관리자 알림 (best-effort)
-    await notifyAdmin({ amount, currency, payerName, payerEmail, orderID, captureId: capture?.id })
+    await notifyAdmin({ status, amount, currency, payerName, payerEmail, orderID, captureId: capture?.id })
 
     return jsonResponse(
-      { status: 'completed', order_id: orderID, capture_id: capture?.id ?? null, amount, currency },
+      { status, order_id: orderID, capture_id: capture?.id ?? null, amount, currency },
       200,
     )
   } catch (e) {
@@ -91,18 +130,26 @@ function admin() {
   )
 }
 
-async function markFailed(orderID: string, data: unknown) {
+// 실패 기록은 UPDATE 로만 시도한다. amount 가 NOT NULL 이라, 선행 create 행이 없을 때
+// upsert 로 INSERT 하면 제약 위반이 나므로(정상 캡처는 항상 create 행이 선행함).
+async function markFailed(
+  db: ReturnType<typeof admin>,
+  orderID: string,
+  data: unknown,
+) {
   try {
-    await admin().from('payments').upsert(
-      { paypal_order_id: orderID, status: 'failed', raw: data, updated_at: new Date().toISOString() },
-      { onConflict: 'paypal_order_id' },
-    )
+    const { error } = await db
+      .from('payments')
+      .update({ status: 'failed', raw: data, updated_at: new Date().toISOString() })
+      .eq('paypal_order_id', orderID)
+    if (error) console.error('[paypal-capture-order] markFailed failed:', error.message)
   } catch (e) {
-    console.error('[paypal-capture-order] markFailed db error:', e)
+    console.error('[paypal-capture-order] markFailed threw:', e)
   }
 }
 
 async function notifyAdmin(info: {
+  status: string
   amount: number | null
   currency: string | null
   payerName: string | null
@@ -118,6 +165,7 @@ async function notifyAdmin(info: {
   const amountLabel = info.amount != null
     ? `${info.amount.toFixed(2)} ${info.currency ?? ''}`.trim()
     : '(금액 확인 필요)'
+  const statusLabel = info.status === 'completed' ? '결제 완료' : '결제 접수 (확인 대기)'
 
   try {
     await fetch('https://api.resend.com/emails', {
@@ -126,10 +174,11 @@ async function notifyAdmin(info: {
       body: JSON.stringify({
         from,
         to: [to],
-        subject: `[MustGo 결제] $${amountLabel} 결제 완료`,
+        subject: `[MustGo 결제] $${amountLabel} ${statusLabel}`,
         text: [
-          'PayPal 결제가 완료되었습니다.',
+          `PayPal ${statusLabel}.`,
           '',
+          `상태: ${info.status}`,
           `금액: $${amountLabel}`,
           `결제자: ${info.payerName ?? '-'}`,
           `이메일: ${info.payerEmail ?? '-'}`,

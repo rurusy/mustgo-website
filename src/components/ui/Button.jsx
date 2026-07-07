@@ -6,6 +6,8 @@ const base =
 const variants = {
   primary: 'bg-amber-600 text-white hover:bg-amber-700',
   blue: 'bg-brand-blue text-white hover:bg-brand-green',
+  // Solid blue CTA that darkens on hover (used for the header "Pay Online" entry).
+  blueSolid: 'bg-brand-blue text-white hover:bg-brand-blue-dark shadow-none',
   green: 'bg-brand-green text-white hover:bg-brand-green-light',
   outlineLight:
     'bg-transparent border border-white/40 text-white hover:bg-white/10 hover:border-white backdrop-blur-sm shadow-none',

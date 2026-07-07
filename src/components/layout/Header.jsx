@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { cn } from '../../design/cn'
+import { Button } from '../ui'
 
 const navItems = [
   { label: 'About Mustgo', href: '#about' },
@@ -99,13 +100,17 @@ export function Header() {
                 {item.label}
               </a>
             ))}
-            <Link
+            <Button
+              as={Link}
               to="/pay"
-              className="inline-flex items-center gap-2 bg-brand-blue text-white px-4 py-2 rounded-sm font-eng font-semibold hover:bg-brand-blue-dark transition-colors shadow-sm"
+              variant="blueSolid"
+              size="pillSm"
+              font="eng"
+              className="gap-2"
             >
               <CardIcon />
               Pay Online
-            </Link>
+            </Button>
           </nav>
 
           <button
@@ -191,14 +196,18 @@ export function Header() {
               {item.label}
             </a>
           ))}
-          <Link
+          <Button
+            as={Link}
             to="/pay"
             onClick={() => setMenuOpen(false)}
-            className="mt-6 inline-flex items-center justify-center gap-2 bg-brand-blue text-white py-4 rounded-sm text-lg font-eng font-semibold hover:bg-brand-blue-dark transition-colors"
+            variant="blueSolid"
+            size="md"
+            font="eng"
+            className="w-full gap-2 mt-6"
           >
             <CardIcon />
             Pay Online
-          </Link>
+          </Button>
         </nav>
       </aside>
     </>

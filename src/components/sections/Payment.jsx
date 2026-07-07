@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Section, Fade, FormLabel, Input, BrandText, Button } from '../ui'
 import { supabase } from '../../lib/supabase'
+import { cn } from '../../design/cn'
 
 // Client ID is a public value, so exposing it on the frontend is safe.
 // The Secret lives only on the server (Edge Functions).
@@ -137,7 +138,8 @@ export function Payment() {
         const { data: res, error } = await supabase.functions.invoke('paypal-capture-order', {
           body: { orderID: data.orderID },
         })
-        if (error || res?.status !== 'completed') {
+        // 'completed' = 즉시 확정, 'pending' = PayPal 검토 대기(둘 다 접수 성공).
+        if (error || (res?.status !== 'completed' && res?.status !== 'pending')) {
           setStatus('error')
           setErrorMsg(
             "We couldn't finalize your payment. If you were not charged, please try again — if the problem persists, contact us.",
@@ -327,31 +329,43 @@ export function Payment() {
 }
 
 function SuccessPanel({ success, onReset }) {
+  const pending = success.status === 'pending'
+  const amountLabel =
+    success.amount != null ? `$${Number(success.amount).toFixed(2)} ${success.currency ?? ''}`.trim() : null
+
   return (
     <div className="text-center">
-      <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-brand-green/10 text-brand-green mb-6">
-        <svg
-          className="w-7 h-7"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          aria-hidden="true"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-        </svg>
+      <div
+        className={cn(
+          'inline-flex items-center justify-center w-14 h-14 rounded-full mb-6',
+          pending ? 'bg-amber-500/10 text-amber-600' : 'bg-brand-green/10 text-brand-green',
+        )}
+      >
+        {pending ? (
+          <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        ) : (
+          <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+          </svg>
+        )}
       </div>
-      <h3 className="text-xl font-bold text-gray-900 mb-2">Payment complete</h3>
-      <p className="text-sm text-gray-600 mb-1">
-        Amount paid{' '}
-        <span className="font-bold">
-          ${Number(success.amount).toFixed(2)} {success.currency}
-        </span>
-      </p>
+      <h3 className="text-xl font-bold text-gray-900 mb-2">
+        {pending ? 'Payment received — under review' : 'Payment complete'}
+      </h3>
+      {amountLabel && (
+        <p className="text-sm text-gray-600 mb-1">
+          {pending ? 'Amount submitted' : 'Amount paid'} <span className="font-bold">{amountLabel}</span>
+        </p>
+      )}
       {success.capture_id && (
         <p className="text-xs text-gray-400 mb-6">Transaction ID {success.capture_id}</p>
       )}
       <p className="text-sm text-gray-600 mb-8">
-        A receipt has been sent to your PayPal email. Your consultant will follow up shortly.
+        {pending
+          ? 'Your payment is being reviewed by PayPal and will be confirmed shortly. Your consultant will follow up.'
+          : 'A receipt has been sent to your PayPal email. Your consultant will follow up shortly.'}
       </p>
       <Button type="button" variant="ghost" size="sm" onClick={onReset}>
         Make another payment
