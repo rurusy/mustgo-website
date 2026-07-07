@@ -11,6 +11,7 @@ dev.log
 
 *.bak
 .claude/settings.local.json
+.claude/agent-memory/
 
 # Local-only marketing asset tooling (banner generator, etc.)
 tools/
