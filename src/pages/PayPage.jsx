@@ -69,6 +69,12 @@ export default function PayPage() {
             >
               wemustgo@mustgokorea.com
             </a>
+            <Link
+              to="/policy"
+              className="block mt-1 text-gray-400 hover:text-amber-500 font-eng transition-colors"
+            >
+              Payment &amp; Refund Policy
+            </Link>
             <p className="text-xs text-gray-600 font-eng mt-1">© 2026 Mustgo Co., Ltd.</p>
           </div>
         </div>

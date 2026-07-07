@@ -318,7 +318,16 @@ export function Payment() {
               )}
 
               <p className="mt-6 text-xs text-gray-400 leading-relaxed">
-                Payments are processed securely by PayPal. <BrandText /> never stores your card
+                By paying, you agree to our{' '}
+                <a
+                  href="/policy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline hover:text-brand-blue"
+                >
+                  Payment &amp; Refund Policy
+                </a>
+                . Payments are processed securely by PayPal; <BrandText /> never stores your card
                 details. Your consultant will confirm receipt after payment.
               </p>
           </div>

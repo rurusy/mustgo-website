@@ -2,6 +2,7 @@ import { Route, Routes } from 'react-router-dom'
 import HomePage from './pages/HomePage'
 import StyleguidePage from './pages/StyleguidePage'
 import PayPage from './pages/PayPage'
+import PolicyPage from './pages/PolicyPage'
 import AdminLoginPage from './pages/AdminLoginPage'
 import AdminPage from './pages/AdminPage'
 
@@ -11,6 +12,7 @@ export default function App() {
       <Route path="/" element={<HomePage />} />
       <Route path="/styleguide" element={<StyleguidePage />} />
       <Route path="/pay" element={<PayPage />} />
+      <Route path="/policy" element={<PolicyPage />} />
       <Route path="/admin/login" element={<AdminLoginPage />} />
       <Route path="/admin" element={<AdminPage />} />
     </Routes>
