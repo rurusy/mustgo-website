@@ -30,7 +30,34 @@ function CardIcon() {
   )
 }
 
-export function Header() {
+const HEADER_COPY = {
+  ko: { openMenu: '메뉴 열기', closeMenu: '메뉴 닫기', mobileMenu: '모바일 메뉴' },
+  en: { openMenu: 'Open menu', closeMenu: 'Close menu', mobileMenu: 'Mobile menu' },
+}
+
+// KOR ⇄ ENG switch. Same markup on both pages; only the active language differs.
+function LangToggle({ lang, className, onNavigate }) {
+  const item = (to, code, active) => (
+    <Link
+      to={to}
+      onClick={onNavigate}
+      aria-current={active ? 'true' : undefined}
+      className={cn('px-1.5 transition-colors', active ? 'text-brand-blue' : 'hover:text-brand-blue')}
+    >
+      {code}
+    </Link>
+  )
+  return (
+    <div className={cn('flex items-center text-sm font-eng font-semibold text-gray-400', className)}>
+      {item('/', 'KOR', lang === 'ko')}
+      <span className="text-gray-300" aria-hidden="true">/</span>
+      {item('/en', 'ENG', lang === 'en')}
+    </div>
+  )
+}
+
+export function Header({ lang = 'ko' }) {
+  const t = HEADER_COPY[lang]
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const triggerRef = useRef(null)
@@ -100,17 +127,20 @@ export function Header() {
                 {item.label}
               </a>
             ))}
-            <Button
-              as={Link}
-              to="/pay"
-              variant="blueSolid"
-              size="pillSm"
-              font="eng"
-              className="gap-2"
-            >
-              <CardIcon />
-              Pay Online
-            </Button>
+            {lang === 'en' && (
+              <Button
+                as={Link}
+                to="/pay"
+                variant="blueSolid"
+                size="pillSm"
+                font="eng"
+                className="gap-2"
+              >
+                <CardIcon />
+                Pay Online
+              </Button>
+            )}
+            <LangToggle lang={lang} />
           </nav>
 
           <button
@@ -118,7 +148,7 @@ export function Header() {
             type="button"
             onClick={() => setMenuOpen(true)}
             className="lg:hidden flex items-center justify-center w-10 h-10 -mr-2 text-brand-blue hover:text-brand-blue-dark transition-colors"
-            aria-label="메뉴 열기"
+            aria-label={t.openMenu}
             aria-expanded={menuOpen}
             aria-controls="mobile-menu"
           >
@@ -157,7 +187,7 @@ export function Header() {
         id="mobile-menu"
         role="dialog"
         aria-modal="true"
-        aria-label="모바일 메뉴"
+        aria-label={t.mobileMenu}
         className={cn(
           'lg:hidden fixed top-0 right-0 h-full w-[80%] max-w-xs bg-white shadow-2xl transition-transform duration-300 ease-out z-[70] flex flex-col',
           menuOpen ? 'translate-x-0' : 'translate-x-full',
@@ -170,7 +200,7 @@ export function Header() {
             type="button"
             onClick={() => setMenuOpen(false)}
             className="flex items-center justify-center w-10 h-10 -mr-2 text-brand-blue hover:text-brand-blue-dark transition-colors"
-            aria-label="메뉴 닫기"
+            aria-label={t.closeMenu}
           >
             <svg
               className="w-6 h-6"
@@ -196,18 +226,21 @@ export function Header() {
               {item.label}
             </a>
           ))}
-          <Button
-            as={Link}
-            to="/pay"
-            onClick={() => setMenuOpen(false)}
-            variant="blueSolid"
-            size="md"
-            font="eng"
-            className="w-full gap-2 mt-6"
-          >
-            <CardIcon />
-            Pay Online
-          </Button>
+          {lang === 'en' && (
+            <Button
+              as={Link}
+              to="/pay"
+              onClick={() => setMenuOpen(false)}
+              variant="blueSolid"
+              size="md"
+              font="eng"
+              className="w-full gap-2 mt-6"
+            >
+              <CardIcon />
+              Pay Online
+            </Button>
+          )}
+          <LangToggle lang={lang} onNavigate={() => setMenuOpen(false)} className="mt-8" />
         </nav>
       </aside>
     </>

@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router-dom'
 import HomePage from './pages/HomePage'
+import EnHomePage from './pages/EnHomePage'
 import StyleguidePage from './pages/StyleguidePage'
 import PayPage from './pages/PayPage'
 import PolicyPage from './pages/PolicyPage'
@@ -10,6 +11,7 @@ export default function App() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
+      <Route path="/en" element={<EnHomePage />} />
       <Route path="/styleguide" element={<StyleguidePage />} />
       <Route path="/pay" element={<PayPage />} />
       <Route path="/policy" element={<PolicyPage />} />

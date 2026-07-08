@@ -4,8 +4,8 @@ import { Payment } from '../components/sections/Payment'
 import { BrandText } from '../components/ui'
 
 // Dedicated English payment page for overseas clients.
-// Reached from the Korean homepage's "Payment" button (or a direct link a
-// consultant shares). Reuses the same Edge Functions / payments table backend.
+// Reached from the English homepage (/en) "Pay Online" button (or a direct
+// link a consultant shares). Reuses the same Edge Functions / payments backend.
 export default function PayPage() {
   useEffect(() => {
     // Utility/transactional page — keep it out of search results.
@@ -25,7 +25,7 @@ export default function PayPage() {
     <div className="min-h-screen flex flex-col bg-surface-soft">
       <header className="bg-white border-b border-gray-100">
         <div className="max-w-layout mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
-          <Link to="/" className="flex items-center" aria-label="Mustgo home">
+          <Link to="/en" className="flex items-center" aria-label="Mustgo home">
             <img src="/logo.gif" alt="Mustgo" className="h-10 w-auto object-contain" />
           </Link>
           <span className="flex items-center gap-2 text-sm font-eng font-medium text-gray-400">

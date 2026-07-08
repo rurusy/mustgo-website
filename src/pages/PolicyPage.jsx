@@ -91,7 +91,7 @@ export default function PolicyPage() {
     <div className="min-h-screen flex flex-col bg-white">
       <header className="border-b border-gray-100">
         <div className="max-w-layout mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
-          <Link to="/" className="flex items-center" aria-label="Mustgo home">
+          <Link to="/en" className="flex items-center" aria-label="Mustgo home">
             <img src="/logo.gif" alt="Mustgo" className="h-10 w-auto object-contain" />
           </Link>
           <Link
