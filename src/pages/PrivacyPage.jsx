@@ -137,7 +137,8 @@ export default function PrivacyPage() {
             개인정보처리방침
           </h1>
           <p className="text-sm text-gray-400 mt-3">
-            시행일: 2026년 7월 11일 · (주)머스트고 (Mustgo Co., Ltd.) · 사업자등록번호 618-81-35992
+            시행일: 2026년 7월 11일 · (주)머스트고 (Mustgo Co., Ltd.) · 사업자등록번호 618-81-35992 ·
+            통신판매업 신고번호 2026-대구수성구-0781
           </p>
           <nav className="mt-4 text-sm text-brand-blue flex gap-4">
             <a href="#ko" className="hover:underline">한국어</a>
