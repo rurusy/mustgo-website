@@ -78,14 +78,14 @@ const EN_PROCESSORS = [
 
 // 국외이전 (Supabase 저장은 국내라 제외)
 const KO_TRANSFER = [
-  ['PayPal Holdings, Inc.', '미국', '결제자 이름·이메일, 결제 금액·통화, 거래 식별정보', '결제 처리 및 정산', '결제 시 통신망을 통해 전송', '관련 법령 및 PayPal 정책에 따른 기간'],
+  ['PayPal Holdings, Inc.', '미국', '결제자 이름·이메일, 결제 금액·통화, 거래 식별정보', '결제 처리 및 정산 (온라인 결제 이용 시에만)', '결제 시 통신망을 통해 전송', '관련 법령 및 PayPal 정책에 따른 기간'],
   ['Resend, Inc.', '미국', '알림에 포함된 이름·연락처·이메일·문의내용', '관리자 알림 이메일 발송', '문의·결제 접수 시 전송', '발송 처리 후 서비스 정책에 따라 최소 보관'],
   ['Vercel, Inc.', '미국', '접속 IP, 브라우저·기기 정보 등', '웹사이트 호스팅 및 콘텐츠 전송', '사이트 접속 시 전송', '서비스 정책에 따른 기간'],
   ['Cloudflare, Inc.', '미국', '접속 IP, 브라우저·기기 정보 등', 'CDN·보안·트래픽 처리', '사이트 접속 시 전송', '서비스 정책에 따른 기간'],
   ['Google LLC', '미국', '접속 IP, 브라우저·기기 정보 등', '지도(Google Maps)·글꼴(Google Fonts) 제공', '해당 요소 로드 시 전송', '서비스 정책에 따른 기간'],
 ]
 const EN_TRANSFER = [
-  ['PayPal Holdings, Inc.', 'USA', 'Payer name/email, amount, currency, transaction identifiers', 'Payment processing and settlement', 'Transmitted over the network at payment', 'Per applicable law and PayPal policy'],
+  ['PayPal Holdings, Inc.', 'USA', 'Payer name/email, amount, currency, transaction identifiers', 'Payment processing and settlement (only when you pay online)', 'Transmitted over the network at payment', 'Per applicable law and PayPal policy'],
   ['Resend, Inc.', 'USA', 'Name, phone, email, message contained in notifications', 'Sending admin notification emails', 'Transmitted when an inquiry/payment is received', 'Minimally retained per service policy'],
   ['Vercel, Inc.', 'USA', 'Access IP, browser/device information, etc.', 'Website hosting and content delivery', 'Transmitted when the site is accessed', 'Per service policy'],
   ['Cloudflare, Inc.', 'USA', 'Access IP, browser/device information, etc.', 'CDN, security, and traffic handling', 'Transmitted when the site is accessed', 'Per service policy'],
@@ -104,6 +104,15 @@ export default function PrivacyPage() {
       document.head.removeChild(meta)
       document.title = prevTitle
     }
+  }, [])
+
+  // Land on the section matching the URL hash (e.g. /privacy#en linked from English
+  // pages), since client-side navigation doesn't scroll to the hash on its own.
+  useEffect(() => {
+    const id = window.location.hash.slice(1)
+    if (!id) return
+    const el = document.getElementById(id)
+    if (el) requestAnimationFrame(() => el.scrollIntoView())
   }, [])
 
   return (
@@ -185,9 +194,10 @@ export default function PrivacyPage() {
 
             <H2>5. 개인정보의 국외 이전</H2>
             <P>
-              회사는 서비스 제공(웹사이트 운영, 결제, 알림)에 필요한 범위에서 다음과 같이 개인정보를
-              국외로 이전합니다. 문의·결제 데이터의 <strong>저장 위치는 국내(AWS 서울 리전)</strong>이며,
-              아래는 결제·전송·알림 과정에서 국외로 이전되는 항목입니다.
+              <strong>고객님의 문의·결제 정보는 국내(대한민국, AWS 서울 리전)에 저장됩니다.</strong>{' '}
+              다만 웹사이트 운영, 관리자 알림 이메일 발송, 그리고 (결제 이용 시) 결제 처리를 위해 아래
+              해외 서비스로 일부 정보가 이전됩니다. <strong>PayPal 결제는 온라인 결제를 진행하는 경우에만
+              해당</strong>하며, 단순 문의 시에는 적용되지 않습니다.
             </P>
             <Table
               head={['이전받는 자', '국가', '이전 항목', '이전 목적', '이전 시기·방법', '보유·이용기간']}
@@ -314,10 +324,11 @@ export default function PrivacyPage() {
 
             <H2>5. Overseas transfer</H2>
             <P>
-              To the extent necessary for the Site, payment, and notifications, we transfer personal
-              information overseas as below. Inquiry/payment data is <strong>stored in Korea (AWS Seoul
-              region)</strong>; the items below are transferred abroad during payment, delivery, and
-              notification.
+              <strong>Your inquiry and payment data is stored in Korea (AWS Seoul region).</strong>{' '}
+              Some information is transferred to the overseas services below only to operate the
+              website, send admin notification emails, and (if you pay) process payment.{' '}
+              <strong>PayPal applies only when you make an online payment</strong>, not for simple
+              inquiries.
             </P>
             <Table
               head={['Recipient', 'Country', 'Items', 'Purpose', 'When/how', 'Retention']}

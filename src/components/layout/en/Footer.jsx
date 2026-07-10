@@ -29,7 +29,7 @@ export function Footer() {
             </p>
             <p className="text-sm mb-2 font-eng">
               <Link
-                to="/privacy"
+                to="/privacy#en"
                 className="text-gray-300 font-semibold hover:text-amber-500 transition-colors"
               >
                 Privacy Policy

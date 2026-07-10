@@ -79,7 +79,7 @@ export default function PayPage() {
               Payment &amp; Refund Policy
             </Link>
             <Link
-              to="/privacy"
+              to="/privacy#en"
               className="block mt-1 text-gray-400 hover:text-amber-500 font-eng transition-colors"
             >
               Privacy Policy

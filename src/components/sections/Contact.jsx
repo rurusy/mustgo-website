@@ -186,7 +186,7 @@ const CONTACT_COPY = {
       <>
         I agree to the{' '}
         <a
-          href="/privacy"
+          href="/privacy#en"
           target="_blank"
           rel="noopener noreferrer"
           onClick={(e) => e.stopPropagation()}
