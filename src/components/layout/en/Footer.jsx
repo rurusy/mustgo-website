@@ -21,8 +21,11 @@ export function Footer() {
           </div>
 
           <div className="lg:text-right">
-            <p className="text-sm text-gray-400 mb-2 font-eng">
+            <p className="text-sm text-gray-400 mb-1 font-eng">
               Mustgo Co., Ltd. | CEO: Jonghwa Lee | Business Reg. No. 618-81-35992
+            </p>
+            <p className="text-sm text-gray-400 mb-2 font-eng">
+              Mail-Order Business Reg. No. 2026-대구수성구-0781
             </p>
             <p className="text-xs text-gray-600 font-eng mb-1">
               © 2026 Mustgo Co., Ltd. All Rights Reserved.

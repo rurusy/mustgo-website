@@ -61,6 +61,9 @@ export default function PayPage() {
             <p className="text-xs text-gray-600 font-eng">
               Mustgo Co., Ltd. · Business Reg. 618-81-35992
             </p>
+            <p className="text-xs text-gray-600 font-eng">
+              Mail-Order Business Reg. No. 2026-대구수성구-0781
+            </p>
           </div>
           <div className="text-sm">
             <a

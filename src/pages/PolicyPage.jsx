@@ -9,7 +9,6 @@ import { cn } from '../design/cn'
 //
 // TODO(사장님 최종 확정 후 교체):
 //   - 시행일(Effective date)
-//   - 통신판매업 신고번호 (신고 후 발급)
 //   - 견적 유효기간(현재 7일), 환불 처리 영업일(현재 5~10일)
 //   - 최저 행사인원 통보 기한, 여행자 보험 실제 제공 여부/보장 내용
 //   - 준거법·관할 최종 문구 (변호사/KATA 확인)
@@ -110,7 +109,7 @@ export default function PolicyPage() {
           </h1>
           <p className="text-sm text-gray-400 mt-3">
             Effective date: to be confirmed · Mustgo Co., Ltd. ((주)머스트고) · Business Reg. No.
-            618-81-35992
+            618-81-35992 · Mail-Order Business Reg. No. 2026-대구수성구-0781
           </p>
           <nav className="mt-4 text-sm text-brand-blue font-eng flex gap-4">
             <a href="#en" className="hover:underline">English</a>
@@ -306,8 +305,7 @@ export default function PolicyPage() {
             <H2>13. 문의</H2>
             <P>(주)머스트고 — wemustgo@mustgokorea.com — 1551-5992</P>
             <P className="text-xs text-gray-400 mt-6">
-              본 문서는 초안이며 법률 자문이 아닙니다. 통신판매업 신고번호 및 세부 조건은 확정 후
-              반영 예정입니다.
+              본 문서는 초안이며 법률 자문이 아닙니다. 시행일 등 세부 조건은 확정 후 반영 예정입니다.
             </P>
           </article>
         </div>
