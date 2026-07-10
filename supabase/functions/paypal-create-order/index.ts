@@ -3,7 +3,8 @@
 //
 // 필요한 Edge Function Secrets:
 //   PAYPAL_CLIENT_ID / PAYPAL_SECRET / PAYPAL_ENV          (paypal.ts 참고)
-//   PAYPAL_CURRENCY     통화 (기본 'USD') — 서버가 확정, 클라이언트 값 무시
+//   PAYPAL_CURRENCIES   허용 통화 목록 (기본 'USD,EUR') — 이 목록 안에서만 클라이언트 선택 허용
+//   PAYPAL_CURRENCY     기본 통화 (미지정 시 목록 첫 번째) — 클라이언트가 통화 미전송 시 사용
 //   PAYPAL_MIN_AMOUNT   최소 결제 금액 (기본 '1')
 //   PAYPAL_MAX_AMOUNT   최대 결제 금액 (기본 '50000')
 //   SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY              (자동 주입됨)
@@ -14,8 +15,14 @@ import { createClient } from 'npm:@supabase/supabase-js@2'
 import { corsHeaders, jsonResponse } from '../_shared/cors.ts'
 import { getAccessToken, paypalBase } from '../_shared/paypal.ts'
 
-// 통화는 서버가 확정한다(USD). 클라이언트가 보낸 currency 는 신뢰하지 않음.
-const CURRENCY = (Deno.env.get('PAYPAL_CURRENCY') ?? 'USD').toUpperCase().slice(0, 3)
+// 통화는 허용목록 안에서만 채택한다. 클라이언트가 보낸 값이라도 목록에 없으면 거부.
+const ALLOWED_CURRENCIES = (Deno.env.get('PAYPAL_CURRENCIES') ?? 'USD,EUR')
+  .split(',')
+  .map((c) => c.trim().toUpperCase().slice(0, 3))
+  .filter(Boolean)
+const DEFAULT_CURRENCY = (Deno.env.get('PAYPAL_CURRENCY') ?? ALLOWED_CURRENCIES[0] ?? 'USD')
+  .toUpperCase()
+  .slice(0, 3)
 const MIN_AMOUNT = Number(Deno.env.get('PAYPAL_MIN_AMOUNT') ?? '1')
 const MAX_AMOUNT = Number(Deno.env.get('PAYPAL_MAX_AMOUNT') ?? '50000')
 
@@ -33,6 +40,20 @@ Deno.serve(async (req) => {
     }
     const value = amount.toFixed(2)
 
+    // 통화 검증: 클라이언트가 보낸 통화를 허용목록과 대조해서만 채택(미전송 시 기본값).
+    let currency = DEFAULT_CURRENCY
+    const rawCurrency = body?.currency
+    if (rawCurrency != null && String(rawCurrency).trim() !== '') {
+      const c = String(rawCurrency).toUpperCase().slice(0, 3)
+      if (!ALLOWED_CURRENCIES.includes(c)) {
+        return jsonResponse(
+          { error: `unsupported currency (allowed: ${ALLOWED_CURRENCIES.join(', ')})` },
+          400,
+        )
+      }
+      currency = c
+    }
+
     // 공개 엔드포인트라 입력 길이를 서버에서 제한(DB bloat / 남용 방지).
     const reference = trimOrNull(body?.reference, 200)
     const payerName = trimOrNull(body?.payer_name, 200)
@@ -49,7 +70,7 @@ Deno.serve(async (req) => {
         intent: 'CAPTURE',
         purchase_units: [
           {
-            amount: { currency_code: CURRENCY, value },
+            amount: { currency_code: currency, value },
             description: 'MustGo travel service',
             ...(reference ? { custom_id: reference.slice(0, 127) } : {}),
           },
@@ -69,7 +90,7 @@ Deno.serve(async (req) => {
       const { error: dbError } = await admin().from('payments').insert({
         paypal_order_id: order.id,
         amount,
-        currency: CURRENCY,
+        currency,
         status: 'created',
         payer_name: payerName,
         payer_email: payerEmail,

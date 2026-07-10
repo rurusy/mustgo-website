@@ -174,12 +174,12 @@ async function notifyAdmin(info: {
       body: JSON.stringify({
         from,
         to: [to],
-        subject: `[MustGo 결제] $${amountLabel} ${statusLabel}`,
+        subject: `[MustGo 결제] ${amountLabel} ${statusLabel}`,
         text: [
           `PayPal ${statusLabel}.`,
           '',
           `상태: ${info.status}`,
-          `금액: $${amountLabel}`,
+          `금액: ${amountLabel}`,
           `결제자: ${info.payerName ?? '-'}`,
           `이메일: ${info.payerEmail ?? '-'}`,
           `주문번호: ${info.orderID}`,

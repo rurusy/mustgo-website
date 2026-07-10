@@ -130,7 +130,7 @@ export default function PolicyPage() {
             <UL>
               <li>Services are priced per quotation; the amount payable is the amount stated in the quote from your consultant.</li>
               <li>Quotes are valid for 7 days unless stated otherwise, and may change if not confirmed in time or if third-party costs (airfare, accommodation, ground services) change.</li>
-              <li>Amounts are in US Dollars (USD) unless otherwise agreed. Any bank or card conversion costs are the payer's responsibility.</li>
+              <li>Amounts are in US Dollars (USD) or Euros (EUR), as selected at checkout or stated in your quote. Any bank or card conversion costs are the payer's responsibility.</li>
             </UL>
 
             <H2>3. What is included / excluded</H2>
@@ -154,6 +154,11 @@ export default function PolicyPage() {
               Korea's Consumer Dispute Resolution Standards for overseas travel):
             </P>
             <ScheduleTable head={['Notice before service start date', 'Cancellation fee']} rows={EN_SCHEDULE} />
+            <P>Additional rules apply depending on the type of product:</P>
+            <UL>
+              <li><strong>Travel products:</strong> The general cancellation fees are as shown above; however, where special terms apply to a product, a separate fee rate applies.</li>
+              <li><strong className="text-gray-900">Tickets (e.g., airfare):</strong> Cancellation fees and the dates on which they apply vary by the ticket's fare rules, so please contact your consultant.</li>
+            </UL>
             <UL>
               <li>In addition, non-recoverable third-party costs already incurred on your behalf (airline tickets, hotel/venue deposits, permits, event tickets, guide/vehicle bookings) are non-refundable to the extent Mustgo cannot recover them.</li>
               <li>PayPal processing fees may be non-refundable.</li>
@@ -229,7 +234,7 @@ export default function PolicyPage() {
             <UL>
               <li>요금은 건별 견적에 따르며, 결제 금액은 담당 컨설턴트가 안내한 견적 금액입니다.</li>
               <li>견적 유효기간은 별도 표기가 없으면 7일이며, 기간 내 미확정 또는 항공·숙박·현지 서비스 등 제3자 비용 변동 시 변경될 수 있습니다.</li>
-              <li>별도 합의가 없으면 통화는 미국 달러(USD)이며, 환전·카드 수수료는 결제자 부담입니다.</li>
+              <li>결제 통화는 결제 시 선택 또는 견적에 명시된 미국 달러(USD) 또는 유로(EUR)이며, 환전·카드 수수료는 결제자 부담입니다.</li>
             </UL>
 
             <H2>3. 여행경비 포함/불포함</H2>
@@ -251,6 +256,11 @@ export default function PolicyPage() {
               취소수수료를 적용합니다(공정위 소비자분쟁해결기준(국외여행) 정합):
             </P>
             <ScheduleTable head={['서비스 개시일 전 통보 시점', '취소수수료']} rows={KO_SCHEDULE} />
+            <P>상품 유형에 따라 다음 사항이 추가로 적용됩니다:</P>
+            <UL>
+              <li><strong>여행상품:</strong> 일반적인 취소수수료는 상기 표와 같으나, 특별약관이 적용되는 상품의 경우 별도의 수수료율이 적용됩니다.</li>
+              <li><strong className="text-gray-900">항공권 등 티켓:</strong> 티켓 규정에 따라 취소수수료 및 적용 시점이 다르므로 담당 컨설턴트에게 문의해 주십시오.</li>
+            </UL>
             <UL>
               <li>또한 고객을 위해 이미 지출된 회수 불가 제3자 비용(항공권, 호텔·행사장 예치금, 허가·입장권, 가이드·차량 예약 등)은 위 표와 무관하게 회수 불가 범위에서 환불되지 않습니다.</li>
               <li>PayPal 결제 수수료는 환불되지 않을 수 있습니다.</li>

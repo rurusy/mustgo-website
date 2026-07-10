@@ -6,38 +6,51 @@ import { cn } from '../../design/cn'
 // Client ID is a public value, so exposing it on the frontend is safe.
 // The Secret lives only on the server (Edge Functions).
 const CLIENT_ID = import.meta.env.VITE_PAYPAL_CLIENT_ID
-const CURRENCY = 'USD'
+// Currencies the customer can pay in. Must match the server's PAYPAL_CURRENCIES allow-list.
+const CURRENCIES = {
+  USD: { symbol: '$', label: 'USD' },
+  EUR: { symbol: '€', label: 'EUR' },
+}
+const CURRENCY_CODES = Object.keys(CURRENCIES)
+const DEFAULT_CURRENCY = 'USD'
 const MIN_AMOUNT = 1
 const MAX_AMOUNT = 50000 // Keep in sync with the server's PAYPAL_MAX_AMOUNT.
 
-// Load the PayPal JS SDK once. The client-id must go in the URL, so we inject a script.
-function loadPayPalSdk(clientId) {
-  if (window.paypal) return Promise.resolve(window.paypal)
+const symbolFor = (code) => CURRENCIES[code]?.symbol ?? ''
 
-  const existing = document.querySelector('script[data-paypal-sdk]')
-  if (existing) {
-    return new Promise((resolve, reject) => {
-      existing.addEventListener('load', () => resolve(window.paypal))
-      existing.addEventListener('error', () => reject(new Error('PayPal SDK load failed')))
+// Load the PayPal JS SDK, once per currency. The SDK's currency is fixed at load
+// time (it's a URL param), so to support multiple currencies we load one script per
+// currency under its own window namespace (data-namespace) and render buttons from
+// the matching namespace. Cached by currency, so switching back is instant.
+const sdkCache = {} // currency -> Promise<paypal namespace object>
+function loadPayPalSdk(clientId, currency) {
+  if (sdkCache[currency]) return sdkCache[currency]
+
+  const namespace = `paypal_${currency.toLowerCase()}`
+  const p = new Promise((resolve, reject) => {
+    if (window[namespace]) return resolve(window[namespace])
+
+    const params = new URLSearchParams({
+      'client-id': clientId,
+      currency,
+      intent: 'capture',
+      components: 'buttons',
     })
-  }
 
-  const params = new URLSearchParams({
-    'client-id': clientId,
-    currency: CURRENCY,
-    intent: 'capture',
-    components: 'buttons',
-  })
-
-  return new Promise((resolve, reject) => {
     const script = document.createElement('script')
     script.src = `https://www.paypal.com/sdk/js?${params.toString()}`
     script.async = true
-    script.setAttribute('data-paypal-sdk', '')
-    script.onload = () => resolve(window.paypal)
+    script.setAttribute('data-namespace', namespace)
+    script.onload = () => resolve(window[namespace])
     script.onerror = () => reject(new Error('PayPal SDK load failed'))
     document.body.appendChild(script)
   })
+  // Don't cache a failure — allow a later retry (e.g. after a flaky network).
+  p.catch(() => {
+    delete sdkCache[currency]
+  })
+  sdkCache[currency] = p
+  return p
 }
 
 function parseAmount(raw) {
@@ -51,6 +64,7 @@ export function Payment() {
   const [payerName, setPayerName] = useState('')
   const [payerEmail, setPayerEmail] = useState('')
   const [reference, setReference] = useState('')
+  const [currency, setCurrency] = useState(DEFAULT_CURRENCY)
   const [status, setStatus] = useState('idle') // idle | processing | success | error
   const [errorMsg, setErrorMsg] = useState('')
   const [success, setSuccess] = useState(null)
@@ -65,10 +79,10 @@ export function Payment() {
 
   // PayPal callbacks (createOrder/onClick) capture a stale closure, so sync latest values into a ref.
   useEffect(() => {
-    liveRef.current = { amount, payerName, payerEmail, reference, amountValid }
+    liveRef.current = { amount, payerName, payerEmail, reference, amountValid, currency }
   })
 
-  // Load the SDK once on mount.
+  // Load the SDK for the selected currency (re-runs when the customer switches currency).
   useEffect(() => {
     const configured = CLIENT_ID && typeof supabase.functions?.invoke === 'function'
     if (!configured) {
@@ -76,23 +90,27 @@ export function Payment() {
       return
     }
     let cancelled = false
-    loadPayPalSdk(CLIENT_ID)
+    setSdkState('loading')
+    loadPayPalSdk(CLIENT_ID, currency)
       .then(() => !cancelled && setSdkState('ready'))
       .catch(() => !cancelled && setSdkState('error'))
     return () => {
       cancelled = true
     }
-  }, [])
+  }, [currency])
 
-  // Render the PayPal buttons once the SDK is ready (once).
+  // Render the PayPal buttons for the selected currency. Re-runs when the currency
+  // changes so the buttons come from that currency's SDK namespace; the previous
+  // instance is torn down in cleanup first.
   useEffect(() => {
-    if (sdkState !== 'ready' || !window.paypal || !containerRef.current) return
-    if (buttonsRef.current) return
+    if (sdkState !== 'ready' || !containerRef.current) return
+    const paypalNs = window[`paypal_${currency.toLowerCase()}`]
+    if (!paypalNs) return
 
     const handle = { instance: null, actions: null }
     buttonsRef.current = handle
 
-    const buttons = window.paypal.Buttons({
+    const buttons = paypalNs.Buttons({
       style: { layout: 'vertical', color: 'gold', shape: 'rect', label: 'pay', tagline: false },
 
       onInit(_data, actions) {
@@ -104,9 +122,11 @@ export function Payment() {
       onClick(_data, actions) {
         const n = parseAmount(liveRef.current.amount)
         if (n === null || n < MIN_AMOUNT || n > MAX_AMOUNT) {
+          const cur = liveRef.current.currency
+          const sym = symbolFor(cur)
           setStatus('error')
           setErrorMsg(
-            `Please enter an amount between $${MIN_AMOUNT.toLocaleString()} and $${MAX_AMOUNT.toLocaleString()} ${CURRENCY}.`,
+            `Please enter an amount between ${sym}${MIN_AMOUNT.toLocaleString()} and ${sym}${MAX_AMOUNT.toLocaleString()} ${cur}.`,
           )
           return actions.reject()
         }
@@ -120,7 +140,7 @@ export function Payment() {
         const { data, error } = await supabase.functions.invoke('paypal-create-order', {
           body: {
             amount: n,
-            currency: CURRENCY,
+            currency: liveRef.current.currency,
             payer_name: liveRef.current.payerName || null,
             payer_email: liveRef.current.payerEmail || null,
             reference: liveRef.current.reference || null,
@@ -174,7 +194,7 @@ export function Payment() {
       }
       buttonsRef.current = null
     }
-  }, [sdkState])
+  }, [sdkState, currency])
 
   // Toggle the buttons enabled/disabled as amount validity changes.
   useEffect(() => {
@@ -202,8 +222,8 @@ export function Payment() {
           Complete your payment securely
         </h2>
         <p className="text-gray-600 text-[15px] leading-relaxed font-eng">
-          Enter the amount (USD) provided by your <BrandText /> consultant to pay securely via
-          PayPal — using your PayPal balance or any major credit card.
+          Enter the amount and currency provided by your <BrandText /> consultant to pay securely
+          via PayPal — using your PayPal balance or any major credit card.
         </p>
       </Fade>
 
@@ -215,12 +235,37 @@ export function Payment() {
               "Make another payment". */}
           <div className={success ? 'hidden' : ''}>
               <div className="mb-6">
-                <FormLabel htmlFor="pay-amount" required>
-                  Payment amount (USD)
-                </FormLabel>
+                <div className="flex items-center justify-between mb-2">
+                  <FormLabel htmlFor="pay-amount" required className="mb-0">
+                    Payment amount
+                  </FormLabel>
+                  <div
+                    className="inline-flex rounded-md border border-gray-200 bg-gray-50 p-0.5"
+                    role="group"
+                    aria-label="Payment currency"
+                  >
+                    {CURRENCY_CODES.map((code) => (
+                      <button
+                        key={code}
+                        type="button"
+                        onClick={() => setCurrency(code)}
+                        disabled={status === 'processing'}
+                        aria-pressed={currency === code}
+                        className={cn(
+                          'px-3 py-1 text-xs font-semibold rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed',
+                          currency === code
+                            ? 'bg-white text-gray-900 shadow-sm'
+                            : 'text-gray-400 hover:text-gray-600',
+                        )}
+                      >
+                        {CURRENCIES[code].symbol} {code}
+                      </button>
+                    ))}
+                  </div>
+                </div>
                 <div className="relative">
                   <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500">
-                    $
+                    {symbolFor(currency)}
                   </span>
                   <Input
                     id="pay-amount"
@@ -232,20 +277,22 @@ export function Payment() {
                     className="pl-8 pr-14"
                   />
                   <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 text-xs">
-                    USD
+                    {currency}
                   </span>
                 </div>
                 {amount && !amountValid && (
                   <p className="mt-2 text-xs text-red-600">
-                    Please enter an amount between ${MIN_AMOUNT.toLocaleString()} and $
-                    {MAX_AMOUNT.toLocaleString()} {CURRENCY}.
+                    Please enter an amount between {symbolFor(currency)}
+                    {MIN_AMOUNT.toLocaleString()} and {symbolFor(currency)}
+                    {MAX_AMOUNT.toLocaleString()} {currency}.
                   </p>
                 )}
                 {amountValid && (
                   <p className="mt-2 text-sm text-gray-700">
                     You will pay:{' '}
                     <span className="font-bold">
-                      ${parsed.toFixed(2)} {CURRENCY}
+                      {symbolFor(currency)}
+                      {parsed.toFixed(2)} {currency}
                     </span>
                   </p>
                 )}
@@ -340,7 +387,9 @@ export function Payment() {
 function SuccessPanel({ success, onReset }) {
   const pending = success.status === 'pending'
   const amountLabel =
-    success.amount != null ? `$${Number(success.amount).toFixed(2)} ${success.currency ?? ''}`.trim() : null
+    success.amount != null
+      ? `${symbolFor(success.currency)}${Number(success.amount).toFixed(2)} ${success.currency ?? ''}`.trim()
+      : null
 
   return (
     <div className="text-center">
