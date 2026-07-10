@@ -5,6 +5,7 @@ import StyleguidePage from './pages/StyleguidePage'
 import PayPage from './pages/PayPage'
 import PolicyPage from './pages/PolicyPage'
 import PrivacyPage from './pages/PrivacyPage'
+import TermsPage from './pages/TermsPage'
 import AdminLoginPage from './pages/AdminLoginPage'
 import AdminPage from './pages/AdminPage'
 
@@ -17,6 +18,7 @@ export default function App() {
       <Route path="/pay" element={<PayPage />} />
       <Route path="/policy" element={<PolicyPage />} />
       <Route path="/privacy" element={<PrivacyPage />} />
+      <Route path="/terms" element={<TermsPage />} />
       <Route path="/admin/login" element={<AdminLoginPage />} />
       <Route path="/admin" element={<AdminPage />} />
     </Routes>

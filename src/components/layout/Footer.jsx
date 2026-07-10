@@ -29,6 +29,13 @@ export function Footer() {
             </p>
             <p className="text-sm mb-2">
               <Link
+                to="/terms"
+                className="text-gray-400 hover:text-amber-500 transition-colors"
+              >
+                이용약관
+              </Link>
+              <span className="text-gray-600 mx-2">·</span>
+              <Link
                 to="/privacy"
                 className="text-gray-300 font-semibold hover:text-amber-500 transition-colors"
               >
