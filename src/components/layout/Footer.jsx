@@ -27,6 +27,21 @@ export function Footer() {
             <p className="text-sm text-gray-400 mb-2">
               통신판매업 신고번호: 2026-대구수성구-0781
             </p>
+            <p className="text-sm mb-2">
+              <Link
+                to="/privacy"
+                className="text-gray-300 font-semibold hover:text-amber-500 transition-colors"
+              >
+                개인정보처리방침
+              </Link>
+              <span className="text-gray-600 mx-2">·</span>
+              <Link
+                to="/policy"
+                className="text-gray-400 hover:text-amber-500 transition-colors"
+              >
+                결제·환불 정책
+              </Link>
+            </p>
             <p className="text-xs text-gray-600 font-eng mb-1">
               © 2026 Mustgo Co., Ltd. All Rights Reserved.
             </p>

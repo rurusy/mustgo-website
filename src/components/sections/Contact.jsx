@@ -130,7 +130,20 @@ const CONTACT_COPY = {
     emailPh: '업무용 이메일 주소',
     message: '문의 내용',
     messagePh: '출장 인원, 일정, 특이사항 등을 자유롭게 남겨주세요.',
-    consent: '개인정보 수집 및 이용에 동의합니다. (필수)',
+    consent: (
+      <>
+        <a
+          href="/privacy"
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={(e) => e.stopPropagation()}
+          className="underline hover:text-brand-blue"
+        >
+          개인정보 수집 및 이용
+        </a>
+        에 동의합니다. (필수)
+      </>
+    ),
     submit: '문의 보내기',
     submitting: '전송 중…',
     errConsent: '개인정보 수집·이용에 동의해주세요.',
@@ -169,7 +182,21 @@ const CONTACT_COPY = {
     emailPh: 'Work email address',
     message: 'Message',
     messagePh: 'Feel free to share the number of travelers, schedule, and any special notes.',
-    consent: 'I agree to the collection and use of my personal information. (Required)',
+    consent: (
+      <>
+        I agree to the{' '}
+        <a
+          href="/privacy"
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={(e) => e.stopPropagation()}
+          className="underline hover:text-brand-blue"
+        >
+          collection and use of my personal information
+        </a>
+        . (Required)
+      </>
+    ),
     submit: 'Send Inquiry',
     submitting: 'Sending…',
     errConsent: 'Please agree to the collection and use of your personal information.',
