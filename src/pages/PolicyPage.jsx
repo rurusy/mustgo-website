@@ -86,6 +86,15 @@ export default function PolicyPage() {
     }
   }, [])
 
+  // Land on the section matching the URL hash (e.g. /policy#ko), since client-side
+  // navigation and SPA loads don't scroll to the hash on their own.
+  useEffect(() => {
+    const id = window.location.hash.slice(1)
+    if (!id) return
+    const el = document.getElementById(id)
+    if (el) requestAnimationFrame(() => el.scrollIntoView())
+  }, [])
+
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <header className="border-b border-gray-100">
