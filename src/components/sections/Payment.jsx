@@ -225,6 +225,17 @@ export function Payment() {
           Enter the amount and currency provided by your <BrandText /> consultant to pay securely
           via PayPal — using your PayPal balance or any major credit card.
         </p>
+        <a
+          href="/how-to-pay"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-4 inline-flex items-center gap-1.5 text-sm font-eng font-semibold text-brand-blue hover:text-brand-green transition-colors"
+        >
+          New to PayPal? See our step-by-step guide
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24" aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+          </svg>
+        </a>
       </Fade>
 
       <Fade className="max-w-lg mx-auto">

@@ -73,6 +73,12 @@ export default function PayPage() {
               wemustgo@mustgokorea.com
             </a>
             <Link
+              to="/how-to-pay"
+              className="block mt-1 text-gray-400 hover:text-amber-500 font-eng transition-colors"
+            >
+              How to Pay
+            </Link>
+            <Link
               to="/policy"
               className="block mt-1 text-gray-400 hover:text-amber-500 font-eng transition-colors"
             >

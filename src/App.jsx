@@ -3,6 +3,7 @@ import HomePage from './pages/HomePage'
 import EnHomePage from './pages/EnHomePage'
 import StyleguidePage from './pages/StyleguidePage'
 import PayPage from './pages/PayPage'
+import PayGuidePage from './pages/PayGuidePage'
 import PolicyPage from './pages/PolicyPage'
 import PrivacyPage from './pages/PrivacyPage'
 import TermsPage from './pages/TermsPage'
@@ -17,6 +18,7 @@ export default function App() {
       <Route path="/en" element={<EnHomePage />} />
       <Route path="/styleguide" element={<StyleguidePage />} />
       <Route path="/pay" element={<PayPage />} />
+      <Route path="/how-to-pay" element={<PayGuidePage />} />
       <Route path="/policy" element={<PolicyPage />} />
       <Route path="/privacy" element={<PrivacyPage />} />
       <Route path="/terms" element={<TermsPage />} />
