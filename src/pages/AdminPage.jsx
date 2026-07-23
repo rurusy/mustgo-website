@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
-import { Button, BrandText, Card } from '../components/ui'
+import { Button, Card } from '../components/ui'
 import { cn } from '../design/cn'
+import { AdminHeader } from './AdminPaymentsPage'
 
 const TYPE_LABEL = {
   corporate: 'Corporate',
@@ -148,22 +149,7 @@ export default function AdminPage() {
 
   return (
     <main className="min-h-screen bg-surface-soft">
-      <header className="bg-white border-b border-gray-200">
-        <div className="max-w-layout mx-auto px-6 lg:px-12 h-16 flex items-center justify-between">
-          <Link to="/" className="font-bold text-lg tracking-tight">
-            <BrandText />{' '}
-            <span className="text-sm font-eng font-medium text-gray-500 ml-2">Admin</span>
-          </Link>
-          <div className="flex items-center gap-4">
-            <Link to="/" className="text-sm text-gray-600 hover:text-amber-600 transition-colors">
-              사이트 보기
-            </Link>
-            <Button variant="ghost" size="sm" onClick={onLogout}>
-              로그아웃
-            </Button>
-          </div>
-        </div>
-      </header>
+      <AdminHeader current="inquiries" onLogout={onLogout} />
 
       <div className="max-w-layout mx-auto px-6 lg:px-12 py-12">
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-8">

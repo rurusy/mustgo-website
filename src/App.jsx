@@ -12,6 +12,7 @@ import TermsPage from './pages/TermsPage'
 import ChecklistPage from './pages/ChecklistPage'
 import AdminLoginPage from './pages/AdminLoginPage'
 import AdminPage from './pages/AdminPage'
+import AdminPaymentsPage from './pages/AdminPaymentsPage'
 
 export default function App() {
   return (
@@ -31,6 +32,7 @@ export default function App() {
       <Route path="/checklist" element={<ChecklistPage />} />
       <Route path="/admin/login" element={<AdminLoginPage />} />
       <Route path="/admin" element={<AdminPage />} />
+      <Route path="/admin/payments" element={<AdminPaymentsPage />} />
     </Routes>
   )
 }
