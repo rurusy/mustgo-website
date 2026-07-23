@@ -10,7 +10,13 @@ const navItems = [
   { label: 'Contact', href: '#contact' },
 ]
 
-// English-labeled payment entry for overseas clients → dedicated /pay page.
+// 결제 진입 버튼. 국내 고객은 원화(토스페이먼츠) /pay-kr, 해외 고객은 USD/EUR(PayPal) /pay.
+// 국내 카드는 외국환거래법상 PayPal 로 받을 수 없어 언어별로 경로가 갈립니다.
+const PAY_ENTRY = {
+  ko: { to: '/pay-kr', label: '결제하기', font: 'sans' },
+  en: { to: '/pay', label: 'Pay Online', font: 'eng' },
+}
+
 function CardIcon() {
   return (
     <svg
@@ -58,6 +64,7 @@ function LangToggle({ lang, className, onNavigate }) {
 
 export function Header({ lang = 'ko' }) {
   const t = HEADER_COPY[lang]
+  const payEntry = PAY_ENTRY[lang] ?? PAY_ENTRY.ko
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const triggerRef = useRef(null)
@@ -127,19 +134,17 @@ export function Header({ lang = 'ko' }) {
                 {item.label}
               </a>
             ))}
-            {lang === 'en' && (
-              <Button
-                as={Link}
-                to="/pay"
-                variant="blueSolid"
-                size="pillSm"
-                font="eng"
-                className="gap-2"
-              >
-                <CardIcon />
-                Pay Online
-              </Button>
-            )}
+            <Button
+              as={Link}
+              to={payEntry.to}
+              variant="blueSolid"
+              size="pillSm"
+              font={payEntry.font}
+              className="gap-2"
+            >
+              <CardIcon />
+              {payEntry.label}
+            </Button>
             <LangToggle lang={lang} />
           </nav>
 
@@ -226,20 +231,18 @@ export function Header({ lang = 'ko' }) {
               {item.label}
             </a>
           ))}
-          {lang === 'en' && (
-            <Button
-              as={Link}
-              to="/pay"
-              onClick={() => setMenuOpen(false)}
-              variant="blueSolid"
-              size="md"
-              font="eng"
-              className="w-full gap-2 mt-6"
-            >
-              <CardIcon />
-              Pay Online
-            </Button>
-          )}
+          <Button
+            as={Link}
+            to={payEntry.to}
+            onClick={() => setMenuOpen(false)}
+            variant="blueSolid"
+            size="md"
+            font={payEntry.font}
+            className="w-full gap-2 mt-6"
+          >
+            <CardIcon />
+            {payEntry.label}
+          </Button>
           <LangToggle lang={lang} onNavigate={() => setMenuOpen(false)} className="mt-8" />
         </nav>
       </aside>

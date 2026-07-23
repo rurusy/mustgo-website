@@ -131,7 +131,8 @@ export default function PolicyPage() {
             <P>
               This policy applies to payments made to <BrandText /> Co., Ltd. ("Mustgo", "we") for
               custom-quoted travel and related services (inbound tours in Korea, corporate travel
-              arrangements, and similar) via mustgokorea.co.kr/pay. By making a payment you agree to
+              arrangements, and similar) via mustgokorea.co.kr/pay (international) or
+              mustgokorea.co.kr/pay-kr (domestic, Korean Won). By making a payment you agree to
               this policy and to the specific quotation provided by your Mustgo consultant.
             </P>
 
@@ -139,7 +140,7 @@ export default function PolicyPage() {
             <UL>
               <li>Services are priced per quotation; the amount payable is the amount stated in the quote from your consultant.</li>
               <li>Quotes are valid for 7 days unless stated otherwise, and may change if not confirmed in time or if third-party costs (airfare, accommodation, ground services) change.</li>
-              <li>Amounts are in US Dollars (USD) or Euros (EUR), as selected at checkout or stated in your quote. Any bank or card conversion costs are the payer's responsibility.</li>
+              <li>Amounts are in Korean Won (KRW) for domestic payments, or in US Dollars (USD) or Euros (EUR) for international payments, as selected at checkout or stated in your quote. Any bank or card conversion costs are the payer's responsibility.</li>
             </UL>
 
             <H2>3. What is included / excluded</H2>
@@ -151,7 +152,10 @@ export default function PolicyPage() {
 
             <H2>4. Payment</H2>
             <UL>
-              <li>Payments are processed securely by PayPal (PayPal balance or credit/debit card). Mustgo never stores your card details.</li>
+              <li>Domestic (KRW) payments are processed securely by Toss Payments — credit/debit card, easy-pay wallets, bank transfer, or virtual account.</li>
+              <li>International (USD/EUR) payments are processed securely by PayPal (PayPal balance or credit/debit card).</li>
+              <li>Mustgo never stores your card details; they are handled entirely by the payment provider.</li>
+              <li>Virtual account payments are only complete once your deposit is received by the due date shown at checkout. If the deadline passes, the account expires and you will need to pay again.</li>
               <li>Your booking is confirmed only after payment is received and your consultant confirms it in writing.</li>
             </UL>
 
@@ -170,8 +174,9 @@ export default function PolicyPage() {
             </UL>
             <UL>
               <li>In addition, non-recoverable third-party costs already incurred on your behalf (airline tickets, hotel/venue deposits, permits, event tickets, guide/vehicle bookings) are non-refundable to the extent Mustgo cannot recover them.</li>
-              <li>PayPal processing fees may be non-refundable.</li>
-              <li>Approved refunds are returned to the original payment method via PayPal, normally within 5–10 business days of approval; posting times may vary.</li>
+              <li>Payment processing fees charged by PayPal or Toss Payments may be non-refundable.</li>
+              <li>Approved refunds are returned to the original payment method through the provider used (Toss Payments for KRW, PayPal for USD/EUR), normally within 5–10 business days of approval; posting times may vary by card issuer or bank.</li>
+              <li>For virtual account payments there is no original payment method to reverse, so we will ask you for a bank account in the payer's name to send the refund to.</li>
             </UL>
 
             <H2>6. Cancellation or changes by Mustgo</H2>
@@ -234,16 +239,16 @@ export default function PolicyPage() {
             <H2>1. 적용 범위</H2>
             <P>
               본 정책은 <BrandText /> (주)머스트고("머스트고")가 제공하는 맞춤 견적 여행 및 관련
-              서비스(한국 인바운드 투어, 기업 출장 수배 등)에 대해 mustgokorea.co.kr/pay 를 통해
-              이루어지는 결제에 적용됩니다. 결제 시 본 정책과 담당 컨설턴트가 제시한 견적 조건에 동의한
-              것으로 봅니다.
+              서비스(한국 인바운드 투어, 기업 출장 수배 등)에 대해 mustgokorea.co.kr/pay-kr(국내 원화)
+              및 mustgokorea.co.kr/pay(해외 통화)를 통해 이루어지는 결제에 적용됩니다. 결제 시 본
+              정책과 담당 컨설턴트가 제시한 견적 조건에 동의한 것으로 봅니다.
             </P>
 
             <H2>2. 견적 및 요금</H2>
             <UL>
               <li>요금은 건별 견적에 따르며, 결제 금액은 담당 컨설턴트가 안내한 견적 금액입니다.</li>
               <li>견적 유효기간은 별도 표기가 없으면 7일이며, 기간 내 미확정 또는 항공·숙박·현지 서비스 등 제3자 비용 변동 시 변경될 수 있습니다.</li>
-              <li>결제 통화는 결제 시 선택 또는 견적에 명시된 미국 달러(USD) 또는 유로(EUR)이며, 환전·카드 수수료는 결제자 부담입니다.</li>
+              <li>결제 통화는 국내 결제의 경우 원화(KRW), 해외 결제의 경우 결제 시 선택 또는 견적에 명시된 미국 달러(USD) 또는 유로(EUR)이며, 환전·카드 수수료는 결제자 부담입니다.</li>
             </UL>
 
             <H2>3. 여행경비 포함/불포함</H2>
@@ -254,7 +259,10 @@ export default function PolicyPage() {
 
             <H2>4. 결제</H2>
             <UL>
-              <li>결제는 PayPal(PayPal 잔액 또는 신용/체크카드)로 안전하게 처리되며, 머스트고는 카드 정보를 저장하지 않습니다.</li>
+              <li>국내 원화 결제는 토스페이먼츠를 통해 신용·체크카드, 간편결제, 계좌이체, 가상계좌로 안전하게 처리됩니다.</li>
+              <li>해외 통화(USD/EUR) 결제는 PayPal(PayPal 잔액 또는 신용/체크카드)로 안전하게 처리됩니다.</li>
+              <li>머스트고는 카드 정보를 저장하지 않으며, 카드 정보는 결제대행사가 전적으로 처리합니다.</li>
+              <li>가상계좌 결제는 결제창에 안내된 입금 기한까지 입금이 확인되어야 완료됩니다. 기한이 지나면 계좌가 만료되어 다시 결제하셔야 합니다.</li>
               <li>예약은 결제 확인 및 담당 컨설턴트의 서면 확정 이후에만 성립합니다.</li>
             </UL>
 
@@ -272,8 +280,9 @@ export default function PolicyPage() {
             </UL>
             <UL>
               <li>또한 고객을 위해 이미 지출된 회수 불가 제3자 비용(항공권, 호텔·행사장 예치금, 허가·입장권, 가이드·차량 예약 등)은 위 표와 무관하게 회수 불가 범위에서 환불되지 않습니다.</li>
-              <li>PayPal 결제 수수료는 환불되지 않을 수 있습니다.</li>
-              <li>승인된 환불은 원 결제수단으로 PayPal을 통해 승인일로부터 통상 영업일 5~10일 내 처리되며, 반영 시점은 다를 수 있습니다.</li>
+              <li>토스페이먼츠·PayPal 등 결제대행사가 부과하는 결제 수수료는 환불되지 않을 수 있습니다.</li>
+              <li>승인된 환불은 이용하신 결제대행사(원화는 토스페이먼츠, USD/EUR는 PayPal)를 통해 원 결제수단으로 승인일로부터 통상 영업일 5~10일 내 처리되며, 카드사·은행에 따라 반영 시점은 다를 수 있습니다.</li>
+              <li>가상계좌 결제는 되돌릴 원 결제수단이 없으므로, 결제자 명의의 환불 계좌를 별도로 요청드립니다.</li>
             </UL>
 
             <H2>6. 머스트고의 취소·변경</H2>

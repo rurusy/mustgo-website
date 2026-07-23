@@ -3,6 +3,8 @@ import HomePage from './pages/HomePage'
 import EnHomePage from './pages/EnHomePage'
 import StyleguidePage from './pages/StyleguidePage'
 import PayPage from './pages/PayPage'
+import PayKrPage from './pages/PayKrPage'
+import PayKrResultPage from './pages/PayKrResultPage'
 import PayGuidePage from './pages/PayGuidePage'
 import PolicyPage from './pages/PolicyPage'
 import PrivacyPage from './pages/PrivacyPage'
@@ -18,6 +20,10 @@ export default function App() {
       <Route path="/en" element={<EnHomePage />} />
       <Route path="/styleguide" element={<StyleguidePage />} />
       <Route path="/pay" element={<PayPage />} />
+      {/* 국내 원화 결제(토스페이먼츠). 결제창이 아래 두 URL 로 되돌려보냅니다. */}
+      <Route path="/pay-kr" element={<PayKrPage />} />
+      <Route path="/pay-kr/success" element={<PayKrResultPage outcome="success" />} />
+      <Route path="/pay-kr/fail" element={<PayKrResultPage outcome="fail" />} />
       <Route path="/how-to-pay" element={<PayGuidePage />} />
       <Route path="/policy" element={<PolicyPage />} />
       <Route path="/privacy" element={<PrivacyPage />} />

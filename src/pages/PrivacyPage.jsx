@@ -8,9 +8,10 @@ import { cn } from '../design/cn'
 // 개인정보보호법 제30조 및 표준 개인정보 처리방침(KISA/PIPC)에 맞춘 초안.
 // 실제 수집·처리 현황을 코드 기준으로 반영:
 //   - 문의(inquiries): 회사·성명·직책·연락처·이메일·문의내용
-//   - 결제(payments): 결제자 이름·이메일·금액·통화·PayPal 거래정보
-//   - 저장: Supabase(AWS 서울 리전, 국내) / 위탁: Resend, PayPal
-//   - 국외이전: PayPal·Resend·Vercel·Cloudflare·Google
+//   - 결제(payments/payments_kr): 결제자 이름·이메일·금액·통화·결제수단·거래정보
+//                                  (원화는 토스페이먼츠, USD/EUR는 PayPal)
+//   - 저장: Supabase(AWS 서울 리전, 국내) / 위탁: 토스페이먼츠(국내), Resend, PayPal
+//   - 국외이전: PayPal·Resend·Vercel·Cloudflare·Google (토스페이먼츠는 국내라 제외)
 //
 // TODO(사장님/법률 검토 후 확정):
 //   - 시행일(현재 2026-07-11 안)
@@ -67,12 +68,14 @@ function Table({ head, rows }) {
 // 처리위탁 (수탁자)
 const KO_PROCESSORS = [
   ['Supabase Inc.', '문의·결제 데이터의 저장 및 서버 인프라 운영', '저장 위치: 대한민국(AWS 서울 리전) · 운영사 소재: 미국'],
-  ['PayPal (PayPal Holdings, Inc.)', '온라인 결제 처리 및 결제수단 관리', '미국 등'],
+  ['토스페이먼츠 주식회사', '국내 원화 결제 처리 및 결제수단 관리', '대한민국'],
+  ['PayPal (PayPal Holdings, Inc.)', '해외 통화(USD/EUR) 결제 처리 및 결제수단 관리', '미국 등'],
   ['Resend (Resend, Inc.)', '문의·결제 접수 시 관리자 알림 이메일 발송', '미국'],
 ]
 const EN_PROCESSORS = [
   ['Supabase Inc.', 'Storage of inquiry/payment data and server infrastructure', 'Data stored in Korea (AWS Seoul) · operator based in the US'],
-  ['PayPal (PayPal Holdings, Inc.)', 'Online payment processing and payment-method handling', 'United States, etc.'],
+  ['Toss Payments Inc.', 'Domestic (KRW) payment processing and payment-method handling', 'Republic of Korea'],
+  ['PayPal (PayPal Holdings, Inc.)', 'International (USD/EUR) payment processing and payment-method handling', 'United States, etc.'],
   ['Resend (Resend, Inc.)', 'Sending admin notification emails for inquiries/payments', 'United States'],
 ]
 
@@ -157,13 +160,13 @@ export default function PrivacyPage() {
             <P>회사는 서비스 제공에 필요한 최소한의 개인정보를 다음과 같이 수집합니다.</P>
             <UL>
               <li><strong>문의하기(상담 신청):</strong> 회사명, 담당자 성명, 직책(선택), 연락처, 이메일, 문의 내용, 수집·이용 동의 여부</li>
-              <li><strong>온라인 결제:</strong> 결제자 이름, 결제자 이메일, 결제 금액·통화, 결제 식별정보(PayPal 주문·거래번호), 고객이 입력한 견적번호/메모</li>
+              <li><strong>온라인 결제:</strong> 결제자 이름, 결제자 이메일, 결제 금액·통화, 결제수단(카드/간편결제/계좌이체/가상계좌 구분), 결제 식별정보(토스페이먼츠 주문·결제번호 또는 PayPal 주문·거래번호), 고객이 입력한 견적번호/메모</li>
               <li><strong>자동 수집:</strong> 서비스 이용 과정에서 접속 IP, 브라우저·기기 정보, 접속 일시 등이 생성·수집될 수 있습니다.</li>
             </UL>
             <P>
               수집 방법: 사이트의 문의 폼 및 결제 화면을 통한 이용자의 직접 입력, 서비스 이용 중
-              자동 생성. <strong>신용카드 번호 등 결제수단 정보는 결제대행사(PayPal)가 처리하며 회사는
-              저장하지 않습니다.</strong>
+              자동 생성. <strong>신용카드 번호 등 결제수단 정보는 결제대행사(토스페이먼츠·PayPal)가
+              처리하며 회사는 저장하지 않습니다.</strong>
             </P>
 
             <H2>2. 개인정보의 수집·이용 목적</H2>
@@ -233,14 +236,14 @@ export default function PrivacyPage() {
             <UL>
               <li>전송 구간 암호화(HTTPS/TLS)를 통한 데이터 전송 보호</li>
               <li>접근권한 통제 — 문의·결제 데이터는 인증된 관리자만 조회 가능하도록 데이터베이스 접근을 제한(RLS)</li>
-              <li>결제수단(카드) 정보 미저장 — 결제는 PayPal이 처리</li>
+              <li>결제수단(카드) 정보 미저장 — 결제는 토스페이먼츠·PayPal이 처리</li>
               <li>개인정보 처리 최소화 및 접근 기록 관리</li>
             </UL>
 
             <H2>10. 쿠키 등 자동수집 장치</H2>
             <P>
               회사는 이용자의 행태정보를 수집하는 자체 광고·분석 쿠키를 사용하지 않습니다. 다만
-              결제(PayPal), 지도(Google Maps), 글꼴(Google Fonts) 등 제3자 서비스가 해당 기능
+              결제(토스페이먼츠·PayPal), 지도(Google Maps), 글꼴(Google Fonts) 등 제3자 서비스가 해당 기능
               제공을 위해 쿠키를 설정할 수 있으며, 이용자는 브라우저 설정을 통해 쿠키 저장을 거부할
               수 있습니다(일부 기능 이용이 제한될 수 있음).
             </P>
@@ -287,13 +290,13 @@ export default function PrivacyPage() {
             <P>We collect the minimum personal information needed to provide our services:</P>
             <UL>
               <li><strong>Inquiry form:</strong> company name, contact person's name, title (optional), phone, email, message, and consent status.</li>
-              <li><strong>Online payment:</strong> payer name, payer email, amount and currency, payment identifiers (PayPal order/transaction ID), and any quote number/memo you enter.</li>
+              <li><strong>Online payment:</strong> payer name, payer email, amount and currency, payment method type (card / easy-pay / bank transfer / virtual account), payment identifiers (Toss Payments order/payment ID or PayPal order/transaction ID), and any quote number/memo you enter.</li>
               <li><strong>Automatically collected:</strong> access IP, browser/device information, and access time may be generated while using the Site.</li>
             </UL>
             <P>
               How: direct entry via the Site's inquiry form and payment screen, and automatic
               generation during use. <strong>Card and other payment-method details are handled by the
-              payment processor (PayPal); we do not store them.</strong>
+              payment processors (Toss Payments and PayPal); we do not store them.</strong>
             </P>
 
             <H2>2. Purposes of collection &amp; use</H2>
@@ -364,14 +367,14 @@ export default function PrivacyPage() {
             <UL>
               <li>Encryption in transit (HTTPS/TLS).</li>
               <li>Access control — inquiry/payment data is restricted so only an authenticated administrator can read it (row-level security).</li>
-              <li>No storage of card details — payment is handled by PayPal.</li>
+              <li>No storage of card details — payment is handled by Toss Payments and PayPal.</li>
               <li>Data minimization and access logging.</li>
             </UL>
 
             <H2>10. Cookies &amp; automatic collection</H2>
             <P>
               We do not use our own advertising/analytics cookies to collect behavioral data. However,
-              third-party services — payment (PayPal), maps (Google Maps), fonts (Google Fonts) — may
+              third-party services — payment (Toss Payments, PayPal), maps (Google Maps), fonts (Google Fonts) — may
               set cookies to provide their features. You can refuse cookies via your browser settings
               (some features may be limited).
             </P>

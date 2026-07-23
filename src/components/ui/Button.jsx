@@ -1,7 +1,9 @@
 import { cn } from '../../design/cn'
 
 const base =
-  'inline-flex items-center justify-center font-semibold transition-colors shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-amber-600 active:scale-[0.98]'
+  'inline-flex items-center justify-center font-semibold transition-colors shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-amber-600 active:scale-[0.98] ' +
+  // 비활성 상태는 눌리지 않는다는 걸 눈으로도 알 수 있어야 한다 (제출 중 / 입력 미완).
+  'disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100'
 
 const variants = {
   primary: 'bg-amber-600 text-white hover:bg-amber-700',
