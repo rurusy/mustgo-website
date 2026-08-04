@@ -3,6 +3,7 @@ import { useHtmlLang } from '../hooks/useHtmlLang'
 import { Header } from '../components/layout/Header'
 import { Footer } from '../components/layout/Footer'
 import { FloatingCTA } from '../components/layout/FloatingCTA'
+import { HolidayNotice } from '../components/layout/HolidayNotice'
 import { Hero } from '../components/sections/Hero'
 import { About } from '../components/sections/About'
 import { Corporate } from '../components/sections/Corporate'
@@ -28,6 +29,7 @@ export default function HomePage() {
       </main>
       <Footer />
       <FloatingCTA />
+      <HolidayNotice />
     </>
   )
 }

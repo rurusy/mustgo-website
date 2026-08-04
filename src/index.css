@@ -52,6 +52,14 @@
     animation: heroCrossfade 32s infinite linear;
   }
 
+  /* Notice / holiday modal — gentle fade for the backdrop, soft rise for the card. */
+  .ds-modal-backdrop {
+    animation: modalBackdropIn 0.25s ease-out both;
+  }
+  .ds-modal-card {
+    animation: modalCardIn 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
   /* Floating CTA hover menu — only opens when the trigger button (or the menu
      itself) is hovered, never the empty area where the menu will appear. */
   .ds-cta-menu {
@@ -75,6 +83,26 @@
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
+  }
+}
+
+@keyframes modalBackdropIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalCardIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
   }
 }
 
@@ -129,6 +157,14 @@
   }
   .ds-cta-group:hover .ds-cta-menu,
   .ds-cta-group:focus-within .ds-cta-menu {
+    transform: none;
+  }
+  /* Notice modal appears without the rise/scale; keep a brief fade only. */
+  .ds-modal-backdrop,
+  .ds-modal-card {
+    animation-duration: 0.01ms;
+  }
+  .ds-modal-card {
     transform: none;
   }
 }
