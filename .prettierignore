@@ -1,0 +1,16 @@
+# No formatter is configured in this repo (see CLAUDE.md). This file exists so
+# that IF Prettier is ever introduced — or if a contributor has the editor
+# extension running with format-on-save — it cannot reformat index.html.
+#
+# Why index.html specifically: Naver's ADVoost diagnostic parses HTML line by
+# line. Prettier's printWidth would wrap the long <meta> tags onto multiple
+# lines, and a tag whose content="" sits on a different line from its name=""
+# reads to that parser as absent — silently dropping the site's SEO grade to C
+# with no visible breakage. The tags must stay on one line each.
+#
+# Leading slash anchors this to the repo root — tools/banner-generator/index.html
+# is a local dev tool and is fine to format.
+/index.html
+
+# Generated: minified/derived output, not hand-edited source.
+dist/

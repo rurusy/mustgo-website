@@ -13,11 +13,13 @@ The voice is "Trust-First" (차분·신뢰형) — measured, premium, never sens
 ```bash
 npm install          # first-time setup
 npm run dev          # Vite dev server on http://localhost:5173 (host: true → reachable on LAN)
-npm run build        # production build to dist/
+npm run build        # production build to dist/ (vite → inline-css → gen-en-html)
 npm run preview      # preview the production build
 ```
 
 There is no test suite, linter, or formatter configured — don't invent commands for them.
+`.prettierignore` exists anyway, to shield `index.html` from an editor's
+format-on-save (see "index.html head is single-line on purpose" below).
 
 ## Architecture
 
@@ -76,6 +78,28 @@ Two custom animations are wired up in `src/index.css` and triggered by JS:
 ### Brand wordmark
 
 Always render the "Mustgo" name through `<BrandText />` — the M is `text-brand-green` and the g is `text-brand-blue`. Don't hardcode the styled spans inline.
+
+### `index.html` head is single-line on purpose — don't reformat
+
+Naver's ADVoost (애드부스트) search-ad diagnostic parses HTML **line by line**. A `<meta>` tag whose `content="…"` sits on a different line from its `name="…"` reads to that parser as *absent*, and a pretty-printed JSON-LD block reads as "no structured data" — even though the markup is valid and browsers handle it fine. A 2026-08 diagnostic graded the site **C** for exactly this, with every tag present and correct.
+
+So in `index.html`:
+
+- every `<meta>` / `<link>` stays on **one line**, however long it gets
+- the `<script type="application/ld+json">` block stays **minified onto one line**
+- **no render-blocking `<link rel="stylesheet">`** — Google Fonts ships as a `rel="preload"` that JS promotes to a stylesheet on load
+
+Wrapping those tags drops the grade back to C with nothing visibly broken. Edit the JSON-LD through `docs/structured-data.json` (the readable source of truth), then run `node scripts/sync-jsonld.mjs` to minify it back into `index.html`.
+
+### Build pipeline
+
+`npm run build` is three steps; both post-steps fail loudly rather than ship something subtly wrong.
+
+1. `vite build` → `dist/`
+2. `scripts/inline-css.mjs` — inlines Vite's CSS bundle into `dist/index.html` as a `<style>` block, so the page ships with no render-blocking stylesheet
+3. `scripts/gen-en-html.mjs` — writes `dist/en/index.html`, a copy of the built index with English `<head>` metadata, so social scrapers (which don't run JS) see English OG tags at `/en`
+
+Step 3 runs after step 2 so `/en` inherits the inlined CSS. `EN.title` there must stay **15–45 characters** (the diagnostic checks title length) and match `document.title` in `src/pages/EnHomePage.jsx`, which re-applies it once React Router mounts.
 
 ## Korean / English mixing
 
