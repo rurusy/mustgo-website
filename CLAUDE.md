@@ -23,13 +23,28 @@ format-on-save (see "index.html head is single-line on purpose" below).
 
 ## Architecture
 
-### Routing (two pages only)
+### Routing
 
-`src/main.jsx` wraps `App` in `<BrowserRouter>`. `src/App.jsx` defines:
-- `/` → `HomePage` — the marketing site (single scrollable page composed of section components)
-- `/styleguide` → `StyleguidePage` — a live catalog of every UI primitive and marketing card, rendered with the real components
+`src/main.jsx` wraps `App` in `<BrowserRouter>`. `src/App.jsx` defines 15 routes in four groups:
 
-When you add a new component, add it to `StyleguidePage.jsx` so designers can review it in isolation.
+**Marketing** — the only pages meant to be indexed.
+- `/` → `HomePage` — Korean marketing site (one scrollable page composed of section components)
+- `/en` → `EnHomePage` — English counterpart, assembled from `sections/en/` + `layout/en/` variants plus the `lang`-aware shared components (`Header`, `Contact`, `FloatingCTA`, `HolidayNotice`)
+- `/styleguide` → `StyleguidePage` — live catalog of every UI primitive and marketing card, rendered with the real components
+
+**Payment** — setup notes in `docs/toss-payments-setup.md` and `docs/paypal-sandbox-test.md`.
+- `/pay` → overseas customers, USD/EUR via PayPal
+- `/pay-kr` → domestic customers, KRW via Toss Payments (domestic cards can't be charged through PayPal under 외국환거래법, hence the split)
+- `/pay-kr/success` and `/pay-kr/fail` → both `PayKrResultPage`, distinguished by an `outcome` prop; these are the URLs the Toss checkout redirects back to
+- `/how-to-pay` → `PayGuidePage`, illustrated guide for overseas customers
+
+**Legal / support** — `/policy` (English payment & refund), `/privacy` (개인정보처리방침), `/terms` (이용약관), `/checklist` (확인 요청)
+
+**Admin** — `/admin/login`, `/admin` (문의 내역), `/admin/payments` (결제 내역)
+
+Only `/` and `/en` carry head metadata in the served HTML — `index.html` and the `dist/en/index.html` the build emits. Every other page sets its own `document.title` and appends a `<meta name="robots">` from a `useEffect`: `noindex,follow` for payment and legal pages, `noindex,nofollow` for admin and checklist. `/styleguide` has no such effect and is blocked in `public/robots.txt` instead.
+
+When you add a new component, add it to `StyleguidePage.jsx` so designers can review it in isolation. When you add a new page, copy the `useEffect` title + robots pattern from an existing one — there's no head-management library, and a page without it inherits the homepage's title and stays indexable.
 
 ### Three-layer component hierarchy
 
