@@ -119,9 +119,10 @@ export function Header({ lang = 'ko' }) {
         )}
       >
         <div className="max-w-layout mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
-          <a href="#" className="flex flex-col items-start group">
+          {/* 로고는 언어별 홈으로. href="#" 는 크롤러가 "접근 불가 내부 링크"로 집계합니다. */}
+          <Link to={lang === 'en' ? '/en' : '/'} className="flex flex-col items-start group">
             <img src="/logo.gif" alt="Mustgo" className="h-10 w-auto object-contain" />
-          </a>
+          </Link>
 
           <nav className="hidden lg:flex items-center space-x-8 text-[15px] font-medium text-gray-700">
             {navItems.map((item) => (
@@ -168,8 +169,6 @@ export function Header({ lang = 'ko' }) {
               <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
-
-          {/* TODO(i18n): /en 라우트 준비 시 KOR/ENG 토글 복원 */}
         </div>
       </header>
 

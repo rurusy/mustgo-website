@@ -13,7 +13,8 @@ import { Contact } from '../components/sections/Contact'
 export default function EnHomePage() {
   useHtmlLang('en')
   useEffect(() => {
-    document.title = 'Mustgo — Your Trusted Partner in Business Travel'
+    // Keep in sync with EN.title in scripts/gen-en-html.mjs (15–45 chars).
+    document.title = 'Mustgo — Trusted Partner in Business Travel'
   }, [])
 
   return (

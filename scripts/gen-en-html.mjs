@@ -22,10 +22,16 @@ const outDir = path.join(root, 'dist', 'en')
 const outFile = path.join(outDir, 'index.html')
 
 const BASE = 'https://mustgokorea.co.kr'
+
+// Length budgets, both enforced by Naver's ADVoost diagnostic / SERP rendering:
+//   title       15–45 chars — outside that range it reports a 경고
+//   description ~80 chars   — Naver truncates past this in search results
+// `title` must stay identical to document.title in src/pages/EnHomePage.jsx,
+// which re-applies it client-side once React Router mounts the English page.
 const EN = {
-  title: 'Mustgo — Your Trusted Partner in Business Travel',
+  title: 'Mustgo — Trusted Partner in Business Travel',
   description:
-    'A corporate travel agency specializing in outbound business trips for Korean companies and inbound VIP visits to Korea. Reply within one business day.',
+    'Outbound business trips and inbound VIP visits to Korea. Reply in 1 business day.',
   ogTitle: 'Mustgo — Your Trusted Partner in Two-Way Business Travel',
   ogImage: `${BASE}/og-image-en.png`,
   ogImageAlt: 'Mustgo — Your Trusted Partner in Two-Way Business Travel',

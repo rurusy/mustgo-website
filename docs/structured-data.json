@@ -1,0 +1,28 @@
+{
+  "@context": "https://schema.org",
+  "@type": "TravelAgency",
+  "name": "머스트고",
+  "alternateName": "Mustgo",
+  "legalName": "(주)머스트고",
+  "url": "https://mustgokorea.co.kr/",
+  "logo": "https://mustgokorea.co.kr/logo.gif",
+  "image": "https://mustgokorea.co.kr/og-image.png",
+  "description": "국내 기업의 해외 출장(Outbound)과 해외 VIP의 한국 방문(Inbound)을 양방향으로 전담하는 기업출장 전문 여행사.",
+  "telephone": "+82-53-255-5992",
+  "email": "wemustgo@mustgokorea.com",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "알파시티 1로 31길 19, 5F",
+    "addressLocality": "수성구",
+    "addressRegion": "대구광역시",
+    "postalCode": "42250",
+    "addressCountry": "KR"
+  },
+  "taxID": "618-81-35992",
+  "areaServed": [
+    { "@type": "Country", "name": "South Korea" },
+    { "@type": "Place", "name": "Worldwide" }
+  ],
+  "serviceType": ["Corporate Travel", "Inbound Tour"],
+  "knowsLanguage": ["ko", "en"]
+}

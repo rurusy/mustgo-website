@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && node scripts/gen-en-html.mjs",
+    "build": "vite build && node scripts/inline-css.mjs && node scripts/gen-en-html.mjs",
     "preview": "vite preview",
     "deck": "node scripts/generate-deck.mjs"
   },

@@ -5,11 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mustgo — 비즈니스 출장의 양방향 전문가</title>
 
+    <!--
+      ⚠ KEEP EVERY <meta>/<link> TAG BELOW ON A SINGLE LINE.
+
+      Naver's ADVoost (애드부스트) site diagnostic parses this file line by line.
+      When a tag is pretty-printed across multiple lines it only sees the first
+      line, so `name="description"` without `content="…"` on the SAME line reads
+      as an empty description. A 2026-08 diagnostic graded the site C purely
+      because description / og:description / JSON-LD were wrapped — the tags were
+      all present and correct. Do not reformat, and do not run a formatter that
+      wraps long attribute lists over this file.
+    -->
+
     <!-- SEO -->
-    <meta
-      name="description"
-      content="기업 해외 출장(Outbound)과 해외 VIP 방한(Inbound)을 전담하는 기업출장 전문 여행사. 1영업일 내 회신."
-    />
+    <meta name="description" content="기업 해외 출장(Outbound)과 해외 VIP 방한(Inbound)을 전담하는 기업출장 전문 여행사. 1영업일 내 회신." />
     <meta name="author" content="(주)머스트고" />
     <meta name="robots" content="index, follow" />
     <meta name="naver-site-verification" content="6f53b92185273f8ae0a15007ea1ae208a794cbe2" />
@@ -26,10 +35,7 @@
     <meta property="og:locale" content="ko_KR" />
     <meta property="og:url" content="https://mustgokorea.co.kr/" />
     <meta property="og:title" content="Mustgo — 비즈니스 출장의 양방향 전문가, 머스트고" />
-    <meta
-      property="og:description"
-      content="기업 해외 출장(Outbound)과 해외 VIP 방한(Inbound)을 전담하는 기업출장 전문 여행사. 1영업일 내 회신."
-    />
+    <meta property="og:description" content="기업 해외 출장(Outbound)과 해외 VIP 방한(Inbound)을 전담하는 기업출장 전문 여행사. 1영업일 내 회신." />
     <meta property="og:image" content="https://mustgokorea.co.kr/og-image.png" />
     <meta property="og:image:width" content="2400" />
     <meta property="og:image:height" content="1260" />
@@ -38,47 +44,17 @@
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Mustgo — 비즈니스 출장의 양방향 전문가, 머스트고" />
-    <meta
-      name="twitter:description"
-      content="기업 해외 출장(Outbound)과 해외 VIP 방한(Inbound)을 전담하는 기업출장 전문 여행사. 1영업일 내 회신."
-    />
+    <meta name="twitter:description" content="기업 해외 출장(Outbound)과 해외 VIP 방한(Inbound)을 전담하는 기업출장 전문 여행사. 1영업일 내 회신." />
     <meta name="twitter:image" content="https://mustgokorea.co.kr/og-image.png" />
 
     <!--
-      Structured data (Schema.org / JSON-LD).
-      Helps Naver/Google understand business identity and surface rich results.
-      If company info changes, mirror updates here AND in src/components/sections/Contact.jsx + Footer.jsx.
+      Structured data (Schema.org / JSON-LD). Minified onto one line for the same
+      line-by-line parser reason as above — a pretty-printed block reads as "no
+      structured data". A readable copy lives in docs/structured-data.json; edit
+      that, then run `node scripts/sync-jsonld.mjs` to write it back here.
+      If company info changes, mirror updates in src/components/sections/Contact.jsx + Footer.jsx.
     -->
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "TravelAgency",
-        "name": "머스트고",
-        "alternateName": "Mustgo",
-        "legalName": "(주)머스트고",
-        "url": "https://mustgokorea.co.kr/",
-        "logo": "https://mustgokorea.co.kr/logo.gif",
-        "image": "https://mustgokorea.co.kr/og-image.png",
-        "description": "국내 기업의 해외 출장(Outbound)과 해외 VIP의 한국 방문(Inbound)을 양방향으로 전담하는 기업출장 전문 여행사.",
-        "telephone": "+82-53-255-5992",
-        "email": "wemustgo@mustgokorea.com",
-        "address": {
-          "@type": "PostalAddress",
-          "streetAddress": "알파시티 1로 31길 19, 5F",
-          "addressLocality": "수성구",
-          "addressRegion": "대구광역시",
-          "postalCode": "42250",
-          "addressCountry": "KR"
-        },
-        "taxID": "618-81-35992",
-        "areaServed": [
-          { "@type": "Country", "name": "South Korea" },
-          { "@type": "Place", "name": "Worldwide" }
-        ],
-        "serviceType": ["Corporate Travel", "Inbound Tour"],
-        "knowsLanguage": ["ko", "en"]
-      }
-    </script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TravelAgency","name":"머스트고","alternateName":"Mustgo","legalName":"(주)머스트고","url":"https://mustgokorea.co.kr/","logo":"https://mustgokorea.co.kr/logo.gif","image":"https://mustgokorea.co.kr/og-image.png","description":"국내 기업의 해외 출장(Outbound)과 해외 VIP의 한국 방문(Inbound)을 양방향으로 전담하는 기업출장 전문 여행사.","telephone":"+82-53-255-5992","email":"wemustgo@mustgokorea.com","address":{"@type":"PostalAddress","streetAddress":"알파시티 1로 31길 19, 5F","addressLocality":"수성구","addressRegion":"대구광역시","postalCode":"42250","addressCountry":"KR"},"taxID":"618-81-35992","areaServed":[{"@type":"Country","name":"South Korea"},{"@type":"Place","name":"Worldwide"}],"serviceType":["Corporate Travel","Inbound Tour"],"knowsLanguage":["ko","en"]}</script>
 
     <!--
       Favicons. Master is public/favicon.svg; PNG/ICO derivatives are generated
@@ -92,21 +68,23 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://images.unsplash.com" crossorigin />
+
     <!--
       Hero LCP candidate. URL must stay in sync with the FIRST entry of
       `heroImages` in src/design/tokens.js. If you reorder/replace that array,
       update this href too.
     -->
-    <link
-      rel="preload"
-      as="image"
-      href="https://images.unsplash.com/photo-1608601006827-c052e2358d6d?auto=format&fit=crop&q=80&w=1920"
-      fetchpriority="high"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <link rel="preload" as="image" href="https://images.unsplash.com/photo-1608601006827-c052e2358d6d?auto=format&fit=crop&q=80&w=1920" fetchpriority="high" />
+
+    <!--
+      Web fonts load non-render-blocking: fetched as a preload, then promoted to
+      a stylesheet on load. Shipping this as a plain `rel="stylesheet"` puts a
+      third-party request on the critical path and trips the diagnostic's
+      "렌더 차단 리소스" warning. The families already use `display=swap`, so the
+      swap-in is the same FOUT either way. No <noscript> fallback on purpose —
+      this is a React SPA, so a JS-less client renders nothing to style anyway.
+    -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
   </head>
   <body>
     <div id="root"></div>
