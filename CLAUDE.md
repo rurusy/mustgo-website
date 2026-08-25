@@ -25,7 +25,7 @@ format-on-save (see "index.html head is single-line on purpose" below).
 
 ### Routing
 
-`src/main.jsx` wraps `App` in `<BrowserRouter>`. `src/App.jsx` defines 15 routes in four groups:
+`src/main.jsx` wraps `App` in `<BrowserRouter>`. `src/App.jsx` defines 16 routes in four groups:
 
 **Marketing** — the only pages meant to be indexed.
 - `/` → `HomePage` — Korean marketing site (one scrollable page composed of section components)
@@ -40,7 +40,9 @@ format-on-save (see "index.html head is single-line on purpose" below).
 
 **Legal / support** — `/policy` (English payment & refund), `/privacy` (개인정보처리방침), `/terms` (이용약관), `/checklist` (확인 요청)
 
-**Admin** — `/admin/login`, `/admin` (문의 내역), `/admin/payments` (결제 내역)
+**Admin** — `/admin/login`, `/admin` (문의 내역), `/admin/payments` (결제 내역), `/admin/reset-password` (비밀번호 재설정)
+
+There is one admin account (`ADMIN_EMAIL` in `src/lib/supabase.js`); its password lives only in Supabase Auth, never in the repo. `/admin/reset-password` is where the recovery mail lands — see `docs/admin-password-reset.md` for the Supabase-side setup it depends on. Supabase strips the `#access_token=…&type=recovery` fragment during `createClient`, so `supabase.js` snapshots it *before* the client is built and hands it over through `takeRecoveryParams()`; `RecoveryRedirect` in `App.jsx` forwards a recovery landing on any other route (a dashboard-sent mail lands on the Site URL, i.e. `/`) to the reset page. Failures on both admin auth screens are rendered through `lib/authErrors.js`, which always prints Supabase's raw `error_code` — collapsing them into one message is what made a 2026-08 lockout take a day to diagnose.
 
 Only `/` and `/en` carry head metadata in the served HTML — `index.html` and the `dist/en/index.html` the build emits. Every other page sets its own `document.title` and appends a `<meta name="robots">` from a `useEffect`: `noindex,follow` for payment and legal pages, `noindex,nofollow` for admin and checklist. `/styleguide` has no such effect and is blocked in `public/robots.txt` instead.
 

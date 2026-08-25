@@ -1,16 +1,15 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { supabase, ADMIN_EMAIL } from '../lib/supabase'
+import { supabase, ADMIN_EMAIL, PASSWORD_RESET_PATH } from '../lib/supabase'
+import { resolveAuthError } from '../lib/authErrors'
 import { Button, BrandText, FormLabel, Input } from '../components/ui'
 
-// Supabase Auth 는 실패 원인을 error_code 로 내려주는데, 화면에서 이를 한 문구로
-// 뭉치면 "비밀번호가 틀렸다"와 "계정이 아예 없다 / 시도가 막혔다 / 환경변수가
-// 비었다"를 구분할 수 없다. 코드별 안내 + 원본 코드 노출로 원인을 화면에서
-// 바로 읽을 수 있게 한다.
-const authErrors = {
+// 로그인 화면에서만 문구가 달라야 하는 코드들. 공통 코드(network / env_missing 등)는
+// lib/authErrors.js 의 sharedAuthErrors 가 받는다.
+const loginErrors = {
   invalid_credentials: {
     message: '비밀번호가 올바르지 않습니다.',
-    hint: `${ADMIN_EMAIL} 계정이 Supabase Authentication → Users 에 없을 때도 같은 오류가 납니다.`,
+    hint: '아래 "재설정 메일 받기"로 새 비밀번호를 지정할 수 있습니다.',
   },
   user_not_found: {
     message: '등록되지 않은 관리자 계정입니다.',
@@ -32,30 +31,6 @@ const authErrors = {
     message: '비밀번호를 입력해주세요.',
     hint: null,
   },
-  // supabase.js 의 stub 이 내려주는 자체 코드 (VITE_ 환경변수 누락).
-  env_missing: {
-    message: 'Supabase 연결이 설정되지 않았습니다.',
-    hint: '배포 환경의 VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY 환경변수를 확인하세요.',
-  },
-  network: {
-    message: '서버에 연결하지 못했습니다.',
-    hint: '네트워크 상태를 확인한 뒤 다시 시도해주세요.',
-  },
-}
-
-function resolveAuthError(err) {
-  // 네트워크 실패는 error_code 없이 AuthRetryableFetchError(status 0) 로 온다.
-  const code =
-    err.code ?? (err.name === 'AuthRetryableFetchError' || err.status === 0 ? 'network' : null)
-  const known = code ? authErrors[code] : null
-  if (known) return { ...known, code }
-
-  // 매핑되지 않은 코드는 원문 그대로 노출 — 원인을 삼키지 않는다.
-  return {
-    message: '로그인에 실패했습니다.',
-    hint: err.message || null,
-    code: code || (err.status ? `HTTP ${err.status}` : 'unknown'),
-  }
 }
 
 export default function AdminLoginPage() {
@@ -63,6 +38,8 @@ export default function AdminLoginPage() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(false)
+  const [resetting, setResetting] = useState(false)
+  const [resetSent, setResetSent] = useState(false)
   const navigate = useNavigate()
 
   // Admin 라우트는 검색엔진에 노출되지 않아야 함.
@@ -104,10 +81,32 @@ export default function AdminLoginPage() {
     })
     setLoading(false)
     if (authError) {
-      setError(resolveAuthError(authError))
+      setError(resolveAuthError(authError, { messages: loginErrors, fallback: '로그인에 실패했습니다.' }))
       return
     }
     navigate('/admin', { replace: true })
+  }
+
+  // redirectTo 를 명시해야 메일의 링크가 홈이 아니라 재설정 화면으로 떨어진다.
+  // 같은 URL 이 Supabase Authentication → URL Configuration 의 Redirect URLs 에
+  // 등록되어 있어야 하며, 등록되지 않으면 Supabase 가 Site URL 로 되돌려보낸다.
+  const onRequestReset = async () => {
+    setResetting(true)
+    setError(null)
+    const { error: resetError } = await supabase.auth.resetPasswordForEmail(ADMIN_EMAIL, {
+      redirectTo: `${window.location.origin}${PASSWORD_RESET_PATH}`,
+    })
+    setResetting(false)
+    if (resetError) {
+      setError(
+        resolveAuthError(resetError, {
+          messages: loginErrors,
+          fallback: '재설정 메일을 보내지 못했습니다.',
+        }),
+      )
+      return
+    }
+    setResetSent(true)
   }
 
   // 세션 확인 전엔 폼을 노출하지 않음 (이미 로그인 상태에서 폼 깜빡임 방지).
@@ -155,6 +154,25 @@ export default function AdminLoginPage() {
           <Button type="submit" className="w-full" disabled={loading}>
             {loading ? '확인 중…' : '로그인'}
           </Button>
+
+          <div className="text-center mt-4">
+            {resetSent ? (
+              <p className="text-xs text-gray-500 leading-relaxed">
+                <span className="font-eng">{ADMIN_EMAIL}</span> 으로 재설정 메일을 보냈습니다.
+                <br />
+                메일의 링크를 열면 새 비밀번호를 지정할 수 있습니다 (1시간 후 만료).
+              </p>
+            ) : (
+              <button
+                type="button"
+                onClick={onRequestReset}
+                disabled={resetting}
+                className="text-xs text-gray-500 hover:text-amber-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {resetting ? '보내는 중…' : '비밀번호를 잊으셨나요? 재설정 메일 받기'}
+              </button>
+            )}
+          </div>
         </form>
 
         <div className="text-center mt-6">
