@@ -29,7 +29,8 @@ const COPY = {
     closingLead:
       '마음에 두신 곳을 알려주시면 동선과 차량, 식사까지 묶어 초안 일정과 견적을 만들어 드립니다. 정해진 상품을 고르는 방식이 아니라, 방문 목적과 일정에 맞춰 처음부터 설계합니다.',
     closingButton: '일정·견적 상담하기',
-    otherCities: '다른 도시 둘러보기',
+    cityNav: '도시 선택',
+    otherCities: '이어서 둘러보기',
   },
   en: {
     eyebrow: 'Travel in Korea',
@@ -41,7 +42,8 @@ const COPY = {
     closingLead:
       'Tell us which places interest you. We plan the route, the vehicles and the dining around them, then send a draft itinerary with a quote. Nothing is taken off a fixed package — the schedule is built around the purpose of the visit.',
     closingButton: 'Talk to a consultant',
-    otherCities: 'Other cities',
+    cityNav: 'Cities',
+    otherCities: 'Continue exploring',
   },
 }
 
@@ -110,9 +112,45 @@ export default function CityPage({ city, lang = 'ko' }) {
         </Section>
 
         <Section tone="light" pad="flush" className="pb-20 lg:pb-28">
-          <h2 className="text-2xl lg:text-3xl font-bold tracking-tight text-gray-900 mb-8">
-            {listTitleFor(lang, t.name)}
-          </h2>
+          {/*
+            도시 탭은 목록 제목과 같은 줄에 둔다. 이 버튼이 바꾸는 것은 페이지 전체가
+            아니라 바로 아래 깔린 관광지 목록이라, 목록 위에 있어야 관계가 설명 없이
+            읽힌다. 광고로 한 도시에 떨어진 방문자가 나머지 두 도시의 존재를 여기서
+            처음 알게 되는 경우가 많다.
+
+            현재 도시는 링크가 아니라 span 이다 — 자기 자신으로 가는 링크를 두면
+            눌렀을 때 아무 일도 일어나지 않는 것처럼 보인다.
+          */}
+          <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
+            <h2 className="text-2xl lg:text-3xl font-bold tracking-tight text-gray-900">
+              {listTitleFor(lang, t.name)}
+            </h2>
+            <nav aria-label={c.cityNav} className="flex flex-wrap gap-2">
+              {cities.map((item) =>
+                item.slug === city.slug ? (
+                  <Button
+                    key={item.slug}
+                    as="span"
+                    variant="pillFilterActive"
+                    size="pillSm"
+                    aria-current="page"
+                  >
+                    {item[lang].name}
+                  </Button>
+                ) : (
+                  <Button
+                    key={item.slug}
+                    as={Link}
+                    to={cityPath(lang, item.slug)}
+                    variant="pillFilter"
+                    size="pillSm"
+                  >
+                    {item[lang].name}
+                  </Button>
+                ),
+              )}
+            </nav>
+          </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {list.map((a, i) => (
               <Fade key={a.slug} delay={i * 0.05}>
