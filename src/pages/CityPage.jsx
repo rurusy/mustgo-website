@@ -6,23 +6,14 @@ import { Footer as EnFooter } from '../components/layout/en/Footer'
 import { Section, Button, Card, Fade } from '../components/ui'
 import { AttractionCard } from '../components/marketing/AttractionCard'
 import { useSeo } from '../hooks/useSeo'
-import { SITE } from '../data/site'
-import {
-  attractionPath,
-  attractionsInCity,
-  cityPath,
-  homePath,
-  pathAlternates,
-  thumbFor,
-} from '../data/attractions'
+import { breadcrumbHome, listTitleFor, seoForCity } from '../data/seo'
+import { attractionPath, attractionsInCity, homePath, thumbFor } from '../data/attractions'
 
 // 도시 허브. 관광지 상세 페이지들의 입구이고, 홈에서 이 페이지로 링크가 들어온다.
 // 색인 경로가 홈 → 도시 허브 → 관광지 상세로 이어져야 새 페이지가 발견된다.
 const COPY = {
   ko: {
-    breadcrumbHome: '홈',
     eyebrow: '한국 여행',
-    listTitle: (city) => `${city} 주요 관광지`,
     quote: '맞춤 견적 요청',
     quoteLead: '보고 계신 관광지를 포함해 일정을 짜드립니다. 날짜와 인원만 알려주셔도 됩니다.',
     quoteButton: '견적 요청하기',
@@ -33,9 +24,7 @@ const COPY = {
     closingButton: '일정·견적 상담하기',
   },
   en: {
-    breadcrumbHome: 'Home',
     eyebrow: 'Travel in Korea',
-    listTitle: (city) => `Highlights of ${city}`,
     quote: 'Request a custom quote',
     quoteLead: 'We build the itinerary around the places that interest you. Dates and party size are enough to start.',
     quoteButton: 'Request a quote',
@@ -50,39 +39,10 @@ const COPY = {
 export default function CityPage({ city, lang = 'ko' }) {
   const t = city[lang]
   const c = COPY[lang]
-  const path = cityPath(lang, city.slug)
   const list = attractionsInCity(city.slug)
 
-  useSeo({
-    lang,
-    title: t.title,
-    description: t.description,
-    path,
-    alternates: pathAlternates('city', city.slug),
-    image: list[0]?.photo,
-    imageAlt: list[0]?.[lang].imageAlt,
-    jsonLd: [
-      {
-        '@context': 'https://schema.org',
-        '@type': 'BreadcrumbList',
-        itemListElement: [
-          { '@type': 'ListItem', position: 1, name: c.breadcrumbHome, item: `${SITE}${homePath(lang)}` },
-          { '@type': 'ListItem', position: 2, name: t.name, item: `${SITE}${path}` },
-        ],
-      },
-      {
-        '@context': 'https://schema.org',
-        '@type': 'ItemList',
-        name: c.listTitle(t.name),
-        itemListElement: list.map((a, i) => ({
-          '@type': 'ListItem',
-          position: i + 1,
-          name: a[lang].name,
-          url: `${SITE}${attractionPath(lang, a)}`,
-        })),
-      },
-    ],
-  })
+  // head 는 빌드(프리렌더)와 브라우저가 같은 서술자를 쓴다 — src/data/seo.js
+  useSeo(seoForCity(city, lang))
 
   const PageFooter = lang === 'en' ? EnFooter : Footer
 
@@ -100,7 +60,7 @@ export default function CityPage({ city, lang = 'ko' }) {
             <ol className="flex items-center gap-2 text-xs text-gray-500">
               <li>
                 <Link to={homePath(lang)} className="hover:text-amber-600 transition-colors">
-                  {c.breadcrumbHome}
+                  {breadcrumbHome(lang)}
                 </Link>
               </li>
               <li aria-hidden="true" className="text-gray-300">
@@ -141,7 +101,7 @@ export default function CityPage({ city, lang = 'ko' }) {
 
         <Section tone="light" pad="flush" className="pb-20 lg:pb-28">
           <h2 className="text-2xl lg:text-3xl font-bold tracking-tight text-gray-900 mb-8">
-            {c.listTitle(t.name)}
+            {listTitleFor(lang, t.name)}
           </h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {list.map((a, i) => (

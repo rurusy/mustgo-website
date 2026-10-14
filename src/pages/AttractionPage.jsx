@@ -4,15 +4,14 @@ import { Footer } from '../components/layout/Footer'
 import { Footer as EnFooter } from '../components/layout/en/Footer'
 import { Section, Card, Button, Fade } from '../components/ui'
 import { useSeo } from '../hooks/useSeo'
-import { SITE } from '../data/site'
-import { attractionPath, cityBySlug, cityPath, homePath, pathAlternates } from '../data/attractions'
+import { breadcrumbHome, seoForAttraction } from '../data/seo'
+import { cityBySlug, cityPath, homePath } from '../data/attractions'
 
 // 관광지 상세 페이지. 하나의 컴포넌트가 두 언어를 모두 렌더한다 — 레이아웃은 같고
 // 문안만 attraction[lang] 에서 갈라지므로, 언어별 컴포넌트를 따로 두면 레이아웃
 // 수정이 두 곳으로 번진다 (sections/en/ 과 달리 이 페이지는 구조가 완전히 동일).
 const COPY = {
   ko: {
-    breadcrumbHome: '홈',
     info: '방문 정보',
     planning: '의전 투어 설계 포인트',
     checkedPrefix: '운영 정보 기준',
@@ -22,7 +21,6 @@ const COPY = {
     photoPrefix: '사진',
   },
   en: {
-    breadcrumbHome: 'Home',
     info: 'Visitor information',
     planning: 'Private tour planning notes',
     checkedPrefix: 'Information verified',
@@ -63,51 +61,15 @@ export default function AttractionPage({ attraction, lang = 'ko' }) {
   const c = COPY[lang]
   const city = cityBySlug(attraction.city)
   const cityName = city[lang].name
-  const path = attractionPath(lang, attraction)
-  const alternates = pathAlternates('attraction', attraction)
 
   const crumbs = [
-    { label: c.breadcrumbHome, href: homePath(lang) },
+    { label: breadcrumbHome(lang), href: homePath(lang) },
     { label: cityName, href: cityPath(lang, attraction.city) },
     { label: t.name },
   ]
 
-  useSeo({
-    lang,
-    title: t.title,
-    description: t.description,
-    path,
-    alternates,
-    image: attraction.photo,
-    imageAlt: t.imageAlt,
-    type: 'article',
-    jsonLd: [
-      {
-        '@context': 'https://schema.org',
-        '@type': 'TouristAttraction',
-        name: t.name,
-        description: t.description,
-        url: `${SITE}${path}`,
-        image: `${SITE}${attraction.photo}`,
-        address: {
-          '@type': 'PostalAddress',
-          addressLocality: cityName,
-          addressCountry: 'KR',
-        },
-        touristType: lang === 'en' ? 'VIP and corporate visitors' : '기업·VIP 방한객',
-      },
-      {
-        '@context': 'https://schema.org',
-        '@type': 'BreadcrumbList',
-        itemListElement: crumbs.map((crumb, i) => ({
-          '@type': 'ListItem',
-          position: i + 1,
-          name: crumb.label,
-          item: `${SITE}${crumb.href ?? path}`,
-        })),
-      },
-    ],
-  })
+  // head 는 빌드(프리렌더)와 브라우저가 같은 서술자를 쓴다 — src/data/seo.js
+  useSeo(seoForAttraction(attraction, lang))
 
   const PageFooter = lang === 'en' ? EnFooter : Footer
 

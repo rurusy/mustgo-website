@@ -47,7 +47,7 @@ format-on-save (see "index.html head is single-line on purpose" below).
 - `/korea/<city>/` and `/en/korea/<city>/` → `CityPage`, the hub listing that city's attractions
 - `/korea/<city>/<slug>/` and `/en/korea/<city>/<slug>/` → `AttractionPage`
 
-Korean lives at the root and English under `/en`, matching the existing `/` and `/en` split, and both languages share one slug so `hreflang` pairs and route generation stay mechanical. The same `contentRoutes()` feeds the router, the prerenderer and the sitemap — **adding a place means adding one entry to the city file and nothing else**. `useSeo` (`src/hooks/useSeo.js`) sets each page's title, description, canonical, hreflang, OG and JSON-LD at runtime, then stamps `html[data-seo="ready"]`; `scripts/prerender.mjs` waits for that attribute before snapshotting, so the static HTML always carries a filled-in head. It also forces every `.ds-fade` to `is-visible` first — otherwise the body copy ships at `opacity: 0` and reads as hidden content.
+Korean lives at the root and English under `/en`, matching the existing `/` and `/en` split, and both languages share one slug so `hreflang` pairs and route generation stay mechanical. The same `contentRoutes()` feeds the router, the prerenderer and the sitemap — **adding a place means adding one entry to the city file and nothing else**. `src/data/seo.js` is the single source for each page's head — title, description, canonical, hreflang, OG and JSON-LD. The page passes that descriptor to `useSeo` for client-side navigation, and `scripts/prerender.mjs` renders the same descriptor into the static HTML at build time, so the two can't drift.
 
 Admin accounts are listed in `ADMIN_EMAILS` (`src/lib/supabase.js`) — the login screen renders a picker over that list and uses the chosen address for both sign-in and the reset mail; `ADMIN_EMAIL` is just the first entry, i.e. the default selection. An address has to exist in **three** places to work: that list, Supabase Authentication → Users, and the email allowlist in the payments RLS policies (`db/payments.sql`, `db/payments_kr.sql`). Miss Supabase and `resetPasswordForEmail` returns success while sending nothing (it hides whether an account exists); miss the RLS allowlist and the account signs in fine but `/admin/payments` renders empty. Passwords live only in Supabase Auth, never in the repo. `/admin/reset-password` is where the recovery mail lands — see `docs/admin-password-reset.md` for the Supabase-side setup it depends on. Supabase strips the `#access_token=…&type=recovery` fragment during `createClient`, so `supabase.js` snapshots it *before* the client is built and hands it over through `takeRecoveryParams()`; `RecoveryRedirect` in `App.jsx` forwards a recovery landing on any other route (a dashboard-sent mail lands on the Site URL, i.e. `/`) to the reset page. Failures on both admin auth screens are rendered through `lib/authErrors.js`, which always prints Supabase's raw `error_code` — collapsing them into one message is what made a 2026-08 lockout take a day to diagnose.
 
@@ -117,13 +117,16 @@ Wrapping those tags drops the grade back to C with nothing visibly broken. Edit 
 
 ### Build pipeline
 
-`npm run build` is five steps; every post-step fails loudly rather than ship something subtly wrong.
+`npm run build` is six steps; every post-step fails loudly rather than ship something subtly wrong.
 
 1. `vite build` → `dist/`
 2. `scripts/inline-css.mjs` — inlines Vite's CSS bundle into `dist/index.html` as a `<style>` block, so the page ships with no render-blocking stylesheet
 3. `scripts/gen-en-html.mjs` — writes `dist/en/index.html`, a copy of the built index with English `<head>` metadata, so social scrapers (which don't run JS) see English OG tags at `/en`
-4. `scripts/prerender.mjs` — opens every content route in headless Chrome and writes the rendered DOM to `dist/<route>/index.html`
-5. `scripts/gen-sitemap.mjs` — writes `dist/sitemap.xml` from the same route list (there is no `public/sitemap.xml` any more)
+4. `vite build --ssr src/entry-server.jsx --outDir dist-ssr` — a Node build of the same app, used only by the next step
+5. `scripts/prerender.mjs` — renders each content route through `react-dom/server`, swaps the `<head>` of the built `dist/index.html` for that route's metadata, and writes `dist/<route>/index.html`
+6. `scripts/gen-sitemap.mjs` — writes `dist/sitemap.xml` from the same route list (there is no `public/sitemap.xml` any more)
+
+Step 5 used to drive headless Chrome through puppeteer. It worked locally and **failed every deploy** — Vercel's build container would not launch Chrome, which took the whole build down with it (2026-10-15). Rendering React in Node has no such dependency, so don't reintroduce a browser into the build. `src/entry-server.jsx` also forces every `.ds-fade` to `is-visible`, because server rendering never runs the IntersectionObserver effect and the body copy would otherwise ship at `opacity: 0`. puppeteer stays a devDependency for the two **manual** scripts (`render-og-image.mjs`, `make-thumbs.mjs`), which never run in CI.
 
 `scripts/make-thumbs.mjs` is **not** part of the build. Run it by hand after adding photos — it writes 800px card versions into `public/photos/attractions/thumbs/` (the 1620px originals are four times what a card needs, and fifteen of them is 5.8 MB on one page).
 

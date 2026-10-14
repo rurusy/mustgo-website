@@ -6,9 +6,12 @@
 // 심사·소셜 스크래퍼는 아예 실행하지 않는다. 관광지 페이지는 "본문 텍스트"가
 // 자산이므로 HTML 에 글이 들어 있어야 한다.
 //
-// How: 빌드된 dist 를 로컬 서버로 띄우고, 헤드리스 Chrome 으로 각 라우트를 열어
-// 렌더가 끝난 DOM 을 그대로 파일로 쓴다. 프레임워크 교체(Next/Astro) 없이
-// puppeteer(이미 OG 이미지 생성에 쓰고 있다) 하나로 끝난다.
+// How: `vite build --ssr` 이 만들어 둔 dist-ssr/entry-server.js 를 Node 에서 불러
+// React 를 그대로 렌더하고, 빌드된 dist/index.html 을 템플릿 삼아 머리말을 갈아끼운다.
+//
+// 처음에는 헤드리스 크롬으로 실제 페이지를 띄워 DOM 을 떠냈다. 로컬에서는 잘 돌았지만
+// 베르셀 빌드 컨테이너에서 크롬이 뜨지 않아 배포가 통째로 막혔다(2026-10-15). 브라우저를
+// 쓰지 않으면 그 환경 의존이 사라진다 — 지금 방식은 Node 와 React 만 있으면 된다.
 //
 // 산출물은 dist/<route>/index.html 이고, Vercel 은 SPA rewrite 보다 실제 파일을
 // 먼저 서빙하므로(vercel.json 의 /(.*) → /index.html 보다 우선) 크롤러는 이 HTML 을
@@ -18,47 +21,28 @@
 //  - React 는 기존 DOM 위에 hydrate 하지 않고 다시 그린다(createRoot). 내용이
 //    동일하므로 눈에 띄는 차이는 없지만, 진짜 hydration 이 필요해지면 그때
 //    hydrateRoot 로 바꿔야 한다.
-//  - .ds-fade 는 IntersectionObserver 가 is-visible 을 붙이기 전까지 opacity:0 이다.
-//    스냅샷 전에 전부 is-visible 로 만들어 둔다 — 안 그러면 크롤러가 본문을
-//    "숨겨진 콘텐츠"로 본다.
-//  - 라우트 목록은 src/data/attractions.js 가 유일한 출처다. 여기에 경로를 다시
-//    적지 않는다.
+//  - <head> 의 모든 태그는 한 줄로 유지한다. 네이버 ADVoost 진단이 줄 단위로 파싱해서,
+//    줄이 나뉜 태그를 "없는 것"으로 읽는다 (index.html 상단 주석 참고).
+//  - 라우트 목록과 head 내용은 src/data/attractions.js 와 src/data/seo.js 가 유일한
+//    출처다. 여기에 경로나 문구를 다시 적지 않는다.
 //
-// Fail-fast: 라우트 하나라도 렌더 신호(html[data-seo="ready"])를 못 내면 빌드를
-// 세운다. 메타가 빈 HTML 을 조용히 배포하는 것보다 낫다.
+// Fail-fast: 치환이 하나라도 빗나가면 빌드를 세운다. index.html 머리말이 바뀌었는데
+// 조용히 옛 메타를 단 페이지를 배포하는 것보다 낫다.
 
-import { createServer } from 'node:http'
 import { readFile, writeFile, mkdir, stat } from 'node:fs/promises'
 import path from 'node:path'
-import { fileURLToPath } from 'node:url'
-import puppeteer from 'puppeteer'
+import { fileURLToPath, pathToFileURL } from 'node:url'
 import { contentRoutes } from '../src/data/attractions.js'
+import { seoForAttraction, seoForCity } from '../src/data/seo.js'
+import { SITE } from '../src/data/site.js'
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..')
 const dist = path.join(root, 'dist')
+const ssrEntry = path.join(root, 'dist-ssr', 'entry-server.js')
 
 // 이 두 파일은 index.html 과 gen-en-html.mjs 가 관리한다. 프리렌더가 덮어쓰면
 // 네이버 진단용으로 한 줄로 유지한 <head> 와 영어 OG 가 날아간다.
 const PROTECTED = ['index.html', path.join('en', 'index.html')]
-
-const MIME = {
-  '.html': 'text/html; charset=utf-8',
-  '.js': 'text/javascript; charset=utf-8',
-  '.mjs': 'text/javascript; charset=utf-8',
-  '.css': 'text/css; charset=utf-8',
-  '.json': 'application/json; charset=utf-8',
-  '.svg': 'image/svg+xml',
-  '.png': 'image/png',
-  '.jpg': 'image/jpeg',
-  '.jpeg': 'image/jpeg',
-  '.gif': 'image/gif',
-  '.webp': 'image/webp',
-  '.ico': 'image/x-icon',
-  '.woff': 'font/woff',
-  '.woff2': 'font/woff2',
-  '.xml': 'application/xml; charset=utf-8',
-  '.txt': 'text/plain; charset=utf-8',
-}
 
 const exists = async (p) => {
   try {
@@ -72,75 +56,129 @@ const indexHtml = path.join(dist, 'index.html')
 if (!(await exists(indexHtml))) {
   throw new Error('prerender: dist/index.html 이 없습니다. vite build 가 먼저 돌아야 합니다.')
 }
-
-// dist 를 그대로 서빙하고, 없는 경로는 index.html 로 떨군다(SPA fallback).
-// 프리렌더 대상 경로는 아직 파일이 없으므로 전부 이 fallback 을 타고 React 가 그린다.
-const server = createServer(async (req, res) => {
-  const urlPath = decodeURIComponent(req.url.split('?')[0])
-  const candidate = urlPath.endsWith('/')
-    ? path.join(dist, urlPath, 'index.html')
-    : path.join(dist, urlPath)
-  const file = (await exists(candidate)) ? candidate : indexHtml
-  try {
-    const body = await readFile(file)
-    res.writeHead(200, { 'content-type': MIME[path.extname(file)] ?? 'application/octet-stream' })
-    res.end(body)
-  } catch (err) {
-    res.writeHead(500)
-    res.end(String(err))
-  }
-})
-
-await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve))
-const { port } = server.address()
-
-const routes = contentRoutes()
-// CI(베르셀) 빌드 컨테이너는 root 로 돌고 /dev/shm 이 매우 작다. 두 플래그가 없으면
-// 크롬이 아예 뜨지 않아 빌드가 통째로 실패한다 — 로컬에서는 넣어도 동작이 같다.
-let browser
-try {
-  browser = await puppeteer.launch({
-    headless: 'new',
-    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
-  })
-} catch (err) {
+if (!(await exists(ssrEntry))) {
   throw new Error(
-    `prerender: 헤드리스 크롬을 띄우지 못했습니다 (${err.message}). ` +
-      '빌드 환경에 puppeteer 의 크롬이 설치돼 있는지 확인하세요 — 설치 단계에서 ' +
-      'PUPPETEER_SKIP_DOWNLOAD 가 켜져 있으면 받아오지 않습니다.',
+    'prerender: dist-ssr/entry-server.js 가 없습니다. ' +
+      '`vite build --ssr src/entry-server.jsx --outDir dist-ssr` 가 먼저 돌아야 합니다.',
   )
 }
 
-try {
-  const page = await browser.newPage()
-  await page.setViewport({ width: 1280, height: 900 })
+const { render } = await import(pathToFileURL(ssrEntry).href)
+const template = await readFile(indexHtml, 'utf8')
 
-  for (const route of routes) {
-    const out = path.join(dist, route.path, 'index.html')
-    const rel = path.relative(dist, out)
-    if (PROTECTED.includes(rel)) {
-      throw new Error(`prerender: ${rel} 은 보호 대상입니다. 라우트 경로를 확인하세요.`)
-    }
+const escapeAttr = (value) =>
+  String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
 
-    await page.goto(`http://127.0.0.1:${port}${route.path}`, { waitUntil: 'networkidle0' })
-    // useSeo 가 <head> 를 다 채운 뒤에 붙이는 신호. 이걸 기다려야 메타가 실린다.
-    await page.waitForSelector('html[data-seo="ready"]', { timeout: 20000 })
+const abs = (url) => (url?.startsWith('http') ? url : `${SITE}${url ?? ''}`)
 
-    const html = await page.evaluate(() => {
-      // 스크롤 전이라 아직 안 보이는 fade 요소를 모두 드러낸다.
-      document.querySelectorAll('.ds-fade').forEach((el) => el.classList.add('is-visible'))
-      // 신호용 속성은 산출물에 남기지 않는다.
-      document.documentElement.removeAttribute('data-seo')
-      return `<!doctype html>\n${document.documentElement.outerHTML}`
-    })
+// [라벨, 찾을 정규식, 바꿀 문자열]. 하나라도 안 맞으면 빌드를 세운다.
+function substitutions(seo) {
+  const url = abs(seo.path)
+  const title = escapeAttr(seo.title)
+  const description = escapeAttr(seo.description)
+  const image = seo.image ? abs(seo.image) : null
+  const imageAlt = seo.imageAlt ? escapeAttr(seo.imageAlt) : null
 
-    await mkdir(path.dirname(out), { recursive: true })
-    await writeFile(out, html, 'utf8')
-    console.log(`  ${route.path} → ${rel.replace(/\\/g, '/')} (${(html.length / 1024).toFixed(0)} KB)`)
+  const subs = [
+    ['lang', /lang="ko"/, `lang="${seo.lang}"`],
+    ['title', /<title>[^<]*<\/title>/, `<title>${title}</title>`],
+    ['description', /(name="description" content=")[^"]*(")/, `$1${description}$2`],
+    ['canonical', /(rel="canonical" href=")[^"]*(")/, `$1${url}$2`],
+    [
+      'hreflang ko',
+      /(hreflang="ko" href=")[^"]*(")/,
+      `$1${abs(seo.alternates.ko)}$2`,
+    ],
+    [
+      'hreflang en',
+      /(hreflang="en" href=")[^"]*(")/,
+      `$1${abs(seo.alternates.en)}$2`,
+    ],
+    [
+      'hreflang x-default',
+      /(hreflang="x-default" href=")[^"]*(")/,
+      `$1${abs(seo.alternates.ko)}$2`,
+    ],
+    ['og:type', /(property="og:type" content=")[^"]*(")/, `$1${seo.type}$2`],
+    [
+      'og:locale',
+      /(property="og:locale" content=")[^"]*(")/,
+      `$1${seo.lang === 'en' ? 'en_US' : 'ko_KR'}$2`,
+    ],
+    ['og:url', /(property="og:url" content=")[^"]*(")/, `$1${url}$2`],
+    ['og:title', /(property="og:title" content=")[^"]*(")/, `$1${title}$2`],
+    ['og:description', /(property="og:description" content=")[^"]*(")/, `$1${description}$2`],
+    ['twitter:title', /(name="twitter:title" content=")[^"]*(")/, `$1${title}$2`],
+    ['twitter:description', /(name="twitter:description" content=")[^"]*(")/, `$1${description}$2`],
+  ]
+
+  if (image) {
+    subs.push(
+      ['og:image', /(property="og:image" content=")[^"]*(")/, `$1${image}$2`],
+      ['og:image:alt', /(property="og:image:alt" content=")[^"]*(")/, `$1${imageAlt}$2`],
+      ['twitter:image', /(name="twitter:image" content=")[^"]*(")/, `$1${image}$2`],
+      // 홈의 OG 이미지(2400×1260) 치수는 관광지 사진에 맞지 않는다. 치수를 틀리게
+      // 알리느니 빼는 편이 낫다 — 선택 항목이다.
+      ['og:image:width 제거', /\s*<meta property="og:image:width"[^>]*>/, ''],
+      ['og:image:height 제거', /\s*<meta property="og:image:height"[^>]*>/, ''],
+    )
   }
 
-  console.log(`✓ Prerendered ${routes.length} route(s) to static HTML`)
-} finally {
-  await browser.close()
-  server.close()
+  return subs
 }
+
+const routes = contentRoutes()
+let written = 0
+
+for (const route of routes) {
+  const out = path.join(dist, route.path, 'index.html')
+  const rel = path.relative(dist, out)
+  if (PROTECTED.includes(rel)) {
+    throw new Error(`prerender: ${rel} 은 보호 대상입니다. 라우트 경로를 확인하세요.`)
+  }
+
+  const seo =
+    route.kind === 'city'
+      ? seoForCity(route.city, route.lang)
+      : seoForAttraction(route.attraction, route.lang)
+
+  let html = template
+  for (const [label, re, replacement] of substitutions(seo)) {
+    // "바뀌었는지"가 아니라 "찾았는지"로 판정한다. 한국어 페이지의 lang="ko" 처럼
+    // 원본과 대체값이 같은 경우가 있어서, 결과 비교로는 멀쩡한 치환을 실패로 읽는다.
+    if (!re.test(html)) {
+      throw new Error(
+        `prerender: "${label}" 치환이 ${route.path} 에서 빗나갔습니다. ` +
+          'index.html 머리말이 바뀌었다면 scripts/prerender.mjs 도 함께 고쳐야 합니다.',
+      )
+    }
+    html = html.replace(re, replacement)
+  }
+
+  // 페이지별 구조화 데이터. index.html 의 TravelAgency 블록은 그대로 두고 덧붙인다.
+  // 한 줄로 — 들여쓴 JSON-LD 는 네이버 진단이 "구조화 데이터 없음"으로 읽는다.
+  const ld = JSON.stringify(seo.jsonLd).replace(/</g, '\\u003c')
+  html = html.replace(
+    '</head>',
+    `  <script type="application/ld+json">${ld}</script>\n  </head>`,
+  )
+
+  const markup = render(route.path)
+  const withBody = html.replace('<div id="root"></div>', `<div id="root">${markup}</div>`)
+  if (withBody === html) {
+    throw new Error('prerender: dist/index.html 에서 <div id="root"></div> 를 찾지 못했습니다.')
+  }
+
+  await mkdir(path.dirname(out), { recursive: true })
+  await writeFile(out, withBody, 'utf8')
+  written += 1
+  console.log(
+    `  ${route.path} → ${rel.replace(/\\/g, '/')} (${(withBody.length / 1024).toFixed(0)} KB)`,
+  )
+}
+
+console.log(`✓ Prerendered ${written} route(s) to static HTML`)

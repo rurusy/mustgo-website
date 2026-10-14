@@ -57,6 +57,8 @@ export function contentRoutes() {
         path: cityPath(lang, city.slug),
         lang,
         kind: 'city',
+        // 프리렌더가 이 객체로 head 서술자(seo.js)를 만든다 — 경로에서 다시 찾지 않도록.
+        city,
         alternates: pathAlternates('city', city.slug),
         lastmod: attractionsInCity(city.slug)[0]?.checkedOn ?? null,
       })
@@ -68,6 +70,7 @@ export function contentRoutes() {
         path: attractionPath(lang, a),
         lang,
         kind: 'attraction',
+        attraction: a,
         alternates: pathAlternates('attraction', a),
         lastmod: a.checkedOn,
       })
