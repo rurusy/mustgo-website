@@ -67,7 +67,7 @@ export default function CityPage({ city, lang = 'ko' }) {
         word-break 는 상속되므로 여기 한 번만 건다.
       */}
       <main className="break-keep">
-        <Section tone="light" pad="flush" className="pt-32 pb-12 lg:pt-36 lg:pb-16">
+        <Section tone="light" pad="flush" className="pt-32 pb-20 lg:pt-36 lg:pb-28">
           <nav aria-label="breadcrumb" className="mb-6">
             <ol className="flex items-center gap-2 text-xs text-gray-500">
               <li>
@@ -81,8 +81,14 @@ export default function CityPage({ city, lang = 'ko' }) {
               <li className="text-gray-700 font-medium">{t.name}</li>
             </ol>
           </nav>
-          <div className="grid lg:grid-cols-[minmax(0,1fr)_340px] gap-10 lg:gap-16 items-start">
-            <Fade className="max-w-3xl">
+          {/*
+            모바일에서는 세로 한 줄로 흐르되 견적 카드만 맨 뒤로 보낸다(order-last).
+            리드문과 카드가 첫 화면을 다 차지해서 도시 탭과 관광지 목록이 한참 아래로
+            밀렸기 때문이다. 데스크톱에서는 그리드 좌표를 직접 지정해 카드가 오른쪽
+            위로 돌아온다 — 소개와 목록은 왼쪽 열에 세로로 쌓인다.
+          */}
+          <div className="flex flex-col gap-10 lg:grid lg:grid-cols-[minmax(0,1fr)_340px] lg:gap-x-16 lg:gap-y-16 lg:items-start">
+            <Fade className="max-w-3xl lg:col-start-1 lg:row-start-1">
               {/* font-eng(Inter)는 영문 전용. 한국어에 씌우면 폴백 폰트로 떨어진다. */}
               <p
                 className={cn(
@@ -98,7 +104,10 @@ export default function CityPage({ city, lang = 'ko' }) {
               <p className="text-base lg:text-lg text-gray-600 leading-[1.8]">{t.lead}</p>
             </Fade>
 
-            <Fade delay={0.1}>
+            <Fade
+              delay={0.1}
+              className="order-last lg:order-none lg:col-start-2 lg:row-start-1"
+            >
               <Card>
                 <h2 className="text-lg font-bold text-gray-900 mb-3">{c.quote}</h2>
                 <p className="text-sm text-gray-600 leading-relaxed mb-6">{c.quoteLead}</p>
@@ -108,11 +117,10 @@ export default function CityPage({ city, lang = 'ko' }) {
                 <p className="mt-4 text-xs text-gray-400 text-center">{c.quoteNote}</p>
               </Card>
             </Fade>
-          </div>
-        </Section>
 
-        <Section tone="light" pad="flush" className="pb-20 lg:pb-28">
-          {/*
+            {/* 목록은 둘째 줄에서 두 열을 다 쓴다 — 카드가 왼쪽 열에 갇히면 폭이 좁아진다. */}
+            <div className="lg:col-start-1 lg:col-span-2 lg:row-start-2">
+              {/*
             도시 탭은 목록 제목과 같은 줄에 둔다. 이 버튼이 바꾸는 것은 페이지 전체가
             아니라 바로 아래 깔린 관광지 목록이라, 목록 위에 있어야 관계가 설명 없이
             읽힌다. 광고로 한 도시에 떨어진 방문자가 나머지 두 도시의 존재를 여기서
@@ -163,7 +171,9 @@ export default function CityPage({ city, lang = 'ko' }) {
                   font={lang === 'en' ? 'eng' : 'sans'}
                 />
               </Fade>
-            ))}
+              ))}
+              </div>
+            </div>
           </div>
         </Section>
 
