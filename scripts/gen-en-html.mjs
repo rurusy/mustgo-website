@@ -21,7 +21,7 @@ const distIndex = path.join(root, 'dist', 'index.html')
 const outDir = path.join(root, 'dist', 'en')
 const outFile = path.join(outDir, 'index.html')
 
-const BASE = 'https://mustgokorea.co.kr'
+const BASE = 'https://www.mustgokorea.co.kr'
 
 // Length budgets, both enforced by Naver's ADVoost diagnostic / SERP rendering:
 //   title       15–45 chars — outside that range it reports a 경고
