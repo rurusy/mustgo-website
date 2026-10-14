@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { Section, Fade, Button, BrandText } from '../ui'
-import { cityPath } from '../../data/attractions'
+import { cities, cityPath } from '../../data/attractions'
 import { AudienceCard } from '../marketing/AudienceCard'
 import { ImageCard } from '../marketing/ImageCard'
 
@@ -105,11 +105,14 @@ export function Inbound() {
           {/*
             관광지 허브로 들어가는 유일한 내부 링크. 새 페이지가 발견되는 경로가
             홈 → 도시 허브 → 관광지 상세이므로, 이 링크가 빠지면 sitemap 에만 있고
-            사이트 안에서는 고립된 페이지가 된다.
+            사이트 안에서는 고립된 페이지가 된다. 도시는 데이터에서 읽으므로
+            busan.js / jeju.js 를 추가한 것만으로 여기 버튼이 늘어난다.
           */}
-          <Button as={Link} to={cityPath('ko', 'seoul')} variant="blue">
-            서울 관광지 둘러보기
-          </Button>
+          {cities.map((city) => (
+            <Button key={city.slug} as={Link} to={cityPath('ko', city.slug)} variant="blue">
+              {city.ko.name} 관광지
+            </Button>
+          ))}
           <Button as="a" href="#contact" variant="outlineLight" font="eng">
             Plan Your VIP Experience →
           </Button>

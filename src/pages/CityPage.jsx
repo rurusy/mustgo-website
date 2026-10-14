@@ -7,7 +7,14 @@ import { Section, Button, Card, Fade } from '../components/ui'
 import { AttractionCard } from '../components/marketing/AttractionCard'
 import { useSeo } from '../hooks/useSeo'
 import { breadcrumbHome, listTitleFor, seoForCity } from '../data/seo'
-import { attractionPath, attractionsInCity, homePath, thumbFor } from '../data/attractions'
+import {
+  attractionPath,
+  attractionsInCity,
+  cities,
+  cityPath,
+  homePath,
+  thumbFor,
+} from '../data/attractions'
 
 // 도시 허브. 관광지 상세 페이지들의 입구이고, 홈에서 이 페이지로 링크가 들어온다.
 // 색인 경로가 홈 → 도시 허브 → 관광지 상세로 이어져야 새 페이지가 발견된다.
@@ -22,6 +29,7 @@ const COPY = {
     closingLead:
       '마음에 두신 곳을 알려주시면 동선과 차량, 식사까지 묶어 초안 일정과 견적을 만들어 드립니다. 정해진 상품을 고르는 방식이 아니라, 방문 목적과 일정에 맞춰 처음부터 설계합니다.',
     closingButton: '일정·견적 상담하기',
+    otherCities: '다른 도시 둘러보기',
   },
   en: {
     eyebrow: 'Travel in Korea',
@@ -33,6 +41,7 @@ const COPY = {
     closingLead:
       'Tell us which places interest you. We plan the route, the vehicles and the dining around them, then send a draft itinerary with a quote. Nothing is taken off a fixed package — the schedule is built around the purpose of the visit.',
     closingButton: 'Talk to a consultant',
+    otherCities: 'Other cities',
   },
 }
 
@@ -40,6 +49,7 @@ export default function CityPage({ city, lang = 'ko' }) {
   const t = city[lang]
   const c = COPY[lang]
   const list = attractionsInCity(city.slug)
+  const others = cities.filter((other) => other.slug !== city.slug)
 
   // head 는 빌드(프리렌더)와 브라우저가 같은 서술자를 쓴다 — src/data/seo.js
   useSeo(seoForCity(city, lang))
@@ -123,6 +133,29 @@ export default function CityPage({ city, lang = 'ko' }) {
           상단 견적 카드와 같은 곳으로 보내지만 문구는 겹치지 않게 둔다. 위는 바로
           요청하려는 사람을 받는 창구고, 여기는 관광지를 다 둘러본 뒤 읽는 마무리다.
         */}
+        {/*
+          도시 허브끼리 서로 연결해 둔다. 홈에서만 들어올 수 있으면 부산을 보던
+          방문자가 제주로 가려고 홈까지 되돌아가야 한다 — 크롤러도 같은 길을 돈다.
+        */}
+        {others.length > 0 && (
+          <Section tone="light" pad="flush" className="pb-20 lg:pb-28">
+            <h2 className="text-sm font-bold text-gray-500 mb-4">{c.otherCities}</h2>
+            <div className="flex flex-wrap gap-3">
+              {others.map((other) => (
+                <Button
+                  key={other.slug}
+                  as={Link}
+                  to={cityPath(lang, other.slug)}
+                  variant="pillFilter"
+                  size="pillSm"
+                >
+                  {other[lang].name}
+                </Button>
+              ))}
+            </div>
+          </Section>
+        )}
+
         <Section tone="charcoal" pad="tight">
           <Fade className="max-w-2xl">
             <h2 className="text-2xl lg:text-3xl font-bold tracking-tight text-white mb-4">

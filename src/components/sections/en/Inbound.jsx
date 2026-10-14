@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { Section, Fade, Button, BrandText } from '../../ui'
-import { cityPath } from '../../../data/attractions'
+import { cities, cityPath } from '../../../data/attractions'
 import { AudienceCard } from '../../marketing/AudienceCard'
 import { ImageCard } from '../../marketing/ImageCard'
 
@@ -98,10 +98,18 @@ export function Inbound() {
           Planning a VIP visit to Korea?<br className="sm:hidden" /> Talk to <BrandText />.
         </p>
         <div className="flex flex-wrap justify-center gap-4">
-          {/* 한국어 홈과 같은 자리. 영어 허브(/en/korea/seoul/)로 보낸다. */}
-          <Button as={Link} to={cityPath('en', 'seoul')} variant="blue" font="eng">
-            Explore Seoul Attractions
-          </Button>
+          {/* 한국어 홈과 같은 자리. 영어 허브(/en/korea/<city>/)로 보낸다. */}
+          {cities.map((city) => (
+            <Button
+              key={city.slug}
+              as={Link}
+              to={cityPath('en', city.slug)}
+              variant="blue"
+              font="eng"
+            >
+              Explore {city.en.name}
+            </Button>
+          ))}
           <Button as="a" href="#contact" variant="outlineLight" font="eng">
             Plan Your VIP Experience →
           </Button>

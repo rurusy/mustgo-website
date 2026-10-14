@@ -13,6 +13,8 @@
 // 생성하려면 경로가 언어 간에 대칭이어야 한다.
 
 import { seoul, seoulAttractions } from './cities/seoul.js'
+import { busan, busanAttractions } from './cities/busan.js'
+import { jeju, jejuAttractions } from './cities/jeju.js'
 
 export { SITE } from './site.js'
 
@@ -21,9 +23,9 @@ export const LANGS = ['ko', 'en']
 // 언어별 홈 경로 — 빵부스러기(breadcrumb)와 CTA 링크가 쓴다.
 export const homePath = (lang) => (lang === 'en' ? '/en' : '/')
 
-export const cities = [seoul]
+export const cities = [seoul, busan, jeju]
 
-export const attractions = [...seoulAttractions]
+export const attractions = [...seoulAttractions, ...busanAttractions, ...jejuAttractions]
 
 // 카드용 축소본 경로. 원본은 1620px 라서 430px 짜리 카드에 그대로 쓰면 허브 한 장에
 // 5.8MB 가 내려간다. scripts/make-thumbs.mjs 가 thumbs/ 에 800px 판을 만들어 둔다.

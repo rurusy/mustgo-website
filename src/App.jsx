@@ -130,7 +130,7 @@ export default function App() {
         {attractions.flatMap((attraction) =>
           LANGS.map((lang) => (
             <Route
-              key={`spot-${lang}-${attraction.slug}`}
+              key={`spot-${lang}-${attraction.city}-${attraction.slug}`}
               path={routePath(attractionPath(lang, attraction))}
               element={<AttractionPage attraction={attraction} lang={lang} />}
             />
