@@ -95,7 +95,21 @@ await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve))
 const { port } = server.address()
 
 const routes = contentRoutes()
-const browser = await puppeteer.launch({ headless: 'new' })
+// CI(베르셀) 빌드 컨테이너는 root 로 돌고 /dev/shm 이 매우 작다. 두 플래그가 없으면
+// 크롬이 아예 뜨지 않아 빌드가 통째로 실패한다 — 로컬에서는 넣어도 동작이 같다.
+let browser
+try {
+  browser = await puppeteer.launch({
+    headless: 'new',
+    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
+  })
+} catch (err) {
+  throw new Error(
+    `prerender: 헤드리스 크롬을 띄우지 못했습니다 (${err.message}). ` +
+      '빌드 환경에 puppeteer 의 크롬이 설치돼 있는지 확인하세요 — 설치 단계에서 ' +
+      'PUPPETEER_SKIP_DOWNLOAD 가 켜져 있으면 받아오지 않습니다.',
+  )
+}
 
 try {
   const page = await browser.newPage()
