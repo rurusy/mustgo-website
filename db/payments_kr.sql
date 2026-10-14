@@ -54,6 +54,7 @@ create index if not exists payments_kr_status_idx     on public.payments_kr (sta
 -- 2) RLS
 --   브라우저(anon)는 접근 불가. 결제 PII 는 관리자 계정만 SELECT.
 --   service_role(Edge Function)은 RLS 를 우회합니다.
+--   아래 허용 목록은 src/lib/supabase.js 의 ADMIN_EMAILS 와 같아야 합니다.
 alter table public.payments_kr enable row level security;
 
 grant select on public.payments_kr to authenticated;
@@ -62,4 +63,4 @@ grant all    on public.payments_kr to service_role;
 drop policy if exists "admin can read payments_kr" on public.payments_kr;
 create policy "admin can read payments_kr"
   on public.payments_kr for select to authenticated
-  using ((auth.jwt() ->> 'email') = 'wemustgo@mustgokorea.com');
+  using ((auth.jwt() ->> 'email') in ('wemustgo@mustgokorea.com', 'rurusy@gmail.com'));

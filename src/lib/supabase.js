@@ -114,9 +114,23 @@ export const supabase = isConfigured
     })
   : createStub()
 
-// 관리자 계정 이메일은 Supabase Authentication → Users 에 등록된 값과 일치해야 합니다.
-// 비밀번호는 코드에 두지 않고 로그인 화면에서 입력받아 Supabase Auth 가 검증합니다.
-export const ADMIN_EMAIL = 'wemustgo@mustgokorea.com'
+// 관리자 계정 이메일 목록. 로그인 화면이 이 목록으로 계정 선택 UI를 만들고,
+// 비밀번호 재설정 메일도 여기서 고른 주소로 발송합니다. 비밀번호는 코드에 두지 않고
+// 화면에서 입력받아 Supabase Auth 가 검증합니다.
+//
+// 주소를 추가할 때 세 곳을 함께 맞춰야 합니다:
+//   1. 이 목록
+//   2. Supabase Authentication → Users (계정이 실제로 있어야 함)
+//   3. db/payments.sql / db/payments_kr.sql 의 RLS 이메일 허용 목록
+// 2를 빠뜨리면 재설정 메일이 조용히 발송되지 않고(아래 참고), 3을 빠뜨리면 로그인은
+// 되지만 결제 내역만 빈 목록으로 뜹니다.
+//
+// 참고 — Supabase 는 등록되지 않은 주소로 재설정 메일을 요청해도 계정 존재 여부를
+// 숨기려고 성공 응답을 돌려줍니다. 에러가 없어도 메일이 오지 않을 수 있습니다.
+export const ADMIN_EMAILS = ['wemustgo@mustgokorea.com', 'rurusy@gmail.com']
+
+// 첫 항목이 주 계정 — 로그인 화면의 초기 선택값.
+export const ADMIN_EMAIL = ADMIN_EMAILS[0]
 
 // 재설정 메일이 되돌아올 주소. Supabase Authentication → URL Configuration 의
 // Redirect URLs 에 같은 값이 등록되어 있어야 링크가 동작합니다.

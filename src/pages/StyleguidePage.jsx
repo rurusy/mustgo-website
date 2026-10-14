@@ -6,6 +6,7 @@ import {
   FormLabel,
   Input,
   Textarea,
+  Select,
   Radio,
   Checkbox,
   IconBadge,
@@ -168,6 +169,14 @@ export default function StyleguidePage() {
             <div className="md:col-span-2">
               <FormLabel>문의 내용</FormLabel>
               <Textarea placeholder="자유롭게 남겨주세요." />
+            </div>
+            <div>
+              <FormLabel>문의 유형</FormLabel>
+              <Select defaultValue="corporate">
+                <option value="corporate">Corporate Travel</option>
+                <option value="inbound">Inbound Tour</option>
+                <option value="etc">기타 문의</option>
+              </Select>
             </div>
             <div className="md:col-span-2 space-y-3">
               <Radio name="demo" label="Corporate Travel" defaultChecked />

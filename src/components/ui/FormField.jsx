@@ -27,6 +27,14 @@ export function Textarea({ className, rows = 4, ...rest }) {
   return <textarea rows={rows} className={cn(fieldBase, 'resize-none', className)} {...rest} />
 }
 
+export function Select({ className, children, ...rest }) {
+  return (
+    <select className={cn(fieldBase, 'cursor-pointer pr-10', className)} {...rest}>
+      {children}
+    </select>
+  )
+}
+
 export function Radio({ name, value, label, defaultChecked, className, ...rest }) {
   return (
     <label className={cn('flex items-center cursor-pointer group', className)}>

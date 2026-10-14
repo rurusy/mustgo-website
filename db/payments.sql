@@ -30,6 +30,8 @@ create index if not exists payments_status_idx     on public.payments (status);
 --   브라우저(anon)는 접근 불가. 결제 PII 는 관리자 계정만 SELECT.
 --   using(true) 로 모든 authenticated 에게 열면 셀프가입 계정이 결제내역을 읽을 수
 --   있으므로, 관리자 이메일로 제한한다. service_role(Edge Function)은 RLS 를 우회.
+--   아래 허용 목록은 src/lib/supabase.js 의 ADMIN_EMAILS 와 같아야 한다 — 한쪽에만
+--   추가하면 로그인은 되는데 /admin/payments 가 빈 목록으로 뜬다.
 alter table public.payments enable row level security;
 
 grant select on public.payments to authenticated;
@@ -39,4 +41,4 @@ drop policy if exists "authenticated can read payments" on public.payments;
 drop policy if exists "admin can read payments" on public.payments;
 create policy "admin can read payments"
   on public.payments for select to authenticated
-  using ((auth.jwt() ->> 'email') = 'wemustgo@mustgokorea.com');
+  using ((auth.jwt() ->> 'email') in ('wemustgo@mustgokorea.com', 'rurusy@gmail.com'));
