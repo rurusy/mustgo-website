@@ -18,6 +18,7 @@ import { FeatureCard } from '../components/marketing/FeatureCard'
 import { ServiceCard } from '../components/marketing/ServiceCard'
 import { AudienceCard } from '../components/marketing/AudienceCard'
 import { ImageCard } from '../components/marketing/ImageCard'
+import { AttractionCard } from '../components/marketing/AttractionCard'
 import { ProcessSteps } from '../components/marketing/ProcessSteps'
 import { ContactInfoItem } from '../components/marketing/ContactInfoItem'
 import { GlobeIcon, StarIcon, ClockIcon, PhoneIcon, MailIcon, PinIcon } from '../components/icons.jsx'
@@ -291,6 +292,24 @@ export default function StyleguidePage() {
                 alt="MICE"
                 eyebrow="S4. MICE Operation"
                 description="컨퍼런스, 인센티브, 전시회, 갈라 디너"
+              />
+            </div>
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <AttractionCard
+                to="/korea/seoul/gyeongbokgung/"
+                image="/photos/attractions/gyeongbokgung.jpg"
+                alt="경복궁 근정전과 월대"
+                name="경복궁"
+                tagline="조선 왕조의 정궁, 서울 의전 투어의 출발점"
+              />
+              <AttractionCard
+                to="/en/korea/seoul/gyeongbokgung/"
+                image="/photos/attractions/gyeongbokgung.jpg"
+                alt="Geunjeongjeon Hall at Gyeongbokgung Palace"
+                name="Gyeongbokgung Palace"
+                tagline="The main palace of the Joseon dynasty — where a Seoul itinerary begins"
+                font="eng"
               />
             </div>
 

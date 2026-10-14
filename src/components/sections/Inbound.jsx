@@ -1,4 +1,6 @@
+import { Link } from 'react-router-dom'
 import { Section, Fade, Button, BrandText } from '../ui'
+import { cityPath } from '../../data/attractions'
 import { AudienceCard } from '../marketing/AudienceCard'
 import { ImageCard } from '../marketing/ImageCard'
 
@@ -99,9 +101,19 @@ export function Inbound() {
         <p className="text-gray-300 mb-6 text-lg">
           해외 VIP의 한국 방문,<br className="sm:hidden" /> <BrandText />와 상담하세요.
         </p>
-        <Button as="a" href="#contact" variant="outlineLight" font="eng">
-          Plan Your VIP Experience →
-        </Button>
+        <div className="flex flex-wrap justify-center gap-4">
+          {/*
+            관광지 허브로 들어가는 유일한 내부 링크. 새 페이지가 발견되는 경로가
+            홈 → 도시 허브 → 관광지 상세이므로, 이 링크가 빠지면 sitemap 에만 있고
+            사이트 안에서는 고립된 페이지가 된다.
+          */}
+          <Button as={Link} to={cityPath('ko', 'seoul')} variant="blue">
+            서울 관광지 둘러보기
+          </Button>
+          <Button as="a" href="#contact" variant="outlineLight" font="eng">
+            Plan Your VIP Experience →
+          </Button>
+        </div>
       </Fade>
     </Section>
   )

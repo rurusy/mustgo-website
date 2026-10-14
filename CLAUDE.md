@@ -25,7 +25,7 @@ format-on-save (see "index.html head is single-line on purpose" below).
 
 ### Routing
 
-`src/main.jsx` wraps `App` in `<BrowserRouter>`. `src/App.jsx` defines 16 routes in four groups:
+`src/main.jsx` wraps `App` in `<BrowserRouter>`. `src/App.jsx` defines 16 fixed routes in four groups, plus the inbound-content routes it generates from `src/data/attractions.js` (see **Inbound content pages** below). `ScrollToTop` there resets the scroll on every PUSH navigation — React Router keeps the old offset otherwise, and going from the long homepage to a short page lands the visitor near its footer; a `#hash` destination scrolls to that section minus the sticky header's height instead, and POP (back/forward) is left to the browser.
 
 **Marketing** — the only pages meant to be indexed.
 - `/` → `HomePage` — Korean marketing site (one scrollable page composed of section components)
@@ -42,9 +42,16 @@ format-on-save (see "index.html head is single-line on purpose" below).
 
 **Admin** — `/admin/login`, `/admin` (문의 내역), `/admin/payments` (결제 내역), `/admin/reset-password` (비밀번호 재설정)
 
+**Inbound content pages** — the 방한 VIP 의전 투어 expansion. Not hand-written routes: `App.jsx` builds them from `src/data/attractions.js`, which composes `src/data/cities/<city>.js`.
+
+- `/korea/<city>/` and `/en/korea/<city>/` → `CityPage`, the hub listing that city's attractions
+- `/korea/<city>/<slug>/` and `/en/korea/<city>/<slug>/` → `AttractionPage`
+
+Korean lives at the root and English under `/en`, matching the existing `/` and `/en` split, and both languages share one slug so `hreflang` pairs and route generation stay mechanical. The same `contentRoutes()` feeds the router, the prerenderer and the sitemap — **adding a place means adding one entry to the city file and nothing else**. `useSeo` (`src/hooks/useSeo.js`) sets each page's title, description, canonical, hreflang, OG and JSON-LD at runtime, then stamps `html[data-seo="ready"]`; `scripts/prerender.mjs` waits for that attribute before snapshotting, so the static HTML always carries a filled-in head. It also forces every `.ds-fade` to `is-visible` first — otherwise the body copy ships at `opacity: 0` and reads as hidden content.
+
 Admin accounts are listed in `ADMIN_EMAILS` (`src/lib/supabase.js`) — the login screen renders a picker over that list and uses the chosen address for both sign-in and the reset mail; `ADMIN_EMAIL` is just the first entry, i.e. the default selection. An address has to exist in **three** places to work: that list, Supabase Authentication → Users, and the email allowlist in the payments RLS policies (`db/payments.sql`, `db/payments_kr.sql`). Miss Supabase and `resetPasswordForEmail` returns success while sending nothing (it hides whether an account exists); miss the RLS allowlist and the account signs in fine but `/admin/payments` renders empty. Passwords live only in Supabase Auth, never in the repo. `/admin/reset-password` is where the recovery mail lands — see `docs/admin-password-reset.md` for the Supabase-side setup it depends on. Supabase strips the `#access_token=…&type=recovery` fragment during `createClient`, so `supabase.js` snapshots it *before* the client is built and hands it over through `takeRecoveryParams()`; `RecoveryRedirect` in `App.jsx` forwards a recovery landing on any other route (a dashboard-sent mail lands on the Site URL, i.e. `/`) to the reset page. Failures on both admin auth screens are rendered through `lib/authErrors.js`, which always prints Supabase's raw `error_code` — collapsing them into one message is what made a 2026-08 lockout take a day to diagnose.
 
-Only `/` and `/en` carry head metadata in the served HTML — `index.html` and the `dist/en/index.html` the build emits. Every other page sets its own `document.title` and appends a `<meta name="robots">` from a `useEffect`: `noindex,follow` for payment and legal pages, `noindex,nofollow` for admin and checklist. `/styleguide` has no such effect and is blocked in `public/robots.txt` instead.
+Only `/`, `/en` and the prerendered inbound-content pages carry head metadata in the served HTML — `index.html`, the `dist/en/index.html` the build emits, and whatever `scripts/prerender.mjs` snapshots. Every other page sets its own `document.title` and appends a `<meta name="robots">` from a `useEffect`: `noindex,follow` for payment and legal pages, `noindex,nofollow` for admin and checklist. `/styleguide` has no such effect and is blocked in `public/robots.txt` instead.
 
 When you add a new component, add it to `StyleguidePage.jsx` so designers can review it in isolation. When you add a new page, copy the `useEffect` title + robots pattern from an existing one — there's no head-management library, and a page without it inherits the homepage's title and stays indexable.
 
@@ -110,11 +117,15 @@ Wrapping those tags drops the grade back to C with nothing visibly broken. Edit 
 
 ### Build pipeline
 
-`npm run build` is three steps; both post-steps fail loudly rather than ship something subtly wrong.
+`npm run build` is five steps; every post-step fails loudly rather than ship something subtly wrong.
 
 1. `vite build` → `dist/`
 2. `scripts/inline-css.mjs` — inlines Vite's CSS bundle into `dist/index.html` as a `<style>` block, so the page ships with no render-blocking stylesheet
 3. `scripts/gen-en-html.mjs` — writes `dist/en/index.html`, a copy of the built index with English `<head>` metadata, so social scrapers (which don't run JS) see English OG tags at `/en`
+4. `scripts/prerender.mjs` — opens every content route in headless Chrome and writes the rendered DOM to `dist/<route>/index.html`
+5. `scripts/gen-sitemap.mjs` — writes `dist/sitemap.xml` from the same route list (there is no `public/sitemap.xml` any more)
+
+`scripts/make-thumbs.mjs` is **not** part of the build. Run it by hand after adding photos — it writes 800px card versions into `public/photos/attractions/thumbs/` (the 1620px originals are four times what a card needs, and fifteen of them is 5.8 MB on one page).
 
 Step 3 runs after step 2 so `/en` inherits the inlined CSS. `EN.title` there must stay **15–45 characters** (the diagnostic checks title length) and match `document.title` in `src/pages/EnHomePage.jsx`, which re-applies it once React Router mounts.
 
