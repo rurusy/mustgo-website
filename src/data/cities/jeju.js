@@ -134,7 +134,7 @@ export const jejuAttractions = [
       body: [
         'Udo lies fifteen minutes by ferry from Seongsan harbour. White coral sand beaches, the low headland of Udobong and peanut ice cream are what the island is known for. It feels like a second Jeju inside the first, and it lands best on an itinerary with a day to spare.',
         'The constraints are real. Sailings are cancelled often — moderate wind is enough — so any day with Udo on it carries an alternative. And between the crossings and getting around the island, the stop takes a full half day.',
-        'Vehicle rules are the strictest of anywhere we send guests. Chartered coaches cannot be carried to the island at all: the coach waits at Seongsan and only passengers board. Vehicles of sixteen seats or fewer may be carried. On the island itself the party uses the circular bus. For a group we explain this structure before building the day.',
+        'Vehicle rules here are the strictest anywhere we take guests. Chartered coaches cannot be carried to the island at all: the coach waits at Seongsan and only passengers board. Vehicles of sixteen seats or fewer may be carried. On the island itself the party uses the circular bus. For a group we explain this structure before building the day.',
       ],
       facts: [
         ['Ferry', 'Roughly 07:30 – 17:00 · frequently cancelled for weather'],
@@ -195,7 +195,7 @@ export const jejuAttractions = [
       imageAlt: 'The lighthouse on the Seopjikoji headland',
       body: [
         'Seopjikoji runs out into the sea as a long headland. A lighthouse stands at the end, and turning back gives the whole of Seongsan Ilchulbong across the water. Paired with the climb, the two stops show the same formation from inside and from outside.',
-        'The path toward the red cone is gentle, so there is almost no physical demand. In spring the rape flowers come in yellow across the fields, and the buildings along the shoreline — familiar from Korean television — photograph well.',
+        'The path toward the red volcanic cone behind it is gentle, so there is almost no physical demand. In spring the rape flowers turn the fields yellow, and the buildings along the shoreline — familiar from Korean television — photograph well.',
         'Entry is free and only parking is charged. Coaches can use the car park, though it fills in peak season, so we favour early morning. It is ten minutes by road from Seongsan Ilchulbong, which lets one transfer cover both.',
       ],
       facts: [
@@ -258,7 +258,7 @@ export const jejuAttractions = [
       body: [
         'Manjanggul runs roughly 7.4 kilometres underground. The tunnel is the channel the lava left behind, and the walls still carry the lines where it flowed at different heights. It is a core component of the Jeju Volcanic Island and Lava Tubes World Heritage listing.',
         'It reopened on 30 May 2026 after refurbishment. The public section is decked, so the walk is effectively level, and an hour covers the round trip. In a Jeju itinerary it is among the least demanding ways to see the geology.',
-        'One thing to brief in advance: the cave holds 11–18°C year round and feels cold in midsummer. Guests arriving in short sleeves always say so, and a jacket is worth carrying even in August.',
+        'One thing to brief in advance: the cave holds 11–18°C year round and feels cold in midsummer. Guests who arrive in short sleeves always notice, and a jacket is worth carrying even in August.',
       ],
       facts: [
         ['Opening hours', '09:00–18:00 (confirm locally)'],
@@ -318,7 +318,7 @@ export const jejuAttractions = [
         'A protected forest of 500–800 year old nutmeg yews. Trail length, timing and why rain suits it.',
       imageAlt: 'The red volcanic path through Bijarim Forest',
       body: [
-        'Bijarim holds some 2,800 nutmeg yews between five and eight hundred years old. A single-species stand of that age and size is rare enough that the forest is designated a natural monument. The air inside is noticeably cooler than the air outside it.',
+        'Bijarim holds some 2,800 nutmeg yews between five and eight hundred years old. A single-species stand of that age and size is rare enough that the forest is designated a natural monument. The air inside is noticeably cooler than outside.',
         'The paths are laid with red volcanic scoria. The sound and the colour underfoot set it apart from other Jeju woodland, and the 2.2-kilometre circuit is gentle enough to walk in an hour. It asks almost nothing physically, which makes it safe to propose for any age.',
         'Rain improves it. The canopy takes most of the water and the wet scoria deepens in colour, which makes this our first choice when weather cancels something outdoors. Parking is free and takes coaches.',
       ],
@@ -330,7 +330,7 @@ export const jejuAttractions = [
         ['Vehicle access — van', 'Same car park'],
       ],
       planning: [
-        'Our first substitute in rain — the canopy shelters the path and the forest reads better wet.',
+        'Our first substitute in rain — the canopy shelters the path and the forest looks better wet.',
         'The gentle circuit makes it comfortable for older guests.',
         'Close to Manjanggul, so the two pair on an eastern route.',
         'Cool inside even in summer, which suits a midday slot.',
@@ -381,7 +381,7 @@ export const jejuAttractions = [
       imageAlt: 'The emerald water at Hamdeok Beach',
       body: [
         'Hamdeok lies a short drive from Jeju City. The water is shallow and the sand pale, which turns the sea close to emerald, and a low hill called Seowubong rises at one end with a walking path over it.',
-        'Proximity to the airport is what makes it useful. It fits the hour or two before hotel check-in on arrival day, or before the flight on the last day. Beaches that work in short pieces are rarer than they sound.',
+        'Proximity to the airport is what makes it useful. It fits the hour or two before hotel check-in on arrival day, or before the flight on the last day. Not many beaches work in so short a visit.',
         'The swimming season runs from late June to late August; outside it the stop becomes a walk and a photograph. The western car park fills in peak season, so with a van we prefer a brief halt in front of the beachfront cafés.',
       ],
       facts: [
@@ -504,7 +504,7 @@ export const jejuAttractions = [
         'The subtropical garden with lava caves, and the beach opposite. Timing and vehicle access.',
       imageAlt: 'The palm avenue at Hallim Park',
       body: [
-        'Hallim Park gathers a subtropical botanical garden, lava caves and a folk village inside one boundary. The route walks a palm avenue, drops into a cave and comes back out into the garden, which compresses several faces of Jeju into one stop. A different flower festival runs each season.',
+        'Hallim Park gathers a subtropical botanical garden, lava caves and a folk village inside one boundary. The visit runs along a palm avenue, drops into a cave and comes back out into the garden, which compresses several faces of Jeju into one stop. A different flower festival runs each season.',
         'Hyeopjae Beach lies directly across the road. Shallow water over pale sand turns the sea jade green, and the islet of Biyangdo sits offshore as a backdrop. Park and beach together make a natural half day.',
         'The park alone takes about two hours. It is large and there is a lot in it, so a short allocation turns the visit into a march. Coach parking is available, and vans find it easy to stop in front of the beachfront cafés at Hyeopjae.',
       ],
@@ -566,9 +566,9 @@ export const jejuAttractions = [
         'The tea museum and café among the green tea fields. Busy hours, vehicle access and where it fits.',
       imageAlt: 'The green tea fields at Osulloc',
       body: [
-        'Osulloc sits in the middle of a tea plantation on the gentle hills of western Jeju, part museum and part café. The exhibition covers the history and the processing of tea, but where guests actually spend their time is the café and the fields outside it.',
+        'Osulloc sits in the middle of a tea plantation on the gentle hills of western Jeju, part museum and part café. The exhibition covers the history and the processing of tea, but guests actually spend their time in the café and the fields outside.',
         'Green tea ice cream and roll cake are what the place is known for. The rhythm — photographs among the rows, then dessert — makes it a good place to breathe between formal engagements. There is no admission charge, which also helps with a group.',
-        'Timing matters. Weekend afternoons fill the café to the point where seating is difficult. We recommend the morning, and for a group we insist on it. The free car park is large and access is easy.',
+        'Timing matters. Weekend afternoons fill the café to the point where seating is difficult. We recommend the morning, and for a group we plan it that way. The free car park is large and access is easy.',
       ],
       facts: [
         ['Opening hours', '09:00–18:00 / 19:00 seasonally, daily'],
@@ -643,7 +643,7 @@ export const jejuAttractions = [
         'Tide and swell close the path often, so we confirm access on the morning itself.',
         'When it is closed we move to the Songaksan trail nearby — same area, no lost driving.',
         'Parts of the path are slippery; we advise suitable shoes in advance.',
-        'In spring the rape flower fields below Sanbangsan open alongside it, which suits photography.',
+        'In spring the rape flower fields below Sanbangsan come into bloom at the same time, which suits photography.',
       ],
       cta: 'Request a custom quote for this itinerary',
     },
@@ -752,8 +752,8 @@ export const jejuAttractions = [
         'The waterfall and subtropical gorge in Seogwipo. The 2026 lighting, hours and access conditions.',
       imageAlt: 'Cheonjiyeon Falls',
       body: [
-        'Cheonjiyeon falls twenty-two metres within walking distance of central Seogwipo. The path from the car park follows a gorge of subtropical forest on level ground, and the walk through it is part of the visit.',
-        'New lighting installed in 2026 keeps the site open until 22:00. Evenings on Jeju otherwise run short of options once the light goes, and this is one of very few outdoor stops that works after dinner. Lit, the falls read nothing like they do by day.',
+        'Cheonjiyeon drops twenty-two metres, within walking distance of central Seogwipo. The path from the car park follows a gorge of subtropical forest on level ground, and the walk through it is part of the visit.',
+        'New lighting installed in 2026 keeps the site open until 22:00. Evenings on Jeju otherwise run short of options once the light goes, and this is one of very few outdoor stops that works after dinner. Lit, the falls look nothing like they do by day.',
         'The path is flat and the round trip takes forty minutes to an hour. Parking is free and takes coaches. Paired with Jusangjeolli it completes a Seogwipo half day.',
       ],
       facts: [
@@ -938,9 +938,9 @@ export const jejuAttractions = [
         'The best-known volcanic cone in western Jeju. Climb time, when the silver grass peaks, and parking.',
       imageAlt: 'Silver grass covering Saebyeol Oreum',
       body: [
-        'Oreum are the small volcanic cones scattered across the flanks of Hallasan. Jeju has around 360 of them, and Saebyeol is the one most visited in the west — a ridge that curves upward gently enough to look drawn.',
+        'Oreum are the small volcanic cones scattered across the flanks of Hallasan. Jeju has around 360 of them, and Saebyeol is the one most visited in the west — a ridge curving upward gently enough to look like a drawn line.',
         'An hour covers the climb and the return. The slope is open the whole way, and from the top Hallasan stands on one side and the western sea on the other. There is no better place to explain how the island is put together.',
-        'Mid-October to November is the peak. Silver grass covers the hill and lies one way in the wind, and only in those weeks. The car park is large and access is easy, but there is no shade at all, so midday in high summer is best avoided.',
+        'Mid-October to November is the peak. Silver grass covers the hill and lies one way in the wind — a few weeks only. The car park is large and access is easy, but there is no shade at all, so midday in high summer is best avoided.',
       ],
       facts: [
         ['Opening hours', 'Always open'],

@@ -24,7 +24,7 @@ export const busan = {
     title: 'Busan Private VIP Tours | Mustgo',
     description:
       'Busan attractions for global VIP visitors — opening hours, admission, coach access and private tour planning notes.',
-    lead: 'A port city where the mountains meet the sea inside the city limits. The high-rise skyline of Haeundae and Gwangalli, the hillside villages of Gamcheon and Huinnyeoul, and the fish market at Jagalchi all sit within thirty minutes of one another — three entirely different cities in a single day.',
+    lead: 'A port city where the mountains meet the sea inside the city limits. The high-rise skyline of Haeundae and Gwangalli, the hillside villages of Gamcheon and Huinnyeoul, and the fish market at Jagalchi all sit within thirty minutes of one another — three entirely different faces of the city in a single day.',
   },
 }
 
@@ -71,7 +71,7 @@ export const busanAttractions = [
         "Korea's best-known city beach. What each season brings, set-down conditions and private tour planning notes.",
       imageAlt: 'Haeundae Beach with the Marine City skyline behind it',
       body: [
-        'Haeundae is a kilometre and a half of sand with hotels and residential towers standing directly behind it. From the beach, one direction is open sea and the other is a skyline. Few beaches put the two that close together, which is why this is where a Busan itinerary usually forms its first impression.',
+        'Haeundae is a kilometre and a half of sand with hotels and residential towers standing directly behind it. From the beach, one direction is open sea and the other is a skyline. Few beaches put the two that close together, which is why a Busan itinerary usually takes its first impression here.',
         'The season changes the place entirely. A sand festival runs in May, the swimming season is late June to mid-September, and in winter a light festival covers the beachfront. At the height of summer it is crowded, so for a protocol itinerary we suggest early morning or the hour before sunset.',
         'Vehicles are the constraint. There is no dedicated beach car park: coaches set down along the hotel strip on Haeundae Beach Road and vans use hotel or public parking. If the party is staying in Haeundae, walking is simply faster than driving. The food lanes of Gunam-ro begin where the promenade ends.',
       ],
@@ -83,7 +83,7 @@ export const busanAttractions = [
         ['Vehicle access — van', 'Hotel or public parking'],
       ],
       planning: [
-        'If the party is staying in Haeundae we walk — with no dedicated car park the vehicle only adds steps.',
+        'If the party is staying in Haeundae we walk — with no dedicated car park the vehicle only gets in the way.',
         'In peak summer we schedule early morning or sunset to avoid the crowds.',
         'Where the dates allow, we line the visit up with the May sand festival or the winter light festival.',
         'The Gunam-ro food lanes follow directly from the promenade, with no transfer.',
@@ -134,8 +134,8 @@ export const busanAttractions = [
       imageAlt: 'Nurimaru APEC House on Dongbaekseom Island',
       body: [
         'Nurimaru APEC House is where the 2005 APEC summit actually took place. The building renders a traditional Korean pavilion in modern materials, and the conference room where the heads of state sat is open to visitors. For an official delegation it reads less as a sight than as a diplomatic room worth standing in.',
-        'Getting there is half of it. Dongbaekseom is an island joined to the mainland, and the deck that runs around its shoreline puts Gwangan Bridge and the towers of Marine City in a single frame. An hour covers the full circuit.',
-        'Check the closing day. Nurimaru shuts on the first Monday of each month and opens 09:00 to 18:00. Vehicles set down at the island entrance in front of the Westin, and vans use the public car park on the island.',
+        'Half of it is the walk in. Dongbaekseom is an island joined to the mainland, and the deck that runs around its shoreline puts Gwangan Bridge and the towers of Marine City in a single frame. An hour covers the full circuit.',
+        'The closing day is worth noting: Nurimaru shuts on the first Monday of each month and opens 09:00 to 18:00. Vehicles set down at the island entrance in front of the Westin, and vans use the public car park on the island.',
       ],
       facts: [
         ['Opening hours', 'Nurimaru 09:00–18:00 · shoreline deck always open'],
@@ -196,8 +196,8 @@ export const busanAttractions = [
       imageAlt: 'The Blue Line Park beach train running along the Busan coast',
       body: [
         'Blue Line Park turned a closed railway line into a tourist route. From Mipo through Cheongsapo to Songjeong, the track runs so close to the water that the window is almost all horizon. It is the least strenuous way to see the Busan coast.',
-        'There are two ways to ride. The beach train seats face the sea and allow hop-off stops along the way, which suits a group; the sky capsules are four-seat pods on an elevated rail, which suits a family. We normally put the main party on the train and accompanying family in the capsules.',
-        'Two things to know in advance. High wind suspends service. And the only coach parking is at Songjeong station, where the free bays number eight — a group needs that confirmed before departure. Boarding at Mipo, vans use nearby paid parking.',
+        'There are two ways to ride. The beach train’s seats face the sea and the ticket allows hop-off stops along the way, which suits a group; the sky capsules are four-seat pods on an elevated rail, which suits a family. We normally put the main party on the train and accompanying family in the capsules.',
+        'Two things to know in advance. High wind suspends service. And the only coach parking is at Songjeong station, where there are eight free bays — a group needs that confirmed before departure. If the party boards at Mipo, vans use nearby paid parking.',
       ],
       facts: [
         ['Operating', 'Seasonal timetable · suspended in high wind'],
@@ -334,7 +334,7 @@ export const busanAttractions = [
         'Our first substitute when rain takes out a beach stop.',
         'Going up around sunset covers both the daylight view and the lit city.',
         'Tall limousine vans may be refused at the underground car park, so we check once the vehicle is fixed.',
-        'At KRW 27,000 per person it is a visible cost and appears as its own line on the quote.',
+        'At KRW 27,000 per person it is a significant line item, which we show separately on the quote.',
       ],
       cta: 'Request a custom quote for this itinerary',
     },
@@ -383,7 +383,7 @@ export const busanAttractions = [
       body: [
         'Gwangalli faces Gwangan Bridge head-on. After dark the bridge lights up and the reflection stretches across the water. When one image has to stand for Busan at night, this is usually it.',
         'The evening is its hour. A drone light show runs over the beach at weekends, and in November the city fireworks festival takes this stretch of water as its stage. Cafés and raw-fish restaurants line the promenade, so dinner can happen without moving the vehicle.',
-        'Stopping on the beach road is difficult. We therefore split Gwangalli into a place to walk and a place to drive through: the party sets down near the Suyeong-gu public car park, and the route crosses Gwangan Bridge itself so the view from the deck becomes part of the itinerary. From up there the night reads differently than it does from the sand.',
+        'Stopping on the beach road is difficult. We therefore split Gwangalli into a place to walk and a place to drive through: the party sets down near the Suyeong-gu public car park, and the route crosses Gwangan Bridge itself so the view from the deck becomes part of the itinerary. From up there the night looks different from the view off the sand.',
       ],
       facts: [
         ['Opening hours', 'Always open'],
@@ -443,7 +443,7 @@ export const busanAttractions = [
         'The glass skywalk on a 35-metre cliff and the Igidae coastal path. Coach bays and wet-weather closure.',
       imageAlt: 'The Oryukdo islets off the Busan coast',
       body: [
-        'Oryukdo Skywalk pushes a horseshoe of glass floor out from a cliff 35 metres above the sea. The waves breaking on the rocks are visible straight down, and there is always one guest who needs a moment before stepping on. Offshore lie the islets that appear as five or six depending on the tide — which is what their name says.',
+        'Oryukdo Skywalk pushes a horseshoe of glass floor out from a cliff 35 metres above the sea. The waves breaking on the rocks are visible straight down, and there is always one guest who needs a moment before stepping on. Offshore lie the islets that appear as five or six depending on the tide — and that count is what their name means.',
         'Adding the Igidae coastal path changes the character of the stop. The route along the cliffs looks back across the water to Gwangan Bridge and the Haeundae towers, and in late March the slope fills with daffodils. An hour covers the skywalk; an hour and a half includes the walk.',
         'Vehicle conditions here are good: seven coach bays at Oryukdo and eighteen at Igidae make group access straightforward. The skywalk does close in rain, so on a wet forecast we carry an alternative.',
       ],
@@ -505,8 +505,8 @@ export const busanAttractions = [
         'The terraced hillside village. Permitted visiting hours, vehicle restrictions and the etiquette we brief.',
       imageAlt: 'Terraced pastel houses in Gamcheon Culture Village',
       body: [
-        'Gamcheon began as a settlement built by refugees on a hillside during the Korean War. The houses stack in terraces, each painted a different colour. An arts programme arrived in 2009 and left works through the lanes, and it is now the most photographed place in Busan.',
-        'It is also, still, a neighbourhood where people live. The city designated it a specially managed area and limits visiting to 09:00–18:00. The lanes are narrow and windows open straight onto them, so keeping voices down and not aiming cameras into houses is simply expected.',
+        'Gamcheon began as a settlement built by refugees on a hillside during the Korean War. The houses stack in terraces, each painted a different colour. An arts programme arrived in 2009 and left artworks through the lanes, and it is now the most photographed place in Busan.',
+        'It is also a neighbourhood where people still live. The city designated it a specially managed area and limits visiting to 09:00–18:00. The lanes are narrow and windows open straight onto them, so keeping voices down and not aiming cameras into houses is simply expected.',
         'Vehicles cannot enter the inner roads. Both coaches and vans set down at the entrance, and the visit climbs and descends on foot. It is a walking stop, so where older guests are travelling we keep to the viewpoint section.',
       ],
       facts: [
@@ -567,8 +567,8 @@ export const busanAttractions = [
         "Busan's old downtown: Jagalchi fish market, Gukje Market and BIFF Square on foot. Hours, set-down and tasting notes.",
       imageAlt: 'The Jagalchi fish market building on the Busan waterfront',
       body: [
-        'Nampo-dong is the old centre of Busan. Jagalchi, on the water, is the largest fish market in Korea; one block inland, Gukje Market preserves the trade that grew up among refugees after the war. BIFF Square runs between them, lined with the stalls selling seed-filled hotteok. All three connect on foot.',
-        'The way Jagalchi works tends to stay with international guests. You choose a live fish downstairs and the restaurant upstairs prepares it immediately. The choosing is the experience, and it opens up considerably with an interpreter present.',
+        'Nampo-dong is the old centre of Busan. Jagalchi, on the water, is the largest fish market in Korea; one block inland, Gukje Market preserves the trade that grew up among refugees after the war. BIFF Square runs between them, lined with stalls selling seed-filled hotteok. All three connect on foot.',
+        'The way Jagalchi works is what international guests remember. A guest chooses a live fish downstairs and the restaurant upstairs prepares it straight away. The choosing is the experience, and it opens up considerably with an interpreter present.',
         'Coaches set down on Chungmu-daero in front of the fish market; vans use nearby car parks such as the Lotte department store in Gwangbok. The aisles are narrow and wet in places, so a larger party moves in smaller groups.',
       ],
       facts: [
@@ -629,7 +629,7 @@ export const busanAttractions = [
         'The hill park above Nampo-dong and the 120-metre tower. Hours, tickets and the low-effort way up.',
       imageAlt: 'Busan Tower rising from Yongdusan Park',
       body: [
-        'Yongdusan Park sits on a hill in the middle of Nampo-dong, with the 120-metre Busan Tower on top. The observation deck looks down on the harbour, the Yeongdo bridge and the ships working their way out to sea. Placed after a walk through the markets, it lets the party see from above the streets they have just crossed.',
+        'Yongdusan Park sits on a hill in the middle of Nampo-dong, with the 120-metre Busan Tower on top. The observation deck looks down on the harbour, the Yeongdo bridge and the ships working their way out to sea. Placed after a walk through the markets, it shows the party from above the streets they have just walked.',
         'The deck also runs a media art exhibition. It stays open until 22:00 and operates daily, so it fits after dinner and imposes no date constraints.',
         'The hill sounds like effort, but an escalator runs up from Gwangbok-ro and removes the climb. Coaches set down in Nampo-dong and the party rides up; vans can drive to the public car park at the top of the park, which is noticeably easier where older guests are travelling.',
       ],
@@ -691,7 +691,7 @@ export const busanAttractions = [
         'The cliffside village on Yeongdo. Why a van is required, plus walking route and visiting etiquette.',
       imageAlt: 'White houses above the sea cliffs at Huinnyeoul',
       body: [
-        'Huinnyeoul is a row of white houses along the cliff edge on Yeongdo island. The path between the houses and the drop looks straight down into the harbour, with ships at anchor in the outer port beyond. A film shot here brought the visitors.',
+        'Huinnyeoul is a row of white houses along the cliff edge on Yeongdo island. The path between the houses and the drop looks straight down into the harbour, with ships at anchor in the outer port beyond. A film shot here is what brought the visitors.',
         'The coastal path and the short sea tunnel are what people photograph. Coming out of the tunnel the sea opens all at once — a short walk that still leaves an image. An hour is enough.',
         'Vehicles decide this stop. Coaches cannot realistically stop on the lanes or on Jeollyeong-ro, so we recommend running the day in a van even for a group. Vans halt briefly on Jeollyeong-ro or use the public car park. As at Gamcheon, people live here: no evening visits, and the party is briefed to keep quiet.',
       ],
@@ -877,7 +877,7 @@ export const busanAttractions = [
         'The outdoor theme park in the Osiria resort complex. Hours, timing and how we use it for family days.',
       imageAlt: 'Lorry Castle at Lotte World Adventure Busan',
       body: [
-        'Lotte World Adventure Busan sits in the Osiria resort complex in Gijang, built as an outdoor park on a fairy-tale theme. Unlike the mostly indoor park in Seoul it spreads across open ground, which gives it space and photographs well.',
+        'Lotte World Adventure Busan sits in the Osiria resort complex in Gijang, built as an outdoor park on a fairy-tale theme. Unlike the mostly indoor park in Seoul it spreads across open ground, which gives it room, and it photographs well.',
         'On protocol itineraries we use it for accompanying family. While an executive is in meetings or on a site inspection, a spouse and children often need somewhere to spend the day, and few places fill four to five hours without a transfer. An outlet mall and a coastal walk are close by for a break.',
         'The one caution is that it is outdoors. Rain or a cold snap can limit operation, so we hold an indoor alternative — X the SKY or the outlet — against the forecast. Vehicles use the resort car park; coach bays need confirming in advance.',
       ],
@@ -951,10 +951,10 @@ export const busanAttractions = [
         ['Vehicle access — van', 'Temple car park'],
       ],
       planning: [
-        'Placed among coastal stops it changes the register of the day — the quiet works as contrast.',
+        'Among coastal stops it resets the tone of the day — the quiet works as contrast.',
         'In the autumn foliage weeks we schedule early morning to stay ahead of the crowds.',
         'It lies outside the city, so the return transfer is blocked out separately.',
-        'The guide briefs temple etiquette, including the halls where photography is restricted.',
+        'The guide briefs the party on temple etiquette, including the halls where photography is restricted.',
       ],
       cta: 'Request a custom quote for this itinerary',
     },
