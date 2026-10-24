@@ -43,8 +43,10 @@ MustGo는 기업 출장의 '양방향'을 책임지는 여행사다.
     "국내 기업의 해외 출장부터, 해외 VIP의 한국 의전까지 —
      양방향 비즈니스 트래블의 모든 디테일을 책임지는
      기업 전문 여행사."
-[CTA Primary]:   "출장 항공 견적 받기"
-[CTA Secondary]: "Inbound Tour 문의"
+[CTA Primary]:   "출장 항공 견적 받기"  → 문의폼 (문의 유형: 기업 출장)
+[CTA Secondary]: "Inbound Tour 안내"   → Inbound Tour 섹션
+  각 버튼 위 한 줄 설명: "국내 기업의 해외 출장" / "해외 VIP의 한국 방문"
+  (두 버튼은 같은 폭으로 나란히 — Outbound와 Inbound의 무게를 맞춤)
 스크롤 인디케이터: "Scroll" 또는 "아래로 더 보기"
 
 ────────────────────────────────────────
@@ -180,7 +182,7 @@ MustGo는 기업 출장의 '양방향'을 책임지는 여행사다.
 
 [하단 CTA]
   문구: "해외 VIP의 한국 방문, MustGo와 상담하세요."
-  버튼: "Plan Your VIP Experience →"
+  버튼: "Plan Your VIP Experience →"  → 문의폼 (문의 유형 Inbound Tour 자동 선택)
 
 ────────────────────────────────────────
 ■ Section 5. Contact (좌우 분할)
@@ -343,8 +345,11 @@ SECTION-BY-SECTION COPY (use exactly as written)
   Subcopy:
     "국내 기업의 해외 출장부터, 해외 VIP의 한국 의전까지 —
      양방향 비즈니스 트래블의 모든 디테일을 책임지는 기업 전문 여행사."
-  Primary CTA:   "출장 항공 견적 받기"
-  Secondary CTA: "Inbound Tour 문의"
+  Primary CTA:   "출장 항공 견적 받기"  → Contact form (type: corporate)
+  Secondary CTA: "Inbound Tour 안내"   → Inbound Tour section
+  Caption above each button: "국내 기업의 해외 출장" / "해외 VIP의 한국 방문"
+  (EN site: "Get a Flight Quote" / "Inbound Tour Overview",
+   captions "For companies traveling abroad" / "For VIPs visiting Korea")
 
 ▸ ABOUT
   Headline:    "기업 출장의 양방향 전문가, MustGo입니다."
@@ -426,7 +431,7 @@ SECTION-BY-SECTION COPY (use exactly as written)
 
   Bottom CTA:
     "해외 VIP의 한국 방문, MustGo와 상담하세요."
-    Button: "Plan Your VIP Experience →"
+    Button: "Plan Your VIP Experience →"  → Contact form (type: inbound pre-selected)
 
 ▸ CONTACT (split layout)
   Headline: "가장 빠른 답변, MustGo가 드립니다."
@@ -511,8 +516,9 @@ MustGo 랜딩페이지의 Hero 섹션(첫 화면, 100vh)을 디자인해 주세�
    양방향 비즈니스 트래블의 모든 디테일을 책임지는 기업 전문 여행사."
 
 [CTA — 2개]
-  Primary:   "출장 항공 견적 받기"
-  Secondary: "Inbound Tour 문의"
+  Primary:   "출장 항공 견적 받기"  → 문의폼
+  Secondary: "Inbound Tour 안내"   → Inbound Tour 섹션
+  각 버튼 위 한 줄 설명: "국내 기업의 해외 출장" / "해외 VIP의 한국 방문"
 
 배경 위에 글자가 잘 읽히도록 좌하단 그라데이션 오버레이.
 화면 하단 중앙에 ↓ 스크롤 인디케이터 ('Scroll' 텍스트).
@@ -558,7 +564,7 @@ MustGo 랜딩페이지의 Hero 섹션(첫 화면, 100vh)을 디자인해 주세�
 
   하단 CTA:
     문구: "해외 VIP의 한국 방문, MustGo와 상담하세요."
-    버튼: "Plan Your VIP Experience →"
+    버튼: "Plan Your VIP Experience →"  → 문의폼 (문의 유형 Inbound Tour 자동 선택)
 
 이전 섹션(Corporate Travel — 비즈니스 블루)과 시각적으로 명확히 구분되되
 같은 사이트 안의 섹션임이 느껴지도록. 섹션 상단에 자연스러운 톤 전환.
