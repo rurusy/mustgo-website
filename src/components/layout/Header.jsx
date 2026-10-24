@@ -1,13 +1,15 @@
 import { useEffect, useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { cn } from '../../design/cn'
 import { Button } from '../ui'
 
+// 메뉴는 홈의 섹션 앵커입니다. 관광지·도시 페이지에는 그 섹션이 없으므로 링크는 항상
+// 홈 경로를 붙여(`/#about`, `/en#about`) 만들고, 이미 홈에 있을 때만 그 자리에서 스크롤합니다.
 const navItems = [
-  { label: 'About Mustgo', href: '#about' },
-  { label: 'Corporate Travel', href: '#corporate' },
-  { label: 'Inbound Tour', href: '#inbound' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'About Mustgo', hash: '#about' },
+  { label: 'Corporate Travel', hash: '#corporate' },
+  { label: 'Inbound Tour', hash: '#inbound' },
+  { label: 'Contact', hash: '#contact' },
 ]
 
 // 결제 진입 버튼. 국내 고객은 원화(토스페이먼츠) /pay-kr, 해외 고객은 USD/EUR(PayPal) /pay.
@@ -65,6 +67,8 @@ function LangToggle({ lang, className, onNavigate }) {
 export function Header({ lang = 'ko' }) {
   const t = HEADER_COPY[lang]
   const payEntry = PAY_ENTRY[lang] ?? PAY_ENTRY.ko
+  const home = lang === 'en' ? '/en' : '/'
+  const { pathname } = useLocation()
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const triggerRef = useRef(null)
@@ -94,15 +98,16 @@ export function Header({ lang = 'ko' }) {
     }
   }, [menuOpen])
 
-  const handleAnchor = (e, href) => {
-    if (!href.startsWith('#') || href === '#') return
-    const target = document.querySelector(href)
+  // 홈이 아니면 막지 않고 Link 가 홈으로 이동시킵니다 — 도착 후 스크롤은 App 의 ScrollToTop 담당.
+  const handleAnchor = (e, hash) => {
+    setMenuOpen(false)
+    if (pathname.replace(/\/$/, '') !== home.replace(/\/$/, '')) return
+    const target = document.querySelector(hash)
     if (!target) return
     e.preventDefault()
     const headerEl = document.getElementById('main-header')
     const offset = headerEl ? headerEl.offsetHeight : 0
     const top = target.getBoundingClientRect().top + window.pageYOffset - offset
-    setMenuOpen(false)
     // 드로어 닫힘 트랜지션이 시작된 다음 스크롤해야 시각적으로 부드러움.
     requestAnimationFrame(() => {
       window.scrollTo({ top, behavior: 'smooth' })
@@ -126,14 +131,14 @@ export function Header({ lang = 'ko' }) {
 
           <nav className="hidden lg:flex items-center space-x-8 text-[15px] font-medium text-gray-700">
             {navItems.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
-                onClick={(e) => handleAnchor(e, item.href)}
+              <Link
+                key={item.hash}
+                to={`${home}${item.hash}`}
+                onClick={(e) => handleAnchor(e, item.hash)}
                 className="hover:text-brand-blue transition-colors"
               >
                 {item.label}
-              </a>
+              </Link>
             ))}
             <Button
               as={Link}
@@ -221,14 +226,14 @@ export function Header({ lang = 'ko' }) {
 
         <nav className="px-6 py-4 flex flex-col overflow-y-auto">
           {navItems.map((item) => (
-            <a
-              key={item.href}
-              href={item.href}
-              onClick={(e) => handleAnchor(e, item.href)}
+            <Link
+              key={item.hash}
+              to={`${home}${item.hash}`}
+              onClick={(e) => handleAnchor(e, item.hash)}
               className="py-4 text-lg font-medium text-ink-800 hover:text-brand-blue active:text-brand-blue border-b border-gray-100 transition-colors"
             >
               {item.label}
-            </a>
+            </Link>
           ))}
           <Button
             as={Link}
