@@ -110,7 +110,15 @@ export function Inbound() {
               Explore {city.en.name}
             </Button>
           ))}
-          <Button as="a" href="#contact" variant="outlineLight" font="eng">
+          <Button
+            as="a"
+            href="#contact"
+            variant="outlineLight"
+            font="eng"
+            onClick={() =>
+              window.dispatchEvent(new CustomEvent('mustgo:prefill-inquiry', { detail: { type: 'inbound' } }))
+            }
+          >
             Plan Your VIP Experience →
           </Button>
         </div>

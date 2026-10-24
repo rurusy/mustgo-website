@@ -1,19 +1,31 @@
 import { Button, Fade, BrandText } from '../ui'
 import { heroImages, heroStepSeconds } from '../../design/tokens'
 
+// scrollTo 만 하면 sticky header 높이만큼 가려지므로 오프셋 보정.
+function scrollToSection(id) {
+  const target = document.getElementById(id)
+  if (!target) return
+  const headerEl = document.getElementById('main-header')
+  const offset = headerEl ? headerEl.offsetHeight : 0
+  const top = target.getBoundingClientRect().top + window.pageYOffset - offset
+  window.scrollTo({ top, behavior: 'smooth' })
+}
+
 // Contact 섹션으로 부드럽게 스크롤하면서 문의 유형 라디오를 미리 선택.
-// scrollTo 만 하면 sticky header 높이만큼 가려지므로 동일한 오프셋 보정 적용.
 function goToContactWithType(type) {
   return (e) => {
     e.preventDefault()
-    const target = document.getElementById('contact')
-    if (target) {
-      const headerEl = document.getElementById('main-header')
-      const offset = headerEl ? headerEl.offsetHeight : 0
-      const top = target.getBoundingClientRect().top + window.pageYOffset - offset
-      window.scrollTo({ top, behavior: 'smooth' })
-    }
+    scrollToSection('contact')
     window.dispatchEvent(new CustomEvent('mustgo:prefill-inquiry', { detail: { type } }))
+  }
+}
+
+// 방한 의전은 문의 전에 서비스를 먼저 보는 고객이 많아 폼이 아니라 Inbound 섹션으로 보냅니다.
+// 섹션 끝의 상담 버튼이 문의 유형을 채워 폼으로 이어 줍니다.
+function goToSection(id) {
+  return (e) => {
+    e.preventDefault()
+    scrollToSection(id)
   }
 }
 
@@ -49,25 +61,35 @@ export function Hero() {
           국내 기업의 해외 출장부터, 해외 VIP의 한국 의전까지 —
           <br className="hidden md:block" /> 양방향 비즈니스 트래블의 모든 디테일을 책임지는 기업 전문 여행사, 머스트고
         </Fade>
-        <Fade delay={0.3} className="flex flex-col sm:flex-row items-center gap-4">
-          <Button
-            as="a"
-            href="#contact"
-            variant="blue"
-            className="w-full sm:w-auto"
-            onClick={goToContactWithType('corporate')}
-          >
-            출장 항공 견적 받기
-          </Button>
-          <Button
-            as="a"
-            href="#contact"
-            variant="outlineLight"
-            className="w-full sm:w-auto"
-            onClick={goToContactWithType('inbound')}
-          >
-            Inbound Tour 문의
-          </Button>
+        {/*
+          버튼마다 누구를 위한 것인지 한 줄을 얹어, 방한 고객이 첫 화면에서 자기 입구를 바로 찾게 합니다.
+          두 열을 같은 폭으로 두어 Outbound/Inbound 의 무게를 맞춥니다.
+        */}
+        <Fade delay={0.3} className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-6 w-full sm:w-auto">
+          <div className="flex flex-col items-center gap-2.5">
+            <span className="text-sm text-gray-300">국내 기업의 해외 출장</span>
+            <Button
+              as="a"
+              href="#contact"
+              variant="blue"
+              className="w-full"
+              onClick={goToContactWithType('corporate')}
+            >
+              출장 항공 견적 받기
+            </Button>
+          </div>
+          <div className="flex flex-col items-center gap-2.5">
+            <span className="text-sm text-gray-300">해외 VIP의 한국 방문</span>
+            <Button
+              as="a"
+              href="#inbound"
+              variant="outlineLight"
+              className="w-full"
+              onClick={goToSection('inbound')}
+            >
+              Inbound Tour 안내
+            </Button>
+          </div>
         </Fade>
       </div>
     </section>

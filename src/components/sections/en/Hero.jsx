@@ -1,19 +1,31 @@
 import { Button, Fade, BrandText } from '../../ui'
 import { heroImages, heroStepSeconds } from '../../../design/tokens'
 
-// English mirror of sections/Hero.jsx. Smooth-scrolls to #contact and pre-selects
-// the inquiry type, matching the offset compensation the Korean hero uses.
+// English mirror of sections/Hero.jsx, with the same header-offset compensation.
+function scrollToSection(id) {
+  const target = document.getElementById(id)
+  if (!target) return
+  const headerEl = document.getElementById('main-header')
+  const offset = headerEl ? headerEl.offsetHeight : 0
+  const top = target.getBoundingClientRect().top + window.pageYOffset - offset
+  window.scrollTo({ top, behavior: 'smooth' })
+}
+
+// Smooth-scrolls to #contact and pre-selects the inquiry type.
 function goToContactWithType(type) {
   return (e) => {
     e.preventDefault()
-    const target = document.getElementById('contact')
-    if (target) {
-      const headerEl = document.getElementById('main-header')
-      const offset = headerEl ? headerEl.offsetHeight : 0
-      const top = target.getBoundingClientRect().top + window.pageYOffset - offset
-      window.scrollTo({ top, behavior: 'smooth' })
-    }
+    scrollToSection('contact')
     window.dispatchEvent(new CustomEvent('mustgo:prefill-inquiry', { detail: { type } }))
+  }
+}
+
+// Inbound clients usually want to see the service before writing in, so this button
+// goes to the Inbound section; its closing CTA pre-selects the inquiry type.
+function goToSection(id) {
+  return (e) => {
+    e.preventDefault()
+    scrollToSection(id)
   }
 }
 
@@ -49,27 +61,37 @@ export function Hero() {
           From Korean companies traveling abroad to global VIPs visiting Korea —
           <br className="hidden md:block" /> the corporate travel agency that manages every detail of two-way business travel.
         </Fade>
-        <Fade delay={0.3} className="flex flex-col sm:flex-row items-center gap-4">
-          <Button
-            as="a"
-            href="#contact"
-            variant="blue"
-            font="eng"
-            className="w-full sm:w-auto"
-            onClick={goToContactWithType('corporate')}
-          >
-            Get a Flight Quote
-          </Button>
-          <Button
-            as="a"
-            href="#contact"
-            variant="outlineLight"
-            font="eng"
-            className="w-full sm:w-auto"
-            onClick={goToContactWithType('inbound')}
-          >
-            Inbound Tour Inquiry
-          </Button>
+        {/*
+          Same layout as the Korean hero: a one-line audience caption over each button,
+          two equal-width columns so Outbound and Inbound carry the same weight.
+        */}
+        <Fade delay={0.3} className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-6 w-full sm:w-auto">
+          <div className="flex flex-col items-center gap-2.5">
+            <span className="font-eng text-sm text-gray-300">For companies traveling abroad</span>
+            <Button
+              as="a"
+              href="#contact"
+              variant="blue"
+              font="eng"
+              className="w-full"
+              onClick={goToContactWithType('corporate')}
+            >
+              Get a Flight Quote
+            </Button>
+          </div>
+          <div className="flex flex-col items-center gap-2.5">
+            <span className="font-eng text-sm text-gray-300">For VIPs visiting Korea</span>
+            <Button
+              as="a"
+              href="#inbound"
+              variant="outlineLight"
+              font="eng"
+              className="w-full"
+              onClick={goToSection('inbound')}
+            >
+              Inbound Tour Overview
+            </Button>
+          </div>
         </Fade>
       </div>
     </section>

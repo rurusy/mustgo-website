@@ -113,7 +113,15 @@ export function Inbound() {
               {city.ko.name} 관광지
             </Button>
           ))}
-          <Button as="a" href="#contact" variant="outlineLight" font="eng">
+          <Button
+            as="a"
+            href="#contact"
+            variant="outlineLight"
+            font="eng"
+            onClick={() =>
+              window.dispatchEvent(new CustomEvent('mustgo:prefill-inquiry', { detail: { type: 'inbound' } }))
+            }
+          >
             Plan Your VIP Experience →
           </Button>
         </div>
