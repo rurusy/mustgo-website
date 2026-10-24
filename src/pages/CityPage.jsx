@@ -1,3 +1,4 @@
+import { Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import { cn } from '../design/cn'
 import { Header } from '../components/layout/Header'
@@ -10,7 +11,9 @@ import { breadcrumbHome, listTitleFor, seoForCity } from '../data/seo'
 import {
   attractionPath,
   attractionsInCity,
+  CITY_GROUPS,
   cities,
+  citiesInGroup,
   cityPath,
   homePath,
   thumbFor,
@@ -29,7 +32,7 @@ const COPY = {
     closingLead:
       '마음에 두신 곳을 알려주시면 동선과 차량, 식사까지 묶어 초안 일정과 견적을 만들어 드립니다. 정해진 상품을 고르는 방식이 아니라, 방문 목적과 일정에 맞춰 처음부터 설계합니다.',
     closingButton: '일정·견적 상담하기',
-    cityNav: '도시 선택',
+    cityNav: '지역 선택',
     otherCities: '이어서 둘러보기',
   },
   en: {
@@ -42,7 +45,7 @@ const COPY = {
     closingLead:
       'Tell us which places interest you. We plan the route, the vehicles and the dining around them, then send a draft itinerary with a quote. Nothing is taken off a fixed package — the schedule is built around the purpose of the visit.',
     closingButton: 'Talk to a consultant',
-    cityNav: 'Cities',
+    cityNav: 'Regions',
     otherCities: 'Continue exploring',
   },
 }
@@ -133,30 +136,41 @@ export default function CityPage({ city, lang = 'ko' }) {
             <h2 className="text-2xl lg:text-3xl font-bold tracking-tight text-gray-900">
               {listTitleFor(lang, t.name)}
             </h2>
-            <nav aria-label={c.cityNav} className="flex flex-wrap gap-2">
-              {cities.map((item) =>
-                item.slug === city.slug ? (
-                  <Button
-                    key={item.slug}
-                    as="span"
-                    variant="pillFilterActive"
-                    size="pillSm"
-                    aria-current="page"
-                  >
-                    {item[lang].name}
-                  </Button>
-                ) : (
-                  <Button
-                    key={item.slug}
-                    as={Link}
-                    to={cityPath(lang, item.slug)}
-                    variant="pillFilter"
-                    size="pillSm"
-                  >
-                    {item[lang].name}
-                  </Button>
-                ),
-              )}
+            {/*
+              주요 도시와 더 많은 지역 사이에 세로 구분선 하나만 둔다 — 제목 줄이라 라벨까지 넣으면 넘친다.
+              그룹을 한 덩어리로 묶어 폰에서는 그룹별로 줄이 바뀌게 하고, 그때는 구분선을 숨긴다.
+            */}
+            <nav aria-label={c.cityNav} className="flex flex-wrap items-center gap-2">
+              {CITY_GROUPS.map((group, gi) => (
+                <Fragment key={group.key}>
+                  {gi > 0 && <span aria-hidden="true" className="hidden sm:block w-px h-5 bg-gray-300 mx-1" />}
+                  <div className="flex flex-wrap gap-2">
+                    {citiesInGroup(group.key).map((item) =>
+                      item.slug === city.slug ? (
+                        <Button
+                          key={item.slug}
+                          as="span"
+                          variant="pillFilterActive"
+                          size="pillSm"
+                          aria-current="page"
+                        >
+                          {item[lang].name}
+                        </Button>
+                      ) : (
+                        <Button
+                          key={item.slug}
+                          as={Link}
+                          to={cityPath(lang, item.slug)}
+                          variant="pillFilter"
+                          size="pillSm"
+                        >
+                          {item[lang].name}
+                        </Button>
+                      ),
+                    )}
+                  </div>
+                </Fragment>
+              ))}
             </nav>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">

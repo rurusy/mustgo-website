@@ -1,6 +1,8 @@
+import { Fragment } from 'react'
 import { Link } from 'react-router-dom'
+import { cn } from '../../../design/cn'
 import { Section, Fade, Button, BrandText } from '../../ui'
-import { cities, cityPath } from '../../../data/attractions'
+import { CITY_GROUPS, citiesInGroup, cityPath } from '../../../data/attractions'
 import { AudienceCard } from '../../marketing/AudienceCard'
 import { ImageCard } from '../../marketing/ImageCard'
 
@@ -97,19 +99,37 @@ export function Inbound() {
         <p className="text-gray-300 mb-6 text-lg">
           Planning a VIP visit to Korea?<br className="sm:hidden" /> Talk to <BrandText />.
         </p>
-        <div className="flex flex-wrap justify-center gap-4">
-          {/* 한국어 홈과 같은 자리. 영어 허브(/en/korea/<city>/)로 보낸다. */}
-          {cities.map((city) => (
-            <Button
-              key={city.slug}
-              as={Link}
-              to={cityPath('en', city.slug)}
-              variant="blue"
-              font="eng"
-            >
-              Explore {city.en.name}
-            </Button>
+        {/* 한국어 홈과 같은 자리·같은 두 줄 묶음. 영어 허브(/en/korea/<city>/)로 보낸다. */}
+        <div className="grid grid-cols-3 sm:grid-cols-[auto_repeat(3,minmax(0,1fr))] items-center gap-x-2 sm:gap-x-3 gap-y-3 max-w-2xl mx-auto mb-10">
+          {CITY_GROUPS.map((group, gi) => (
+            <Fragment key={group.key}>
+              <span
+                className={cn(
+                  'font-eng col-span-3 sm:col-span-1 text-sm text-gray-400 text-center sm:text-right sm:pr-2',
+                  gi > 0 && 'mt-3 sm:mt-0',
+                )}
+              >
+                {group.en}
+              </span>
+              {citiesInGroup(group.key).map((city) => (
+                <Button
+                  key={city.slug}
+                  as={Link}
+                  to={cityPath('en', city.slug)}
+                  variant="blue"
+                  font="eng"
+                  size="cell"
+                  className="w-full"
+                >
+                  {/* 폰의 좁은 칸에서는 "Explore Gyeongju" 가 두 줄로 꺾이므로 도시 이름만 남긴다. */}
+                  <span className="hidden sm:inline">Explore&nbsp;</span>
+                  {city.en.name}
+                </Button>
+              ))}
+            </Fragment>
           ))}
+        </div>
+        <div className="flex justify-center">
           <Button
             as="a"
             href="#contact"

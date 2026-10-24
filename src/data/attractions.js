@@ -15,6 +15,9 @@
 import { seoul, seoulAttractions } from './cities/seoul.js'
 import { busan, busanAttractions } from './cities/busan.js'
 import { jeju, jejuAttractions } from './cities/jeju.js'
+import { gangwon, gangwonAttractions } from './cities/gangwon.js'
+import { jeonju, jeonjuAttractions } from './cities/jeonju.js'
+import { gyeongju, gyeongjuAttractions } from './cities/gyeongju.js'
 
 export { SITE } from './site.js'
 
@@ -23,9 +26,25 @@ export const LANGS = ['ko', 'en']
 // 언어별 홈 경로 — 빵부스러기(breadcrumb)와 CTA 링크가 쓴다.
 export const homePath = (lang) => (lang === 'en' ? '/en' : '/')
 
-export const cities = [seoul, busan, jeju]
+export const cities = [seoul, busan, jeju, gangwon, jeonju, gyeongju]
 
-export const attractions = [...seoulAttractions, ...busanAttractions, ...jejuAttractions]
+export const attractions = [
+  ...seoulAttractions,
+  ...busanAttractions,
+  ...jejuAttractions,
+  ...gangwonAttractions,
+  ...jeonjuAttractions,
+  ...gyeongjuAttractions,
+]
+
+// 화면에서 도시 버튼을 두 줄로 묶는 단위. 페이지·주소는 도시마다 따로 두고(도시명 검색과
+// 도시별 소개글 때문) 홈과 허브의 버튼만 묶는다. 도시 객체에 group 이 없으면 주요 도시다.
+export const CITY_GROUPS = [
+  { key: 'main', ko: '주요 도시', en: 'Major Cities' },
+  { key: 'more', ko: '더 많은 지역', en: 'More Regions' },
+]
+
+export const citiesInGroup = (key) => cities.filter((c) => (c.group ?? 'main') === key)
 
 // 카드용 축소본 경로. 원본은 1620px 라서 430px 짜리 카드에 그대로 쓰면 허브 한 장에
 // 5.8MB 가 내려간다. scripts/make-thumbs.mjs 가 thumbs/ 에 800px 판을 만들어 둔다.

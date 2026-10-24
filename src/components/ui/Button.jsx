@@ -29,6 +29,8 @@ const sizes = {
   md: 'px-8 py-4 text-[15px] rounded-sm',
   lg: 'px-10 py-5 text-base rounded-sm',
   pill: 'h-14 px-6 rounded-full text-[15px]',
+  // 같은 폭 칸으로 나란히 놓는 버튼(홈의 도시 버튼). 폰에서 세 개가 한 줄에 들어가도록 좌우 여백만 줄인다.
+  cell: 'px-3 sm:px-8 py-4 text-[15px] rounded-sm',
   // Compact sizes for utility/chip buttons.
   xs: 'h-8 px-3 text-xs rounded-sm',
   pillSm: 'px-4 py-2 text-sm rounded-sm',

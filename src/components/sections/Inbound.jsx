@@ -1,6 +1,8 @@
+import { Fragment } from 'react'
 import { Link } from 'react-router-dom'
+import { cn } from '../../design/cn'
 import { Section, Fade, Button, BrandText } from '../ui'
-import { cities, cityPath } from '../../data/attractions'
+import { CITY_GROUPS, citiesInGroup, cityPath } from '../../data/attractions'
 import { AudienceCard } from '../marketing/AudienceCard'
 import { ImageCard } from '../marketing/ImageCard'
 
@@ -101,18 +103,40 @@ export function Inbound() {
         <p className="text-gray-300 mb-6 text-lg">
           해외 VIP의 한국 방문,<br className="sm:hidden" /> <BrandText />와 상담하세요.
         </p>
-        <div className="flex flex-wrap justify-center gap-4">
-          {/*
-            관광지 허브로 들어가는 유일한 내부 링크. 새 페이지가 발견되는 경로가
-            홈 → 도시 허브 → 관광지 상세이므로, 이 링크가 빠지면 sitemap 에만 있고
-            사이트 안에서는 고립된 페이지가 된다. 도시는 데이터에서 읽으므로
-            busan.js / jeju.js 를 추가한 것만으로 여기 버튼이 늘어난다.
-          */}
-          {cities.map((city) => (
-            <Button key={city.slug} as={Link} to={cityPath('ko', city.slug)} variant="blue">
-              {city.ko.name} 관광지
-            </Button>
+        {/*
+          관광지 허브로 들어가는 유일한 내부 링크. 새 페이지가 발견되는 경로가
+          홈 → 도시 허브 → 관광지 상세이므로, 이 링크가 빠지면 sitemap 에만 있고
+          사이트 안에서는 고립된 페이지가 된다. 도시는 데이터에서 읽으므로
+          cities/*.js 를 추가한 것만으로 여기 버튼이 늘어난다 — 줄은 도시의 group 으로 정해진다.
+          두 줄을 한 그리드에 넣어 버튼 폭이 줄 사이에서도 맞는다. 폰에서는 라벨이 버튼 위로 올라간다.
+        */}
+        <div className="grid grid-cols-3 sm:grid-cols-[auto_repeat(3,minmax(0,1fr))] items-center gap-x-2 sm:gap-x-3 gap-y-3 max-w-2xl mx-auto mb-10">
+          {CITY_GROUPS.map((group, gi) => (
+            <Fragment key={group.key}>
+              <span
+                className={cn(
+                  'col-span-3 sm:col-span-1 text-sm text-gray-400 text-center sm:text-right sm:pr-2',
+                  gi > 0 && 'mt-3 sm:mt-0',
+                )}
+              >
+                {group.ko}
+              </span>
+              {citiesInGroup(group.key).map((city) => (
+                <Button
+                  key={city.slug}
+                  as={Link}
+                  to={cityPath('ko', city.slug)}
+                  variant="blue"
+                  size="cell"
+                  className="w-full"
+                >
+                  {city.ko.name} 관광지
+                </Button>
+              ))}
+            </Fragment>
           ))}
+        </div>
+        <div className="flex justify-center">
           <Button
             as="a"
             href="#contact"
