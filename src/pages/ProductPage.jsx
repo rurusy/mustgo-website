@@ -4,7 +4,7 @@ import { useHtmlLang } from '../hooks/useHtmlLang'
 import { Header } from '../components/layout/Header'
 import { Footer } from '../components/layout/Footer'
 import { Button } from '../components/ui'
-import { sampleProduct as p } from '../data/sampleProduct'
+import { HERO_PHOTO, PHOTO_DIR, sampleProduct as p } from '../data/sampleProduct'
 
 // 토스페이먼츠 심사용 (샘플) 상품 상세 — 심사 통과 후 삭제. 자세한 사정은 data/sampleProduct.js.
 // "결제하기"는 /pay-kr 로 금액과 상품명을 넘겨 기존 결제 흐름을 그대로 탄다.
@@ -48,8 +48,15 @@ export default function ProductPage() {
       <Header />
       <main className="pt-20 bg-white">
         {/* 상단: 상품명 + 가격·구매 */}
-        <section className="bg-ink-900 text-white">
-          <div className="max-w-layout mx-auto px-6 lg:px-12 py-14 lg:py-20 grid gap-10 lg:grid-cols-[1fr_380px] lg:items-center">
+        <section className="relative bg-ink-900 text-white overflow-hidden">
+          <img
+            src={HERO_PHOTO}
+            alt=""
+            aria-hidden="true"
+            className="absolute inset-0 h-full w-full object-cover opacity-40"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-ink-900/90 via-ink-900/60 to-ink-900/30" />
+          <div className="relative max-w-layout mx-auto px-6 lg:px-12 py-14 lg:py-20 grid gap-10 lg:grid-cols-[1fr_380px] lg:items-center">
             <div>
               <p className="text-xs font-eng font-bold uppercase tracking-wide2 text-amber-500">
                 Seoul · Busan
@@ -177,6 +184,24 @@ export default function ProductPage() {
                     {d.route.join(' → ')}
                   </p>
                   {d.routeNote && <p className="mt-1 text-sm text-gray-500">* {d.routeNote}</p>}
+                  {d.photos && (
+                    <ul className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-3">
+                      {d.photos.map(([file, caption]) => (
+                        <li key={file}>
+                          <figure>
+                            <img
+                              src={`${PHOTO_DIR}/${file}.jpg`}
+                              alt={caption}
+                              loading="lazy"
+                              decoding="async"
+                              className="aspect-[4/3] w-full rounded object-cover bg-gray-100"
+                            />
+                            <figcaption className="mt-1.5 text-xs text-gray-500">{caption}</figcaption>
+                          </figure>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                   <p className="mt-3 text-[15px] text-gray-600 leading-relaxed">{d.desc}</p>
                   <p className="mt-4 text-sm text-gray-700">
                     <span className="font-semibold">식사</span> · {d.meals.join(' / ')}

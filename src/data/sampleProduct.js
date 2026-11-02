@@ -6,12 +6,18 @@
 // 가격"을 요구해서, 대표 상품(서울·부산 4박 5일)을 상품 페이지로 임시 게시한다.
 // 원자료: work/머스트고/2026/서울 부산 4박5일.xlsx
 //
-// 삭제할 때 함께 지울 것: 이 파일, src/pages/ProductPage.jsx, App.jsx 의 라우트,
+// 삭제할 때 함께 지울 것: 이 파일, public/photos/products/, src/pages/ProductPage.jsx, App.jsx 의 라우트,
 // Header.jsx 의 PRODUCT_NAV, StyleguidePage 에는 넣지 않았음.
 // /pay-kr 의 ?amount=&ref= 프리필(PaymentKr.jsx)은 결제 링크에도 쓸 수 있어 남겨도 된다.
 // =============================================================================
 
 export const PRODUCT_PATH = '/products/seoul-busan-5d'
+
+// 사진: 엑셀에 붙어 있던 이미지를 800px JPEG 로 줄여 public 에 둔다. photos 는 [파일명, 캡션].
+// 롯데월드타워·경복궁·남이섬·해운대·해변열차·광안리·흰여울은 엑셀 원본부터 324px 정도라
+// 화질이 낮다 — 원본을 받으면 같은 이름으로 덮어쓰면 된다.
+export const PHOTO_DIR = '/photos/products/seoul-busan'
+export const HERO_PHOTO = `${PHOTO_DIR}/hero.jpg` // 해동용궁사
 
 export const sampleProduct = {
   name: '서울·부산 4박 5일',
@@ -45,6 +51,12 @@ export const sampleProduct = {
   itinerary: [
     {
       day: 1,
+      photos: [
+        ['bongeunsa', '봉은사'],
+        ['gangnam-style', '강남스타일 동상'],
+        ['starfield-library', '코엑스 별마당도서관'],
+        ['lotte-world-tower', '롯데월드타워'],
+      ],
       region: '서울',
       route: ['호텔 픽업', '봉은사', '강남스타일 동상', '코엑스 별마당도서관', '롯데월드타워·서울스카이', '호텔 드랍'],
       desc: '봉은사에서 한국 전통 사찰의 고즈넉한 분위기를 느껴본 뒤, 강남스타일 동상에서 기념사진을 촬영합니다. 코엑스 별마당도서관의 독특한 실내 공간을 둘러보고, 롯데월드타워·서울스카이에서 서울 도심의 탁 트인 전경을 감상합니다.',
@@ -52,6 +64,12 @@ export const sampleProduct = {
     },
     {
       day: 2,
+      photos: [
+        ['gyeongbokgung', '경복궁'],
+        ['national-museum', '국립중앙박물관'],
+        ['nanta', '난타 공연'],
+        ['myeongdong', '명동'],
+      ],
       region: '서울',
       route: ['호텔 픽업', '경복궁 또는 창덕궁 한복 체험', '국립중앙박물관', '난타 공연', '명동 자유시간', '호텔 드랍'],
       routeNote: '월·수~일요일은 경복궁, 화요일은 창덕궁을 방문합니다.',
@@ -60,6 +78,12 @@ export const sampleProduct = {
     },
     {
       day: 3,
+      photos: [
+        ['nami-island', '남이섬'],
+        ['nami-metasequoia', '남이섬 메타세쿼이아길'],
+        ['haeundae', '부산 도착'],
+        ['gukbap', '석식: 부산국밥'],
+      ],
       region: '서울 → 남이섬 → 부산',
       route: ['호텔 픽업', '서울 출발', '남이섬 관광 및 자유 산책', '부산 이동', '호텔 체크인 후 도보 이동 석식 (자율 해산)'],
       desc: '서울에서 출발해 남이섬으로 이동한 뒤, 메타세쿼이아길과 숲길을 따라 여유롭게 산책하며 자연 풍경을 즐깁니다. 계절마다 달라지는 나무와 강변 풍경을 배경으로 사진을 남기고, 섬 안을 자유롭게 둘러보는 시간을 가진 후 부산으로 이동합니다.',
@@ -67,6 +91,12 @@ export const sampleProduct = {
     },
     {
       day: 4,
+      photos: [
+        ['haedong-yonggungsa', '해동용궁사'],
+        ['blueline-park', '블루라인파크 해변열차'],
+        ['x-the-sky', '부산 엑스더스카이'],
+        ['gwangalli-yacht', '광안리 요트투어'],
+      ],
       region: '부산',
       route: ['호텔 픽업', '해동용궁사', '해운대 블루라인파크 해변열차', '부산 엑스더스카이', '광안리 요트투어', '호텔 드랍'],
       desc: '바다를 바라보며 자리한 해동용궁사를 방문합니다. 해운대 블루라인파크 해변열차를 타고(송정→미포) 해안 풍경을 감상하고, 부산 엑스더스카이 전망대에서 해운대와 바다를 내려다봅니다. 저녁에는 광안리 요트투어를 즐기며 광안대교와 부산의 야경을 감상합니다.',
@@ -74,6 +104,12 @@ export const sampleProduct = {
     },
     {
       day: 5,
+      photos: [
+        ['huinnyeoul', '흰여울문화마을'],
+        ['gamcheon', '감천문화마을'],
+        ['jagalchi', '자갈치시장'],
+        ['jajangmyeon', '중식: 짜장면'],
+      ],
       region: '부산 → 서울',
       route: ['호텔 픽업', '흰여울문화마을', '감천문화마을', '자갈치시장', '서울역 이동 (오후 늦게 도착)', '서울역 도착 후 자율 해산'],
       desc: '흰여울문화마을에서 바다를 따라 이어지는 골목길과 아름다운 해안 풍경을 감상하며 여유로운 산책을 즐깁니다. 감천문화마을의 알록달록한 주택과 골목길을 둘러보며 벽화와 예술 작품, 개성 있는 포토존에서 기념사진을 촬영합니다. 마지막으로 자갈치시장을 방문해 부산의 활기찬 시장 분위기를 경험한 후, 버스로 서울역으로 이동해 일정을 마무리합니다.',
