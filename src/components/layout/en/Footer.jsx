@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { NOTICE_PATH } from '../PrivacyIncidentBanner'
 import { BrandText } from '../../ui'
+import { BUSINESS } from '../../../data/business'
 
 export function Footer() {
   return (
@@ -23,10 +24,13 @@ export function Footer() {
 
           <div className="lg:text-right">
             <p className="text-sm text-gray-400 mb-1 font-eng">
-              Mustgo Co., Ltd. | CEO: Jonghwa Lee | Business Reg. No. 618-81-35992
+              {BUSINESS.en.name} | CEO: {BUSINESS.en.ceo} | Business Reg. No. {BUSINESS.en.regNo}
+            </p>
+            <p className="text-sm text-gray-400 mb-1 font-eng">
+              Address: {BUSINESS.en.address}
             </p>
             <p className="text-sm text-gray-400 mb-2 font-eng">
-              Mail-Order Business Reg. No. 2026-대구수성구-0781
+              Tel: {BUSINESS.en.phone} | Mail-Order Business Reg. No. {BUSINESS.en.mailOrderNo}
             </p>
             <p className="text-sm mb-2 font-eng">
               <Link

@@ -159,7 +159,16 @@ export default function PolicyPage() {
               <li>Your booking is confirmed only after payment is received and your consultant confirms it in writing.</li>
             </UL>
 
-            <H2>5. Cancellation by you &amp; refunds</H2>
+            <H2>5. Service delivery (shipping policy)</H2>
+            <UL>
+              <li>Mustgo provides travel and business-trip arrangement services; <strong>no physical goods are shipped.</strong></li>
+              <li>Once your payment is confirmed, your consultant will email the necessary documents — booking confirmation, itinerary, e-tickets, and accommodation or ground-service vouchers — to the email address you entered at checkout within 2 business days.</li>
+              <li>Air tickets are issued as e-tickets and emailed as soon as the airline issues them; no paper tickets are issued.</li>
+              <li>Services are delivered at the dates, times and places stated in your confirmation and itinerary (airport meet &amp; greet, vehicles, guides, accommodation, etc.).</li>
+              <li>If you have not received your documents or find an error, contact us at +82-1551-5992 or wemustgo@mustgokorea.com and we will resend or correct them right away.</li>
+            </UL>
+
+            <H2>6. Cancellation by you &amp; refunds</H2>
             <P>
               To cancel, email wemustgo@mustgokorea.com or contact your consultant. Cancellation takes
               effect on the date we receive your written request (KST). Unless your quotation states
@@ -179,47 +188,47 @@ export default function PolicyPage() {
               <li>For virtual account payments there is no original payment method to reverse, so we will ask you for a bank account in the payer's name to send the refund to.</li>
             </UL>
 
-            <H2>6. Cancellation or changes by Mustgo</H2>
+            <H2>7. Cancellation or changes by Mustgo</H2>
             <UL>
               <li><strong>Our fault:</strong> If we cancel or materially change confirmed services due to our fault, we will refund all amounts paid and pay compensation equivalent to the rate in the table above for the corresponding timing.</li>
               <li><strong>Minimum participants:</strong> For group products, if a required minimum is not met we will notify you by the date stated in your quotation and refund amounts paid.</li>
               <li><strong>Force majeure:</strong> If services cannot be delivered due to events beyond either party's control (natural disaster, war, terrorism, epidemic, government order, supplier failure, etc.), neither party is penalized; we refund recoverable amounts less costs already incurred. Mustgo is not liable for indirect or consequential losses.</li>
             </UL>
 
-            <H2>7. After services begin</H2>
+            <H2>8. After services begin</H2>
             <P>
               If services are terminated after they begin due to events beyond either party's control,
               refunds are limited to the unused portion, less costs already incurred or committed on
               your behalf.
             </P>
 
-            <H2>8. Travel documents, insurance &amp; safety</H2>
+            <H2>9. Travel documents, insurance &amp; safety</H2>
             <UL>
               <li>You are responsible for holding a valid passport, visa, and any entry requirements. We provide guidance but cannot be liable for denied entry due to missing or invalid documents.</li>
               <li>We recommend that travelers hold appropriate travel insurance. Any insurance we arrange is described in your quotation.</li>
               <li>We provide safety information relevant to your itinerary as required.</li>
             </UL>
 
-            <H2>9. Claims</H2>
+            <H2>10. Claims</H2>
             <P>
               If you believe you have suffered a loss, please notify us with supporting documentation.
               We will review and respond within a reasonable period.
             </P>
 
-            <H2>10. Corporate &amp; custom bookings</H2>
+            <H2>11. Corporate &amp; custom bookings</H2>
             <P>
               For corporate (B2B) and custom arrangements, the specific terms set out in the individual
               quotation or contract prevail over this policy where they differ (including any
               supplier-driven cancellation terms).
             </P>
 
-            <H2>11. Before a chargeback</H2>
+            <H2>12. Before a chargeback</H2>
             <P>
               Please contact us first — we aim to resolve issues quickly. Filing a card or PayPal
               dispute without contacting us may delay resolution.
             </P>
 
-            <H2>12. Governing law &amp; interpretation</H2>
+            <H2>13. Governing law &amp; interpretation</H2>
             <P>
               This policy is governed by the laws of the Republic of Korea. For consumer contracts, the
               relevant consumer-protection laws and the Consumer Dispute Resolution Standards apply and
@@ -227,7 +236,7 @@ export default function PolicyPage() {
               traveler's favor.
             </P>
 
-            <H2>13. Contact</H2>
+            <H2>14. Contact</H2>
             <P>Mustgo Co., Ltd. — wemustgo@mustgokorea.com — +82-1551-5992</P>
             <P className="text-xs text-gray-400 mt-6">This is a draft and not legal advice.</P>
           </article>
@@ -266,7 +275,16 @@ export default function PolicyPage() {
               <li>예약은 결제 확인 및 담당 컨설턴트의 서면 확정 이후에만 성립합니다.</li>
             </UL>
 
-            <H2>5. 고객 취소 및 환불</H2>
+            <H2>5. 서비스 제공 방법 (배송 정책)</H2>
+            <UL>
+              <li>머스트고의 상품은 여행·출장 수배 서비스로, <strong>실물 상품의 배송은 없습니다.</strong></li>
+              <li>결제가 확인되면 담당 컨설턴트가 영업일 기준 2일 이내에 예약 확정서, 일정표, 전자항공권(e-ticket), 숙박·현지 서비스 바우처 등 필요한 서류를 결제 시 입력하신 이메일로 발송합니다.</li>
+              <li>항공권은 항공사 발권 완료 즉시 전자항공권으로 발송되며, 별도의 종이 항공권은 발행하지 않습니다.</li>
+              <li>서비스는 확정서·일정표에 기재된 일시와 장소에서 제공됩니다(공항 영접·차량·가이드·숙박 등).</li>
+              <li>서류를 받지 못하셨거나 내용에 오류가 있는 경우 1551-5992 또는 wemustgo@mustgokorea.com으로 연락해 주시면 즉시 재발송·정정해 드립니다.</li>
+            </UL>
+
+            <H2>6. 고객 취소 및 환불</H2>
             <P>
               취소는 wemustgo@mustgokorea.com 또는 담당 컨설턴트에게 요청하며, 효력은 서면 요청
               도달일(KST) 기준입니다. 견적에 별도 명시가 없으면 총 서비스 금액 기준으로 다음
@@ -285,52 +303,52 @@ export default function PolicyPage() {
               <li>가상계좌 결제는 되돌릴 원 결제수단이 없으므로, 결제자 명의의 환불 계좌를 별도로 요청드립니다.</li>
             </UL>
 
-            <H2>6. 머스트고의 취소·변경</H2>
+            <H2>7. 머스트고의 취소·변경</H2>
             <UL>
               <li><strong>머스트고 귀책:</strong> 당사 귀책으로 확정 서비스를 취소·중대 변경하는 경우, 기지급액 전액 환급 및 위 표의 해당 시점 요율에 상응하는 배상금을 지급합니다.</li>
               <li><strong>최저 행사인원:</strong> 단체 상품에서 최저인원 미달 시 견적서에 명시된 기한까지 통보하고 기지급액을 환급합니다.</li>
               <li><strong>불가항력:</strong> 천재지변·전쟁·테러·감염병·정부명령·공급사 사정 등 양 당사자의 통제를 벗어난 사유로 서비스가 불가한 경우 어느 쪽도 위약금을 부담하지 않으며, 이미 지출된 비용을 제외한 회수 가능액을 환급합니다. 머스트고는 간접·부수적 손해에 대해 책임지지 않습니다.</li>
             </UL>
 
-            <H2>7. 여행 시작 후 해지</H2>
+            <H2>8. 여행 시작 후 해지</H2>
             <P>
               서비스 개시 후 양 당사자의 통제를 벗어난 사유로 해지되는 경우, 환불은 미사용분에
               한하며 이미 지출·확정된 비용은 공제합니다.
             </P>
 
-            <H2>8. 여권·비자·보험·안전</H2>
+            <H2>9. 여권·비자·보험·안전</H2>
             <UL>
               <li>유효한 여권·비자 및 입국 요건 구비는 고객 책임입니다. 당사는 안내를 제공하나, 서류 미비·무효로 인한 입국 거부에 대해서는 책임지지 않습니다.</li>
               <li>여행자 보험 가입을 권장합니다. 당사가 수배하는 보험이 있는 경우 견적서에 명시합니다.</li>
               <li>일정과 관련된 안전정보를 관련 규정에 따라 제공합니다.</li>
             </UL>
 
-            <H2>9. 손해배상 청구</H2>
+            <H2>10. 손해배상 청구</H2>
             <P>
               손해가 발생했다고 판단되는 경우 증빙 서류와 함께 통지해 주십시오. 당사는 합리적 기간 내
               검토·회신합니다.
             </P>
 
-            <H2>10. 기업·맞춤 예약</H2>
+            <H2>11. 기업·맞춤 예약</H2>
             <P>
               기업(B2B) 및 맞춤 수배의 경우, 개별 견적서 또는 계약서에 정한 조건(공급사 기반 취소
               조건 포함)이 본 정책과 다를 때 그 조건이 우선합니다.
             </P>
 
-            <H2>11. 지급거절(차지백) 전 문의</H2>
+            <H2>12. 지급거절(차지백) 전 문의</H2>
             <P>
               문제가 있으면 먼저 연락 주십시오 — 신속히 해결하겠습니다. 사전 연락 없는 카드/PayPal
               분쟁 제기는 처리를 지연시킬 수 있습니다.
             </P>
 
-            <H2>12. 준거법 및 해석</H2>
+            <H2>13. 준거법 및 해석</H2>
             <P>
               본 정책은 대한민국 법을 준거법으로 합니다. 소비자 계약의 경우 관련 소비자보호 법령 및
               소비자분쟁해결기준이 적용되며, 소비자에게 더 유리한 경우 그 기준이 우선합니다. 약관의
               해석이 모호한 경우 여행자(소비자)에게 유리하게 해석합니다.
             </P>
 
-            <H2>13. 문의</H2>
+            <H2>14. 문의</H2>
             <P>(주)머스트고 — wemustgo@mustgokorea.com — 1551-5992</P>
             <P className="text-xs text-gray-400 mt-6">
               본 문서는 초안이며 법률 자문이 아닙니다. 시행일 등 세부 조건은 확정 후 반영 예정입니다.

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { BrandText } from '../ui'
+import { BUSINESS } from '../../data/business'
 import { NOTICE_PATH } from './PrivacyIncidentBanner'
 
 export function Footer() {
@@ -23,10 +24,13 @@ export function Footer() {
 
           <div className="lg:text-right">
             <p className="text-sm text-gray-400 mb-1">
-              (주)머스트고 | 대표자: 이종화 | 사업자등록번호: 618-81-35992
+              상호: {BUSINESS.ko.name} | 대표자: {BUSINESS.ko.ceo} | 사업자등록번호: {BUSINESS.ko.regNo}
+            </p>
+            <p className="text-sm text-gray-400 mb-1">
+              사업장 주소: {BUSINESS.ko.address}
             </p>
             <p className="text-sm text-gray-400 mb-2">
-              통신판매업 신고번호: 2026-대구수성구-0781
+              대표전화: {BUSINESS.ko.phone} | 통신판매업 신고번호: {BUSINESS.ko.mailOrderNo}
             </p>
             <p className="text-sm mb-2">
               <Link

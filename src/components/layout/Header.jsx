@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { cn } from '../../design/cn'
 import { Button } from '../ui'
+import { PRODUCT_PATH } from '../../data/sampleProduct'
 
 // 메뉴는 홈의 섹션 앵커입니다. 관광지·도시 페이지에는 그 섹션이 없으므로 링크는 항상
 // 홈 경로를 붙여(`/#about`, `/en#about`) 만들고, 이미 홈에 있을 때만 그 자리에서 스크롤합니다.
@@ -11,6 +12,9 @@ const navItems = [
   { label: 'Inbound Tour', hash: '#inbound' },
   { label: 'Contact', hash: '#contact' },
 ]
+
+// 토스페이먼츠 심사용 (샘플) 상품 링크 — 한국어 메뉴에만. 심사 통과 후 삭제.
+const PRODUCT_NAV = { ko: { to: PRODUCT_PATH, label: '여행상품' } }
 
 // 결제 진입 버튼. 국내 고객은 원화(토스페이먼츠) /pay-kr, 해외 고객은 USD/EUR(PayPal) /pay.
 // 국내 카드는 외국환거래법상 PayPal 로 받을 수 없어 언어별로 경로가 갈립니다.
@@ -70,6 +74,7 @@ export function Header({ lang = 'ko', banner = null }) {
   const t = HEADER_COPY[lang]
   const payEntry = PAY_ENTRY[lang] ?? PAY_ENTRY.ko
   const home = lang === 'en' ? '/en' : '/'
+  const productNav = PRODUCT_NAV[lang]
   const { pathname } = useLocation()
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
@@ -143,6 +148,11 @@ export function Header({ lang = 'ko', banner = null }) {
                 {item.label}
               </Link>
             ))}
+            {productNav && (
+              <Link to={productNav.to} className="hover:text-brand-blue transition-colors">
+                {productNav.label}
+              </Link>
+            )}
             <Button
               as={Link}
               to={payEntry.to}
@@ -238,6 +248,15 @@ export function Header({ lang = 'ko', banner = null }) {
               {item.label}
             </Link>
           ))}
+          {productNav && (
+            <Link
+              to={productNav.to}
+              onClick={() => setMenuOpen(false)}
+              className="py-4 text-lg font-medium text-ink-800 hover:text-brand-blue active:text-brand-blue border-b border-gray-100 transition-colors"
+            >
+              {productNav.label}
+            </Link>
+          )}
           <Button
             as={Link}
             to={payEntry.to}
