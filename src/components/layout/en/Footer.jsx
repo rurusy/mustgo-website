@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { NOTICE_PATH } from '../PrivacyIncidentBanner'
 import { BrandText } from '../../ui'
 
 export function Footer() {
@@ -47,6 +48,13 @@ export function Footer() {
                 className="text-gray-400 hover:text-amber-500 transition-colors"
               >
                 Payment &amp; Refund Policy
+              </Link>
+              <span className="text-gray-600 mx-2">·</span>
+              <Link
+                to={NOTICE_PATH.en}
+                className="text-gray-300 font-semibold hover:text-amber-500 transition-colors"
+              >
+                Data Breach Notice
               </Link>
             </p>
             <p className="text-xs text-gray-600 font-eng mb-1">

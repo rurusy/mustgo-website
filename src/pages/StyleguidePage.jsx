@@ -21,6 +21,7 @@ import { ImageCard } from '../components/marketing/ImageCard'
 import { AttractionCard } from '../components/marketing/AttractionCard'
 import { ProcessSteps } from '../components/marketing/ProcessSteps'
 import { ContactInfoItem } from '../components/marketing/ContactInfoItem'
+import { PrivacyIncidentBanner } from '../components/layout/PrivacyIncidentBanner'
 import { GlobeIcon, StarIcon, ClockIcon, PhoneIcon, MailIcon, PinIcon } from '../components/icons.jsx'
 import { colors } from '../design/tokens'
 
@@ -330,6 +331,11 @@ export default function StyleguidePage() {
               </div>
             </Card>
           </div>
+        </Block>
+
+        <Block title="Notice Banner" description="홈 최상단 공지 띠 (닫기 없음). 개인정보 유출 고지 등 법정 공지용.">
+          <PrivacyIncidentBanner />
+          <div className="mt-4"><PrivacyIncidentBanner lang="en" /></div>
         </Block>
 
         <Block title="Animations">

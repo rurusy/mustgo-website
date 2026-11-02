@@ -64,7 +64,9 @@ function LangToggle({ lang, className, onNavigate }) {
   )
 }
 
-export function Header({ lang = 'ko' }) {
+// banner: 헤더 맨 위에 붙는 공지 띠(예: PrivacyIncidentBanner). 헤더가 fixed 라 그 위에
+// 따로 두면 가려진다. 앵커 스크롤 오프셋은 헤더 offsetHeight 를 재므로 자동으로 맞는다.
+export function Header({ lang = 'ko', banner = null }) {
   const t = HEADER_COPY[lang]
   const payEntry = PAY_ENTRY[lang] ?? PAY_ENTRY.ko
   const home = lang === 'en' ? '/en' : '/'
@@ -123,6 +125,7 @@ export function Header({ lang = 'ko' }) {
           scrolled && 'shadow-sm',
         )}
       >
+        {banner}
         <div className="max-w-layout mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
           {/* 로고는 언어별 홈으로. href="#" 는 크롤러가 "접근 불가 내부 링크"로 집계합니다. */}
           <Link to={lang === 'en' ? '/en' : '/'} className="flex flex-col items-start group">

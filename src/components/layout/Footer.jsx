@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { BrandText } from '../ui'
+import { NOTICE_PATH } from './PrivacyIncidentBanner'
 
 export function Footer() {
   return (
@@ -47,6 +48,13 @@ export function Footer() {
                 className="text-gray-400 hover:text-amber-500 transition-colors"
               >
                 결제·환불 정책
+              </Link>
+              <span className="text-gray-600 mx-2">·</span>
+              <Link
+                to={NOTICE_PATH.ko}
+                className="text-gray-300 font-semibold hover:text-amber-500 transition-colors"
+              >
+                개인정보 유출 안내
               </Link>
             </p>
             <p className="text-xs text-gray-600 font-eng mb-1">

@@ -4,6 +4,7 @@ import { Header } from '../components/layout/Header'
 import { Footer } from '../components/layout/en/Footer'
 import { FloatingCTA } from '../components/layout/FloatingCTA'
 import { HolidayNotice } from '../components/layout/HolidayNotice'
+import { PrivacyIncidentBanner } from '../components/layout/PrivacyIncidentBanner'
 import { Hero } from '../components/sections/en/Hero'
 import { About } from '../components/sections/en/About'
 import { Corporate } from '../components/sections/en/Corporate'
@@ -19,7 +20,7 @@ export default function EnHomePage() {
 
   return (
     <>
-      <Header lang="en" />
+      <Header lang="en" banner={<PrivacyIncidentBanner lang="en" />} />
       <main>
         <Hero />
         <About />
