@@ -369,7 +369,7 @@ export function PaymentKr() {
           <p className="mt-6 text-xs text-gray-400 leading-relaxed">
             결제 시{' '}
             <a
-              href="/policy"
+              href="/policy#ko"
               target="_blank"
               rel="noopener noreferrer"
               className="underline hover:text-brand-blue"

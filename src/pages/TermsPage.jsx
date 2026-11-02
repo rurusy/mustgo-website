@@ -124,13 +124,13 @@ export default function TermsPage() {
             <UL>
               <li>서비스 요금은 건별 견적에 따르며, 결제 금액은 담당 컨설턴트가 안내한 견적 금액입니다.</li>
               <li>결제는 회사가 제공하는 수단으로 이루어집니다. 국내 결제는 토스페이먼츠를 통해 원화(KRW)로, 해외 결제는 PayPal을 통해 미국 달러(USD) 또는 유로(EUR)로 처리됩니다.</li>
-              <li>결제·통화·수수료 등 세부 사항은 <Link to="/policy" className={linkCls}>결제·환불 정책</Link>을 따릅니다.</li>
+              <li>결제·통화·수수료 등 세부 사항은 <Link to="/policy#ko" className={linkCls}>결제·환불 정책</Link>을 따릅니다.</li>
             </UL>
 
             <H2>제7조 (취소 및 환불)</H2>
             <P>
               이용자의 취소 및 환불, 회사의 취소·변경, 불가항력 등에 관한 사항은{' '}
-              <Link to="/policy" className={linkCls}>결제·환불 정책</Link>에 따릅니다. 소비자에게 더
+              <Link to="/policy#ko" className={linkCls}>결제·환불 정책</Link>에 따릅니다. 소비자에게 더
               유리한 관계 법령 및 소비자분쟁해결기준이 있는 경우 그 기준이 우선합니다.
             </P>
 

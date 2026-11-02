@@ -48,7 +48,7 @@ export function Footer() {
               </Link>
               <span className="text-gray-600 mx-2">·</span>
               <Link
-                to="/policy"
+                to="/policy#ko"
                 className="text-gray-400 hover:text-amber-500 transition-colors"
               >
                 결제·환불 정책

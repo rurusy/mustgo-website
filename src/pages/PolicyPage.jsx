@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { BrandText } from '../components/ui'
 import { cn } from '../design/cn'
 
@@ -67,6 +67,32 @@ const KO_SCHEDULE = [
   ['당일 / 개시 후 / No-show', '50%'],
 ]
 
+// 상단 "돌아가기". 사이트 안에서 링크를 타고 왔으면(상품 페이지 등) 그 페이지로 되돌아가고,
+// 새 탭으로 바로 열렸으면(결제 화면의 정책 링크는 target=_blank) 되돌아갈 곳이 없으니
+// 결제 페이지로 보낸다 — 한국어 섹션(#ko)으로 왔으면 /pay-kr, 아니면 /pay.
+// location.key 가 'default' 면 이 탭에서 앱이 처음 연 페이지라는 뜻이다.
+function BackLink() {
+  const location = useLocation()
+  const navigate = useNavigate()
+  const ko = location.hash === '#ko'
+  const cls = cn(
+    'text-sm font-medium text-gray-500 hover:text-brand-blue transition-colors',
+    !ko && 'font-eng',
+  )
+  if (location.key !== 'default') {
+    return (
+      <button type="button" onClick={() => navigate(-1)} className={cls}>
+        {ko ? '← 이전 페이지로' : '← Back'}
+      </button>
+    )
+  }
+  return (
+    <Link to={ko ? '/pay-kr' : '/pay'} className={cls}>
+      {ko ? '← 결제 페이지로' : '← Back to payment'}
+    </Link>
+  )
+}
+
 export default function PolicyPage() {
   useEffect(() => {
     const meta = document.createElement('meta')
@@ -97,12 +123,7 @@ export default function PolicyPage() {
           <Link to="/en" className="flex items-center" aria-label="Mustgo home">
             <img src="/logo.gif" alt="Mustgo" className="h-10 w-auto object-contain" />
           </Link>
-          <Link
-            to="/pay"
-            className="text-sm font-eng font-medium text-gray-500 hover:text-brand-blue transition-colors"
-          >
-            ← Back to payment
-          </Link>
+          <BackLink />
         </div>
       </header>
 

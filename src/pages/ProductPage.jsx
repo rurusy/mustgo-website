@@ -133,7 +133,7 @@ export default function ProductPage() {
               </Button>
               <p className="mt-3 text-xs text-gray-400 leading-relaxed">
                 결제 전{' '}
-                <Link to="/policy" className="underline hover:text-brand-blue">
+                <Link to="/policy#ko" className="underline hover:text-brand-blue">
                   결제·환불 정책
                 </Link>
                 을 확인해 주세요.
@@ -220,7 +220,7 @@ export default function ProductPage() {
               <li>환불은 결제하신 수단으로 처리되며, 자세한 기준은 결제·환불 정책을 따릅니다.</li>
             </ul>
             <Link
-              to="/policy"
+              to="/policy#ko"
               className="inline-block mt-4 text-sm font-semibold text-brand-blue hover:underline"
             >
               결제·환불 정책 전문 보기 →
