@@ -4,15 +4,10 @@ import { BrandText } from '../components/ui'
 import { cn } from '../design/cn'
 
 // =============================================================================
-// 결제·환불 정책 (표준 정합 버전 초안)
+// 결제·환불 정책. 시행일 2026-11-03 (사장님 확정 — 토스페이먼츠 가맹 심사 때 "초안"
+// 표기를 걷어냄).
 // 취소수수료는 공정위 소비자분쟁해결기준(국외여행) 값에 맞춤: 0/10/15/20/30/50%.
-//
-// TODO(사장님 최종 확정 후 교체):
-//   - 시행일(Effective date)
-//   - 견적 유효기간(현재 7일), 환불 처리 영업일(현재 5~10일)
-//   - 최저 행사인원 통보 기한, 여행자 보험 실제 제공 여부/보장 내용
-//   - 준거법·관할 최종 문구 (변호사/KATA 확인)
-// 인바운드/B2B 적용 여부와 최종 문구는 법률 검토 권장 — 본 문서는 법률 자문 아님.
+// 견적 유효기간 7일, 환불 처리 영업일 5~10일, 서류 발송 영업일 2일은 필요하면 갱신.
 // =============================================================================
 
 function H2({ children }) {
@@ -117,7 +112,7 @@ export default function PolicyPage() {
             Payment &amp; Refund Policy
           </h1>
           <p className="text-sm text-gray-400 mt-3">
-            Effective date: to be confirmed · Mustgo Co., Ltd. ((주)머스트고) · Business Reg. No.
+            Effective date: November 3, 2026 (시행일: 2026년 11월 3일) · Mustgo Co., Ltd. ((주)머스트고) · Business Reg. No.
             618-81-35992 · Mail-Order Business Reg. No. 2026-대구수성구-0781
           </p>
           <nav className="mt-4 text-sm text-brand-blue font-eng flex gap-4">
@@ -238,7 +233,6 @@ export default function PolicyPage() {
 
             <H2>14. Contact</H2>
             <P>Mustgo Co., Ltd. — wemustgo@mustgokorea.com — +82-1551-5992</P>
-            <P className="text-xs text-gray-400 mt-6">This is a draft and not legal advice.</P>
           </article>
 
           <hr className="my-14 border-gray-200" />
@@ -350,9 +344,6 @@ export default function PolicyPage() {
 
             <H2>14. 문의</H2>
             <P>(주)머스트고 — wemustgo@mustgokorea.com — 1551-5992</P>
-            <P className="text-xs text-gray-400 mt-6">
-              본 문서는 초안이며 법률 자문이 아닙니다. 시행일 등 세부 조건은 확정 후 반영 예정입니다.
-            </P>
           </article>
         </div>
       </main>

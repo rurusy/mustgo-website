@@ -3,16 +3,13 @@ import { Link } from 'react-router-dom'
 import { cn } from '../design/cn'
 
 // =============================================================================
-// 이용약관 (표준 정합 초안)
+// 이용약관. 시행일 2026-07-11.
 // 머스트고 실제 사업에 맞춤: 기업 출장(아웃바운드) 수배 + 해외 VIP 인바운드 투어,
 // B2B/B2C, 사이트 문의·견적·결제(/pay). 회원가입/계정이 없는 사이트이므로 회원·
 // 아이디·탈퇴 등 해당 없는 조항은 넣지 않음. 결제·환불은 /policy, 개인정보는
 // /privacy 를 참조.
 //
-// TODO(사장님/법률 검토 후 확정):
-//   - 시행일(현재 2026-07-11 안)
-//   - 준거법·관할, 면책·책임 한계, 지식재산권 최종 문구
-// 본 문서는 표준 기반 초안이며 법률 자문이 아님 — 최종 시행 전 전문가 검토 권장.
+// "초안" 표기는 토스페이먼츠 가맹 심사 때 걷어냄(2026-11-03).
 // =============================================================================
 
 function H2({ children }) {
@@ -187,10 +184,6 @@ export default function TermsPage() {
 
             <H2>부칙</H2>
             <P>본 약관은 2026년 7월 11일부터 시행합니다.</P>
-            <P className="text-xs text-gray-400 mt-6">
-              본 문서는 표준 기반 초안이며 법률 자문이 아닙니다. 시행일 및 세부 문구는 최종 확정 후 반영
-              예정입니다.
-            </P>
           </article>
 
           <hr className="my-14 border-gray-200" />
@@ -301,10 +294,6 @@ export default function TermsPage() {
 
             <H2>Addendum</H2>
             <P>These Terms take effect on July 11, 2026.</P>
-            <P className="text-xs text-gray-400 mt-6">
-              This is a standards-based draft and not legal advice. The effective date and detailed
-              wording are subject to final confirmation.
-            </P>
           </article>
         </div>
       </main>
