@@ -2,7 +2,6 @@ import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { PaymentKr } from '../components/sections/PaymentKr'
 import { BrandText } from '../components/ui'
-import { BUSINESS } from '../data/business'
 
 // 국내 고객용 원화 결제 페이지. 한글 홈(/) 헤더의 "결제하기" 버튼으로 진입합니다.
 // 해외 고객용 USD/EUR PayPal 결제는 /pay 에 따로 있습니다
@@ -71,12 +70,9 @@ export function PayKrFooter() {
             <BrandText /> — 비즈니스 출장의 양방향 전문가
           </p>
           <p className="text-xs text-gray-600">
-            상호: {BUSINESS.ko.name} | 대표자: {BUSINESS.ko.ceo} | 사업자등록번호: {BUSINESS.ko.regNo}
+            (주)머스트고 | 대표자: 이종화 | 사업자등록번호: 618-81-35992
           </p>
-          <p className="text-xs text-gray-600">사업장 주소: {BUSINESS.ko.address}</p>
-          <p className="text-xs text-gray-600">
-            대표전화: {BUSINESS.ko.phone} | 통신판매업 신고번호: {BUSINESS.ko.mailOrderNo}
-          </p>
+          <p className="text-xs text-gray-600">통신판매업 신고번호: 2026-대구수성구-0781</p>
         </div>
         <div className="text-sm">
           <a
@@ -86,7 +82,7 @@ export function PayKrFooter() {
             wemustgo@mustgokorea.com
           </a>
           <Link
-            to="/policy#ko"
+            to="/policy"
             className="block mt-1 text-gray-400 hover:text-amber-500 transition-colors"
           >
             결제·환불 정책

@@ -12,8 +12,6 @@ import PolicyPage from './pages/PolicyPage'
 import PrivacyPage from './pages/PrivacyPage'
 import TermsPage from './pages/TermsPage'
 import PrivacyIncidentNoticePage from './pages/PrivacyIncidentNoticePage'
-import ProductPage from './pages/ProductPage'
-import { PRODUCT_PATH } from './data/sampleProduct'
 import { NOTICE_PATH } from './components/layout/PrivacyIncidentBanner'
 import ChecklistPage from './pages/ChecklistPage'
 import AdminLoginPage from './pages/AdminLoginPage'
@@ -111,8 +109,6 @@ export default function App() {
         <Route path="/terms" element={<TermsPage />} />
         <Route path={NOTICE_PATH.ko} element={<PrivacyIncidentNoticePage lang="ko" />} />
         <Route path={NOTICE_PATH.en} element={<PrivacyIncidentNoticePage lang="en" />} />
-        {/* 토스 심사용 (샘플) 상품 — 심사 통과 후 삭제 */}
-        <Route path={PRODUCT_PATH} element={<ProductPage />} />
         <Route path="/checklist" element={<ChecklistPage />} />
         <Route path="/admin/login" element={<AdminLoginPage />} />
         {/* 복구 메일 링크의 착지점. Supabase Redirect URLs 에 등록되어 있어야 합니다. */}

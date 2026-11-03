@@ -48,25 +48,11 @@ function parseAmount(raw) {
 
 const isValidEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)
 
-// 결제 링크용 프리필: /pay-kr?amount=1500000&ref=견적번호 처럼 보내면 금액과 메모가
-// 채워진 채로 열린다. 입력칸을 미리 채울 뿐이라 고객이 직접 입력하는 것과 같고,
-// 금액 범위 검증·주문 고정은 기존 흐름(toss-prepare-payment) 그대로 거친다.
-function initialFromQuery() {
-  if (typeof window === 'undefined') return { amount: '', reference: '' }
-  const q = new URLSearchParams(window.location.search)
-  const n = parseAmount(q.get('amount'))
-  return {
-    amount: n === null ? '' : n.toLocaleString('ko-KR'),
-    reference: (q.get('ref') ?? '').slice(0, 100),
-  }
-}
-
 export function PaymentKr() {
-  const [initial] = useState(initialFromQuery)
-  const [amount, setAmount] = useState(initial.amount)
+  const [amount, setAmount] = useState('')
   const [payerName, setPayerName] = useState('')
   const [payerEmail, setPayerEmail] = useState('')
-  const [reference, setReference] = useState(initial.reference)
+  const [reference, setReference] = useState('')
 
   // form   금액·연락처 입력 단계
   // widget 결제수단 선택 단계 (주문번호와 금액이 서버에 고정된 뒤)
@@ -369,7 +355,7 @@ export function PaymentKr() {
           <p className="mt-6 text-xs text-gray-400 leading-relaxed">
             결제 시{' '}
             <a
-              href="/policy#ko"
+              href="/policy"
               target="_blank"
               rel="noopener noreferrer"
               className="underline hover:text-brand-blue"

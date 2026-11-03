@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
 import { BrandText } from '../ui'
-import { BUSINESS } from '../../data/business'
 import { NOTICE_PATH } from './PrivacyIncidentBanner'
 
 export function Footer() {
@@ -24,13 +23,10 @@ export function Footer() {
 
           <div className="lg:text-right">
             <p className="text-sm text-gray-400 mb-1">
-              상호: {BUSINESS.ko.name} | 대표자: {BUSINESS.ko.ceo} | 사업자등록번호: {BUSINESS.ko.regNo}
-            </p>
-            <p className="text-sm text-gray-400 mb-1">
-              사업장 주소: {BUSINESS.ko.address}
+              (주)머스트고 | 대표자: 이종화 | 사업자등록번호: 618-81-35992
             </p>
             <p className="text-sm text-gray-400 mb-2">
-              대표전화: {BUSINESS.ko.phone} | 통신판매업 신고번호: {BUSINESS.ko.mailOrderNo}
+              통신판매업 신고번호: 2026-대구수성구-0781
             </p>
             <p className="text-sm mb-2">
               <Link
@@ -48,7 +44,7 @@ export function Footer() {
               </Link>
               <span className="text-gray-600 mx-2">·</span>
               <Link
-                to="/policy#ko"
+                to="/policy"
                 className="text-gray-400 hover:text-amber-500 transition-colors"
               >
                 결제·환불 정책
