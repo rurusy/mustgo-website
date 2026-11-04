@@ -228,7 +228,7 @@ export default function PolicyPage() {
             </P>
 
             <H2>13. Contact</H2>
-            <P>Mustgo Co., Ltd. — wemustgo@mustgokorea.com — +82-1551-5992</P>
+            <P>Mustgo Co., Ltd. — wemustgo@mustgokorea.com — +82-2-1551-5992</P>
             <P className="text-xs text-gray-400 mt-6">This is a draft and not legal advice.</P>
           </article>
 

@@ -383,7 +383,7 @@ export default function PrivacyPage() {
             <UL>
               <li>Privacy Officer: Jonghwa Lee (CEO) <span className="text-gray-400">(to be confirmed)</span></li>
               <li>Email: wemustgo@mustgokorea.com</li>
-              <li>Phone: +82-1551-5992</li>
+              <li>Phone: +82-2-1551-5992</li>
             </UL>
 
             <H2>12. Remedies</H2>

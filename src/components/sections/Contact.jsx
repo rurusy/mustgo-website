@@ -11,7 +11,22 @@ import { cn } from '../../design/cn'
 // so Google Maps resolves the correct pin regardless of page language).
 const OFFICES = [
   {
+    // 관광사업등록증·인허가보증보험에 적힌 등록 주소. 우편번호·건물명은 미확인이라 비워 둠.
     key: 'hq',
+    label: '대표사무실',
+    labelEn: 'Head Office',
+    region: '대구',
+    regionEn: 'Daegu',
+    tradeName: '(주)머스트고',
+    tradeNameEn: 'Mustgo Co., Ltd.',
+    tradeNameColor: 'text-brand-blue', // 로고의 'g' 색상
+    display: '대구광역시 수성구 명덕로 422, 10층 (수성동2가)',
+    displayEn: '10F, 422, Myeongdeok-ro, Suseong-gu, Daegu, Republic of Korea',
+    mapQuery: '대구광역시 수성구 명덕로 422',
+    businessNumber: '618-81-35992',
+  },
+  {
+    key: 'daegu',
     label: '대구사무소',
     labelEn: 'Daegu Office',
     region: '대구',
@@ -154,6 +169,7 @@ const CONTACT_COPY = {
     successBody: '영업일 기준 1일 이내, 담당 컨설턴트가 직접 회신드립니다.',
     sendAnother: '다른 문의 추가로 보내기',
     phoneEyebrow: 'Phone',
+    phoneNumber: '1551-5992',
     phoneHelper: '평일 09:00 - 18:00',
     emergencyEyebrow: '24/7 Emergency Line',
     emergencyLabel: '계약 기업 전용 핫라인 제공',
@@ -207,6 +223,7 @@ const CONTACT_COPY = {
     successBody: 'A dedicated consultant will personally reply within one business day.',
     sendAnother: 'Send another inquiry',
     phoneEyebrow: 'Phone',
+    phoneNumber: '+82-2-1551-5992',
     phoneHelper: 'Weekdays 09:00 – 18:00 (KST)',
     emergencyEyebrow: '24/7 Emergency Line',
     emergencyLabel: 'Dedicated hotline for contracted clients',
@@ -432,7 +449,7 @@ export function Contact({ lang = 'ko' }) {
               <ContactInfoItem
                 icon={<PhoneIcon />}
                 eyebrow={t.phoneEyebrow}
-                label="1551-5992"
+                label={t.phoneNumber}
                 helper={t.phoneHelper}
               />
 
@@ -466,7 +483,7 @@ export function Contact({ lang = 'ko' }) {
                         </p>
                       )}
                       <p className="text-[15px] font-medium text-gray-900 mb-1">{office.dDisplay}</p>
-                      <p className="text-xs text-gray-500">{office.dBuilding}</p>
+                      {office.dBuilding && <p className="text-xs text-gray-500">{office.dBuilding}</p>}
                       {office.businessNumber && (
                         <p className="text-xs text-gray-500 mt-1">
                           <span className="text-gray-400 mr-1">{t.bizNo}</span>
@@ -476,7 +493,7 @@ export function Contact({ lang = 'ko' }) {
                       <div className="mb-3" />
                       <div className="w-full min-h-[180px] rounded overflow-hidden border border-gray-200">
                         <iframe
-                          title={`${office.dBuilding} ${t.mapSuffix}`}
+                          title={`${office.dBuilding || office.dLabel} ${t.mapSuffix}`}
                           src={office.mapsSrc}
                           className="w-full h-full border-0"
                           loading="lazy"

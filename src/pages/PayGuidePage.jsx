@@ -479,8 +479,8 @@ export default function PayGuidePage() {
                   wemustgo@mustgokorea.com
                 </a>
                 <span className="hidden sm:inline text-gray-600">·</span>
-                <a href="tel:+8215515992" className="text-gray-200 hover:text-amber-500 transition-colors">
-                  +82-1551-5992
+                <a href="tel:+82215515992" className="text-gray-200 hover:text-amber-500 transition-colors">
+                  +82-2-1551-5992
                 </a>
               </div>
               <div className="mt-7">
