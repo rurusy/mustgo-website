@@ -3,16 +3,13 @@ import { Link } from 'react-router-dom'
 import { cn } from '../design/cn'
 
 // =============================================================================
-// 이용약관 (표준 정합 초안)
+// 이용약관. 시행일 2026-07-11.
 // 머스트고 실제 사업에 맞춤: 기업 출장(아웃바운드) 수배 + 해외 VIP 인바운드 투어,
 // B2B/B2C, 사이트 문의·견적·결제(/pay). 회원가입/계정이 없는 사이트이므로 회원·
 // 아이디·탈퇴 등 해당 없는 조항은 넣지 않음. 결제·환불은 /policy, 개인정보는
 // /privacy 를 참조.
 //
-// TODO(사장님/법률 검토 후 확정):
-//   - 시행일(현재 2026-07-11 안)
-//   - 준거법·관할, 면책·책임 한계, 지식재산권 최종 문구
-// 본 문서는 표준 기반 초안이며 법률 자문이 아님 — 최종 시행 전 전문가 검토 권장.
+// "초안" 표기는 토스페이먼츠 가맹 심사 때 걷어냄(2026-11-03).
 // =============================================================================
 
 function H2({ children }) {
@@ -126,7 +123,7 @@ export default function TermsPage() {
             <H2>제6조 (요금 및 결제)</H2>
             <UL>
               <li>서비스 요금은 건별 견적에 따르며, 결제 금액은 담당 컨설턴트가 안내한 견적 금액입니다.</li>
-              <li>결제는 PayPal 등 회사가 제공하는 수단으로 이루어지며, 통화는 미국 달러(USD) 또는 유로(EUR)입니다.</li>
+              <li>결제는 회사가 제공하는 수단으로 이루어집니다. 국내 결제는 토스페이먼츠를 통해 원화(KRW)로, 해외 결제는 PayPal을 통해 미국 달러(USD) 또는 유로(EUR)로 처리됩니다.</li>
               <li>결제·통화·수수료 등 세부 사항은 <Link to="/policy#ko" className={linkCls}>결제·환불 정책</Link>을 따릅니다.</li>
             </UL>
 
@@ -187,10 +184,6 @@ export default function TermsPage() {
 
             <H2>부칙</H2>
             <P>본 약관은 2026년 7월 11일부터 시행합니다.</P>
-            <P className="text-xs text-gray-400 mt-6">
-              본 문서는 표준 기반 초안이며 법률 자문이 아닙니다. 시행일 및 세부 문구는 최종 확정 후 반영
-              예정입니다.
-            </P>
           </article>
 
           <hr className="my-14 border-gray-200" />
@@ -238,7 +231,7 @@ export default function TermsPage() {
             <H2>Article 6 (Fees &amp; payment)</H2>
             <UL>
               <li>Fees follow each quote; the amount payable is the quoted amount from your consultant.</li>
-              <li>Payment is made via PayPal or other means the Company provides, in US Dollars (USD) or Euros (EUR).</li>
+              <li>Payment is made through the means the Company provides: domestic payments in Korean Won (KRW) via Toss Payments, and international payments in US Dollars (USD) or Euros (EUR) via PayPal.</li>
               <li>Details of payment, currency, and fees follow the <Link to="/policy" className={linkCls}>Payment &amp; Refund Policy</Link>.</li>
             </UL>
 
@@ -301,10 +294,6 @@ export default function TermsPage() {
 
             <H2>Addendum</H2>
             <P>These Terms take effect on July 11, 2026.</P>
-            <P className="text-xs text-gray-400 mt-6">
-              This is a standards-based draft and not legal advice. The effective date and detailed
-              wording are subject to final confirmation.
-            </P>
           </article>
         </div>
       </main>

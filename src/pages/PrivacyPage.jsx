@@ -4,8 +4,7 @@ import { BrandText } from '../components/ui'
 import { cn } from '../design/cn'
 
 // =============================================================================
-// 개인정보처리방침 (표준 정합 초안)
-// 개인정보보호법 제30조 및 표준 개인정보 처리방침(KISA/PIPC)에 맞춘 초안.
+// 개인정보처리방침. 개인정보보호법 제30조 및 표준 개인정보 처리방침(KISA/PIPC) 기준.
 // 실제 수집·처리 현황을 코드 기준으로 반영:
 //   - 문의(inquiries): 회사·성명·직책·연락처·이메일·문의내용
 //   - 결제(payments/payments_kr): 결제자 이름·이메일·금액·통화·결제수단·거래정보
@@ -13,11 +12,8 @@ import { cn } from '../design/cn'
 //   - 저장: Supabase(AWS 서울 리전, 국내) / 위탁: 토스페이먼츠(국내), Resend, PayPal
 //   - 국외이전: PayPal·Resend·Vercel·Cloudflare·Google (토스페이먼츠는 국내라 제외)
 //
-// TODO(사장님/법률 검토 후 확정):
-//   - 시행일(현재 2026-07-11 안)
-//   - 개인정보 보호책임자 성명/직책 (현재 대표 이종화)
-//   - 문의 데이터 보유기간(현재 최대 3년 안) — 결제는 전자상거래법 법정기간 적용
-// 본 문서는 표준 기반 초안이며 법률 자문이 아님 — 최종 시행 전 전문가 검토 권장.
+// 시행일 2026-07-11, 보호책임자 대표 이종화, 문의 데이터 보유 최대 3년.
+// "초안"·"확정 예정" 표기는 토스페이먼츠 가맹 심사 때 걷어냄(2026-11-03).
 // =============================================================================
 
 function H2({ children }) {
@@ -183,7 +179,7 @@ export default function PrivacyPage() {
               각 호의 경우 해당 기간 동안 보관합니다.
             </P>
             <UL>
-              <li><strong>문의·상담 기록:</strong> 상담 처리 목적 달성 후, 재문의 응대 및 분쟁 대비를 위해 최대 3년 보관 후 파기 <span className="text-gray-400">(확정 예정)</span></li>
+              <li><strong>문의·상담 기록:</strong> 상담 처리 목적 달성 후, 재문의 응대 및 분쟁 대비를 위해 최대 3년 보관 후 파기</li>
               <li><strong>결제 관련 기록(전자상거래법):</strong> 계약 또는 청약철회 등에 관한 기록 5년 · 대금결제 및 재화 등의 공급에 관한 기록 5년 · 소비자의 불만 또는 분쟁처리에 관한 기록 3년</li>
               <li>기타 관련 법령에서 정한 기간이 있는 경우 그 기간</li>
             </UL>
@@ -250,7 +246,7 @@ export default function PrivacyPage() {
 
             <H2>11. 개인정보 보호책임자 및 문의처</H2>
             <UL>
-              <li>개인정보 보호책임자: 이종화 (대표) <span className="text-gray-400">(확정 예정)</span></li>
+              <li>개인정보 보호책임자: 이종화 (대표)</li>
               <li>이메일: wemustgo@mustgokorea.com</li>
               <li>전화: 1551-5992</li>
             </UL>
@@ -268,10 +264,6 @@ export default function PrivacyPage() {
             <P>
               본 개인정보처리방침은 2026년 7월 11일부터 적용됩니다. 법령·서비스 변경에 따라 내용이
               수정될 경우 사이트를 통해 변경 사항을 공지합니다.
-            </P>
-            <P className="text-xs text-gray-400 mt-6">
-              본 문서는 표준 기반 초안이며 법률 자문이 아닙니다. 시행일·보유기간·보호책임자 등 세부
-              사항은 최종 확정 후 반영 예정입니다.
             </P>
           </article>
 
@@ -313,7 +305,7 @@ export default function PrivacyPage() {
               However, we retain it as follows:
             </P>
             <UL>
-              <li><strong>Inquiry records:</strong> up to 3 years after the consultation purpose is achieved, for follow-up and dispute readiness, then destroyed <span className="text-gray-400">(to be confirmed)</span>.</li>
+              <li><strong>Inquiry records:</strong> up to 3 years after the consultation purpose is achieved, for follow-up and dispute readiness, then destroyed.</li>
               <li><strong>Payment records (E-Commerce Act):</strong> records on contracts/withdrawal 5 years · records on payment and supply of goods 5 years · records on consumer complaints or disputes 3 years.</li>
               <li>Other periods required by applicable law.</li>
             </UL>
@@ -381,7 +373,7 @@ export default function PrivacyPage() {
 
             <H2>11. Privacy Officer &amp; contact</H2>
             <UL>
-              <li>Privacy Officer: Jonghwa Lee (CEO) <span className="text-gray-400">(to be confirmed)</span></li>
+              <li>Privacy Officer: Jonghwa Lee (CEO)</li>
               <li>Email: wemustgo@mustgokorea.com</li>
               <li>Phone: +82-2-1551-5992</li>
             </UL>
@@ -399,10 +391,6 @@ export default function PrivacyPage() {
             <P>
               This Privacy Policy takes effect on July 11, 2026. If the content changes due to law or
               service updates, we will announce the changes through the Site.
-            </P>
-            <P className="text-xs text-gray-400 mt-6">
-              This is a standards-based draft and not legal advice. Details such as the effective date,
-              retention periods, and Privacy Officer are subject to final confirmation.
             </P>
           </article>
         </div>
