@@ -130,7 +130,7 @@ export function Inbound() {
                   size="cell"
                   className="w-full"
                 >
-                  {city.ko.name} 관광지
+                  {city.ko.name}
                 </Button>
               ))}
             </Fragment>

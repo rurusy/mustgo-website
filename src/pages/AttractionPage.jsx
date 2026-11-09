@@ -17,7 +17,7 @@ const COPY = {
     checkedPrefix: '운영 정보 기준',
     quoteLead: '이 관광지를 포함한 일정을 원하시면, 인원과 날짜만 알려주셔도 됩니다. 영업일 1일 안에 담당자가 초안 일정과 견적을 보내드립니다.',
     quoteTitle: '맞춤 견적 요청',
-    backToCity: (city) => `${city} 관광지 전체 보기`,
+    backToCity: (city) => `${city} 전체 보기`,
     photoPrefix: '사진',
   },
   en: {
