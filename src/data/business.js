@@ -7,7 +7,8 @@ export const BUSINESS = {
     ceo: '이종화',
     regNo: '618-81-35992',
     mailOrderNo: '2026-대구수성구-0781',
-    address: '대구광역시 수성구 알파시티1로31길 19, 5층 (42250)',
+    // 사업자등록증 주소(2026-11-09 확인). 알파시티는 실제 근무 사무실로 문의 섹션에만 둔다.
+    address: '대구광역시 수성구 명덕로 422, 10층 (수성동2가)',
     phone: '1551-5992',
     email: 'wemustgo@mustgokorea.com',
   },
@@ -16,7 +17,7 @@ export const BUSINESS = {
     ceo: 'Jonghwa Lee',
     regNo: '618-81-35992',
     mailOrderNo: '2026-대구수성구-0781',
-    address: '5F, 19, Alpha City 1-ro 31-gil, Suseong-gu, Daegu 42250, Republic of Korea',
+    address: '10F, 422, Myeongdeok-ro, Suseong-gu, Daegu, Republic of Korea',
     phone: '+82-2-1551-5992',
     email: 'wemustgo@mustgokorea.com',
   },
