@@ -30,7 +30,8 @@ export function Footer() {
               Address: {BUSINESS.en.address}
             </p>
             <p className="text-sm text-gray-400 mb-2 font-eng">
-              Tel: {BUSINESS.en.phone} | Mail-Order Business Reg. No. {BUSINESS.en.mailOrderNo}
+              Tel: {BUSINESS.en.phone} | Email: {BUSINESS.en.email} | Mail-Order Business Reg. No.{' '}
+              {BUSINESS.en.mailOrderNo}
             </p>
             <p className="text-sm mb-2 font-eng">
               <Link

@@ -75,7 +75,8 @@ export function PayKrFooter() {
           </p>
           <p className="text-xs text-gray-600">사업장 주소: {BUSINESS.ko.address}</p>
           <p className="text-xs text-gray-600">
-            대표전화: {BUSINESS.ko.phone} | 통신판매업 신고번호: {BUSINESS.ko.mailOrderNo}
+            대표전화: {BUSINESS.ko.phone} | 이메일: {BUSINESS.ko.email} | 통신판매업 신고번호:{' '}
+            {BUSINESS.ko.mailOrderNo}
           </p>
         </div>
         <div className="text-sm">

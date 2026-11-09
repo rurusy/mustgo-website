@@ -30,7 +30,8 @@ export function Footer() {
               사업장 주소: {BUSINESS.ko.address}
             </p>
             <p className="text-sm text-gray-400 mb-2">
-              대표전화: {BUSINESS.ko.phone} | 통신판매업 신고번호: {BUSINESS.ko.mailOrderNo}
+              대표전화: {BUSINESS.ko.phone} | 이메일: {BUSINESS.ko.email} | 통신판매업 신고번호:{' '}
+              {BUSINESS.ko.mailOrderNo}
             </p>
             <p className="text-sm mb-2">
               <Link
