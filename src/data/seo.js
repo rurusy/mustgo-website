@@ -23,7 +23,7 @@ export const breadcrumbHome = (lang) => (lang === 'en' ? 'Home' : '홈')
 
 // 도시 허브의 목록 제목. 화면 제목과 ItemList 의 name 이 어긋나지 않도록 공유한다.
 export const listTitleFor = (lang, cityName) =>
-  lang === 'en' ? `Highlights of ${cityName}` : `${cityName} 주요 관광지`
+  lang === 'en' ? `Highlights of ${cityName}` : `${cityName} 주요 명소`
 
 export function seoForCity(city, lang) {
   const t = city[lang]
