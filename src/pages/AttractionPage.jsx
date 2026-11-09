@@ -26,7 +26,7 @@ const COPY = {
     checkedPrefix: 'Information verified',
     quoteLead: 'Tell us the dates and the size of your party — that is enough to start. We reply with a draft itinerary and a quote within one business day.',
     quoteTitle: 'Request a custom quote',
-    backToCity: (city) => `All ${city} attractions`,
+    backToCity: (city) => `See all of ${city}`,
     photoPrefix: 'Photo',
   },
 }
