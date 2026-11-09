@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { Section, Fade, FormLabel, Input, BrandText, Button } from '../ui'
 import { supabase } from '../../lib/supabase'
+import { PRODUCT_PATH, PRODUCT_SLUG, sampleProduct } from '../../data/sampleProduct'
 
 // 클라이언트 키는 "공개값"이라 프론트엔드에 노출해도 안전합니다.
 // 시크릿 키는 서버(Edge Function Secrets)에만 둡니다.
@@ -61,12 +63,31 @@ function initialFromQuery() {
   }
 }
 
+// 상품 결제 모드: 상품 페이지가 /pay-kr?product=seoul-busan-5d&qty=2 로 보내면, 금액을
+// 상품 데이터(단가 × 인원)로 계산해 고정한다. 고객이 금액을 고칠 수 없어서 "상품 금액 =
+// 결제 금액"이 화면에서 보장된다. 모르는 상품이거나 인원이 이상하면 일반 모드로 연다.
+// 토스 심사용 상품과 함께 생겼으므로 상품을 철거할 때 이 함수와 product 분기도 지운다.
+function productFromQuery() {
+  if (typeof window === 'undefined') return null
+  const q = new URLSearchParams(window.location.search)
+  if (q.get('product') !== PRODUCT_SLUG) return null
+  const qty = Number(q.get('qty') ?? '1')
+  const unitPrice = sampleProduct.pricePerPerson
+  if (!Number.isSafeInteger(qty) || qty < 1 || qty * unitPrice > MAX_AMOUNT) return null
+  return { name: sampleProduct.name, qty, unitPrice, amount: qty * unitPrice }
+}
+
 export function PaymentKr() {
   const [initial] = useState(initialFromQuery)
-  const [amount, setAmount] = useState(initial.amount)
+  const [product] = useState(productFromQuery)
+  const [amount, setAmount] = useState(() =>
+    product ? product.amount.toLocaleString('ko-KR') : initial.amount,
+  )
   const [payerName, setPayerName] = useState('')
   const [payerEmail, setPayerEmail] = useState('')
-  const [reference, setReference] = useState(initial.reference)
+  const [reference, setReference] = useState(() =>
+    product ? `${product.name} ${product.qty}인` : initial.reference,
+  )
 
   // form   금액·연락처 입력 단계
   // widget 결제수단 선택 단계 (주문번호와 금액이 서버에 고정된 뒤)
@@ -217,8 +238,17 @@ export function PaymentKr() {
           안전하게 결제하기
         </h2>
         <p className="text-gray-600 text-[15px] leading-relaxed">
-          <BrandText /> 담당 컨설턴트가 안내한 금액을 입력하시면 신용·체크카드, 간편결제,
-          계좌이체, 가상계좌로 결제하실 수 있습니다.
+          {product ? (
+            <>
+              선택하신 상품과 결제 금액을 확인하신 뒤 신용·체크카드, 간편결제, 계좌이체,
+              가상계좌로 결제하실 수 있습니다.
+            </>
+          ) : (
+            <>
+              <BrandText /> 담당 컨설턴트가 안내한 금액을 입력하시면 신용·체크카드, 간편결제,
+              계좌이체, 가상계좌로 결제하실 수 있습니다.
+            </>
+          )}
         </p>
       </Fade>
 
@@ -226,6 +256,27 @@ export function PaymentKr() {
         <div className="bg-white p-8 rounded-lg border border-gray-200 shadow-sm">
           {/* ── 1단계: 결제 정보 입력 ─────────────────────────────── */}
           <div className={step === 'form' ? '' : 'hidden'}>
+            {product ? (
+              <div className="mb-6 rounded border border-gray-200 bg-surface-soft p-5">
+                <p className="text-xs font-bold text-gray-500 mb-1">주문 상품</p>
+                <p className="font-bold text-gray-900">{product.name}</p>
+                <p className="mt-1 text-sm text-gray-600">
+                  1인 {product.unitPrice.toLocaleString('ko-KR')}원 × {product.qty}인
+                </p>
+                <div className="mt-4 pt-4 border-t border-gray-200 flex items-baseline justify-between">
+                  <span className="text-sm font-bold text-gray-700">결제 금액</span>
+                  <span className="text-2xl font-bold text-brand-blue">
+                    {product.amount.toLocaleString('ko-KR')}원
+                  </span>
+                </div>
+                <Link
+                  to={PRODUCT_PATH}
+                  className="inline-block mt-3 text-xs text-gray-500 underline hover:text-brand-blue"
+                >
+                  인원 변경은 상품 페이지에서
+                </Link>
+              </div>
+            ) : (
             <div className="mb-6">
               <FormLabel htmlFor="pay-kr-amount" required>
                 결제 금액
@@ -257,6 +308,7 @@ export function PaymentKr() {
                 </p>
               )}
             </div>
+            )}
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
               <div>
@@ -283,7 +335,8 @@ export function PaymentKr() {
               </div>
             </div>
 
-            <div className="mb-6">
+            {/* 상품 결제에서는 메모가 "상품명 N인"으로 정해져 있어 칸을 숨긴다. */}
+            <div className={product ? 'hidden' : 'mb-6'}>
               <FormLabel htmlFor="pay-kr-ref">견적번호 / 메모</FormLabel>
               <Input
                 id="pay-kr-ref"
@@ -328,7 +381,7 @@ export function PaymentKr() {
                 </p>
               </div>
               <Button type="button" variant="ghost" size="sm" onClick={onEditAmount}>
-                금액 수정
+                {product ? '이전으로' : '금액 수정'}
               </Button>
             </div>
 

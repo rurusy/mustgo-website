@@ -7,11 +7,13 @@
 // 원자료: work/머스트고/2026/서울 부산 4박5일.xlsx
 //
 // 삭제할 때 함께 지울 것: 이 파일, public/photos/products/, src/pages/ProductPage.jsx, App.jsx 의 라우트,
-// Header.jsx 의 PRODUCT_NAV, StyleguidePage 에는 넣지 않았음.
+// Header.jsx 의 PRODUCT_NAV, PaymentKr.jsx 의 상품 결제 모드(productFromQuery 와 그 분기).
+// StyleguidePage 에는 넣지 않았음.
 // /pay-kr 의 ?amount=&ref= 프리필(PaymentKr.jsx)은 결제 링크에도 쓸 수 있어 남겨도 된다.
 // =============================================================================
 
-export const PRODUCT_PATH = '/products/seoul-busan-5d'
+export const PRODUCT_SLUG = 'seoul-busan-5d'
+export const PRODUCT_PATH = `/products/${PRODUCT_SLUG}`
 
 // 사진: 엑셀에 붙어 있던 이미지를 800px JPEG 로 줄여 public 에 둔다. photos 는 [파일명, 캡션].
 // 롯데월드타워·경복궁·남이섬·해운대·해변열차·광안리·흰여울은 엑셀 원본부터 324px 정도라
@@ -25,12 +27,10 @@ export const sampleProduct = {
   tagline: '서울의 전통과 트렌드부터, 부산의 해안 풍경까지',
   // 1인 기준 판매가(원). 엑셀은 "문의요망" — 15인 기준 원가 추정(105만~120만)에
   // 마진을 얹어 사장님이 129만 원으로 확정(2026-11-03).
+  // 심사 기간에는 1인부터 표시 가격 그대로 구매할 수 있는 상품으로 둔다(2026-11-09 결정).
+  // 엑셀의 "최소 15인 출발"과 "가격 변동, 담당자에게 재확인" 안내는 토스 기준("지금 바로 구매
+  // 가능", "상품 금액 = 결제 금액")에 어긋나 보여서 뺐다.
   pricePerPerson: 1290000,
-  minGroup: 15,
-  priceNotes: [
-    '해당 상품은 출발일 및 예약 조건에 따라 가격이 달라질 수 있으므로, 예약 전 담당자에게 최종 가격을 반드시 재확인해 주세요.',
-    '최소 15인 이상 출발 가능 상품으로, 15인 미만은 별도 문의 부탁드립니다.',
-  ],
   included: [
     '대형 전용 버스',
     '3~4성급 숙박 (2인 1실, 요일에 따라 상이)',

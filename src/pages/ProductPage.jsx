@@ -4,12 +4,13 @@ import { useHtmlLang } from '../hooks/useHtmlLang'
 import { Header } from '../components/layout/Header'
 import { Footer } from '../components/layout/Footer'
 import { Button } from '../components/ui'
-import { HERO_PHOTO, PHOTO_DIR, sampleProduct as p } from '../data/sampleProduct'
+import { HERO_PHOTO, PHOTO_DIR, PRODUCT_SLUG, sampleProduct as p } from '../data/sampleProduct'
 
 // 토스페이먼츠 심사용 (샘플) 상품 상세 — 심사 통과 후 삭제. 자세한 사정은 data/sampleProduct.js.
 // "결제하기"는 /pay-kr 로 금액과 상품명을 넘겨 기존 결제 흐름을 그대로 탄다.
 
-const MAX_QTY = 99
+// 결제 한도(1억 원, toss-prepare-payment 의 TOSS_MAX_AMOUNT)를 넘지 않는 인원까지만.
+const MAX_QTY = Math.min(99, Math.floor(100000000 / p.pricePerPerson))
 const won = (n) => `${n.toLocaleString('ko-KR')}원`
 
 function SectionTitle({ children }) {
@@ -38,8 +39,10 @@ export default function ProductPage() {
   const total = priced ? p.pricePerPerson * qty : 0
   const setQtySafe = (n) => setQty(Math.min(MAX_QTY, Math.max(1, n)))
 
+  // 금액이 아니라 상품과 인원을 넘긴다. /pay-kr 가 같은 상품 데이터로 금액을 계산해
+  // 고정해서 보여 주므로, 결제 화면 금액이 이 페이지의 총 결제 금액과 항상 같다.
   const onBuy = () => {
-    const params = new URLSearchParams({ amount: String(total), ref: `${p.name} ${qty}인` })
+    const params = new URLSearchParams({ product: PRODUCT_SLUG, qty: String(qty) })
     navigate(`/pay-kr?${params}`)
   }
 
@@ -67,7 +70,7 @@ export default function ProductPage() {
               <p className="mt-2 font-eng text-sm text-gray-400">{p.nameEn}</p>
               <p className="mt-6 text-gray-300 leading-relaxed">{p.tagline}</p>
               <ul className="mt-6 flex flex-wrap gap-2 text-sm text-gray-200">
-                {['4박 5일', '서울 · 남이섬 · 부산', `최소 ${p.minGroup}인 출발`, '전용 버스 · 가이드 포함'].map((t) => (
+                {['4박 5일', '서울 · 남이섬 · 부산', '전용 버스 · 가이드 포함'].map((t) => (
                   <li key={t} className="rounded-full border border-white/20 px-3 py-1">
                     {t}
                   </li>
@@ -143,15 +146,6 @@ export default function ProductPage() {
         </section>
 
         <div className="max-w-layout mx-auto px-6 lg:px-12 py-14 space-y-14">
-          {/* 가격 안내 */}
-          <section>
-            <ul className="space-y-1 text-sm text-gray-600 leading-relaxed">
-              {p.priceNotes.map((t) => (
-                <li key={t}>* {t}</li>
-              ))}
-            </ul>
-          </section>
-
           {/* 포함 / 불포함 */}
           <section className="grid gap-6 md:grid-cols-2">
             {[
