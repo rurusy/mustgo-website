@@ -2,11 +2,25 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Section, Fade, FormLabel, Input, BrandText, Button } from '../ui'
 import { supabase } from '../../lib/supabase'
+import { cn } from '../../design/cn'
 import { PRODUCT_PATH, PRODUCT_SLUG, sampleProduct } from '../../data/sampleProduct'
 
 // 클라이언트 키는 "공개값"이라 프론트엔드에 노출해도 안전합니다.
 // 시크릿 키는 서버(Edge Function Secrets)에만 둡니다.
 const CLIENT_KEY = import.meta.env.VITE_TOSS_CLIENT_KEY
+
+// 연동 방식은 클라이언트 키의 종류로 정해진다 — 키마다 쓸 수 있는 SDK 가 다르다.
+//   test_gck_ / live_gck_  결제위젯 연동 키   → 'widget' (결제수단·약관 UI 를 페이지에 그림)
+//   test_ck_  / live_ck_   API 개별 연동 키   → 'window' (우리가 결제수단 버튼을 그리고, 토스 결제창을 띄움)
+// 서버의 TOSS_SECRET_KEY 도 같은 종류(gsk / sk)의 짝이어야 승인이 된다.
+// 2026-11: 가맹 심사 중이라 개발자센터에 체험 상점의 ck 키만 있어서 'window' 를 추가했다.
+// 계약 후 gck 키를 받으면 키만 바꾸면 되고 코드는 그대로 둔다.
+function integrationMode(key) {
+  if (/^(test|live)_gck_/.test(key ?? '')) return 'widget'
+  if (/^(test|live)_ck_/.test(key ?? '')) return 'window'
+  return null
+}
+const MODE = integrationMode(CLIENT_KEY)
 
 // 서버(toss-prepare-payment)의 TOSS_MIN_AMOUNT / TOSS_MAX_AMOUNT 와 맞춰야 합니다.
 const MIN_AMOUNT = 1000
@@ -14,6 +28,24 @@ const MAX_AMOUNT = 100000000 // 1억원
 
 const METHODS_SELECTOR = '#toss-payment-methods'
 const AGREEMENT_SELECTOR = '#toss-agreement'
+
+// 'window' 모드에서 고객이 고르는 결제수단. 카드 결제창(flowMode DEFAULT)은 카드사 목록과
+// 함께 상점에 계약된 간편결제도 보여주므로 '간편결제'를 따로 두지 않는다.
+// 결제창 약관 동의는 토스 결제창 안에서 받는다.
+const WINDOW_METHODS = [
+  {
+    key: 'CARD',
+    label: '신용·체크카드 / 간편결제',
+    options: { card: { flowMode: 'DEFAULT', useEscrow: false, useCardPoint: false, useAppCardOnly: false } },
+  },
+  { key: 'TRANSFER', label: '계좌이체', options: { transfer: { useEscrow: false } } },
+  {
+    key: 'VIRTUAL_ACCOUNT',
+    label: '가상계좌 (무통장입금)',
+    // 입금 기한 7일 — 결제위젯 기본값과 같게. 입금 확인은 toss-webhook 이 처리한다.
+    options: { virtualAccount: { validHours: 168, useEscrow: false } },
+  },
+]
 
 // 토스 결제위젯 SDK(v2)를 한 번만 로드한다. 로드되면 window.TossPayments 가 생긴다.
 let sdkPromise = null
@@ -98,13 +130,16 @@ export function PaymentKr() {
   const [errorMsg, setErrorMsg] = useState('')
   const [widgetState, setWidgetState] = useState('idle') // idle | loading | ready | error
 
-  const widgetsRef = useRef(null) // 토스 widgets 인스턴스 (한 번만 생성)
+  const [windowMethod, setWindowMethod] = useState(WINDOW_METHODS[0].key) // 'window' 모드 전용
+
+  const widgetsRef = useRef(null) // 토스 widgets 인스턴스 (한 번만 생성) — 'widget' 모드
+  const paymentRef = useRef(null) // 토스 payment 인스턴스 (한 번만 생성) — 'window' 모드
   const renderedRef = useRef(false) // 결제수단/약관 UI 를 이미 그렸는지
 
   const parsed = parseAmount(amount)
   const amountValid = parsed !== null && parsed >= MIN_AMOUNT && parsed <= MAX_AMOUNT
   const emailValid = !payerEmail.trim() || isValidEmail(payerEmail.trim())
-  const configured = Boolean(CLIENT_KEY) && typeof supabase.functions?.invoke === 'function'
+  const configured = Boolean(MODE) && typeof supabase.functions?.invoke === 'function'
 
   const onAmountChange = (e) => {
     const n = parseAmount(e.target.value)
@@ -159,6 +194,17 @@ export function PaymentKr() {
         const TossPayments = await loadTossSdk()
         if (cancelled) return
 
+        // 결제창 방식은 그릴 UI 가 없다. 인스턴스만 만들고, 금액은 requestPayment 때 넘긴다.
+        if (MODE === 'window') {
+          if (!paymentRef.current) {
+            paymentRef.current = TossPayments(CLIENT_KEY).payment({
+              customerKey: TossPayments.ANONYMOUS,
+            })
+          }
+          if (!cancelled) setWidgetState('ready')
+          return
+        }
+
         if (!widgetsRef.current) {
           const toss = TossPayments(CLIENT_KEY)
           widgetsRef.current = toss.widgets({ customerKey: TossPayments.ANONYMOUS })
@@ -195,24 +241,37 @@ export function PaymentKr() {
   }, [step, order, configured])
 
   const onPay = async () => {
-    const widgets = widgetsRef.current
-    if (!widgets || !order) return
+    const instance = MODE === 'window' ? paymentRef.current : widgetsRef.current
+    if (!instance || !order) return
+
+    // 성공/실패 모두 페이지를 떠나 토스가 지정한 URL 로 돌아옵니다.
+    // 실제 승인은 돌아온 뒤 /pay-kr/success 에서 서버가 처리합니다 (두 방식 공통).
+    const common = {
+      orderId: order.orderId,
+      orderName: order.orderName,
+      successUrl: `${window.location.origin}/pay-kr/success`,
+      failUrl: `${window.location.origin}/pay-kr/fail`,
+      ...(payerName.trim() ? { customerName: payerName.trim().slice(0, 100) } : {}),
+      ...(payerEmail.trim() && isValidEmail(payerEmail.trim())
+        ? { customerEmail: payerEmail.trim() }
+        : {}),
+    }
 
     setErrorMsg('')
     setPaying(true)
     try {
-      // 성공/실패 모두 페이지를 떠나 토스가 지정한 URL 로 돌아옵니다.
-      // 실제 승인은 돌아온 뒤 /pay-kr/success 에서 서버가 처리합니다.
-      await widgets.requestPayment({
-        orderId: order.orderId,
-        orderName: order.orderName,
-        successUrl: `${window.location.origin}/pay-kr/success`,
-        failUrl: `${window.location.origin}/pay-kr/fail`,
-        ...(payerName.trim() ? { customerName: payerName.trim().slice(0, 100) } : {}),
-        ...(payerEmail.trim() && isValidEmail(payerEmail.trim())
-          ? { customerEmail: payerEmail.trim() }
-          : {}),
-      })
+      if (MODE === 'window') {
+        const method = WINDOW_METHODS.find((m) => m.key === windowMethod) ?? WINDOW_METHODS[0]
+        // 금액은 항상 서버가 확정한 값 (입력값이 아니라 order.amount).
+        await instance.requestPayment({
+          method: method.key,
+          amount: { currency: 'KRW', value: order.amount },
+          ...method.options,
+          ...common,
+        })
+      } else {
+        await instance.requestPayment(common)
+      }
     } catch (e) {
       setPaying(false)
       // 고객이 결제창을 닫은 경우는 오류가 아니다.
@@ -392,6 +451,38 @@ export function PaymentKr() {
               <p className="text-sm text-red-600 py-4">
                 결제 모듈을 불러오지 못했습니다. 네트워크 상태를 확인한 뒤 새로고침해주세요.
               </p>
+            )}
+
+            {MODE === 'window' && widgetState === 'ready' && (
+              <fieldset className="py-4">
+                <legend className="text-sm font-bold text-gray-900 mb-3">결제수단</legend>
+                <div className="space-y-2">
+                  {WINDOW_METHODS.map((m) => (
+                    <label
+                      key={m.key}
+                      className={cn(
+                        'flex items-center gap-3 rounded border px-4 py-3 cursor-pointer text-[15px] transition-colors',
+                        windowMethod === m.key
+                          ? 'border-brand-blue bg-brand-blue/5 text-gray-900 font-semibold'
+                          : 'border-gray-200 text-gray-700 hover:border-gray-300',
+                      )}
+                    >
+                      <input
+                        type="radio"
+                        name="pay-kr-method"
+                        value={m.key}
+                        checked={windowMethod === m.key}
+                        onChange={() => setWindowMethod(m.key)}
+                        className="accent-brand-blue"
+                      />
+                      {m.label}
+                    </label>
+                  ))}
+                </div>
+                <p className="mt-3 text-xs text-gray-500">
+                  결제하기를 누르면 토스페이먼츠 결제창이 열립니다.
+                </p>
+              </fieldset>
             )}
 
             <div id="toss-payment-methods" />

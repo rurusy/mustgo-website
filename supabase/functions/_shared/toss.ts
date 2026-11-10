@@ -1,8 +1,10 @@
 // 토스페이먼츠 코어 API 공용 헬퍼 (국내 원화 결제).
 //
 // Secrets (Edge Function Secrets 에 등록):
-//   TOSS_SECRET_KEY   상점관리자 → API 개별 연동 키의 시크릿 키
-//                     (test_gsk_… / live_gsk_…)  ← 절대 프론트엔드/저장소에 두지 말 것
+//   TOSS_SECRET_KEY   개발자센터 → API 키. 프론트의 VITE_TOSS_CLIENT_KEY 와 같은 종류의 짝:
+//                     결제위젯 연동 키면 test_gsk_… / live_gsk_…,
+//                     API 개별 연동 키(결제창)면 test_sk_… / live_sk_…
+//                     ← 절대 프론트엔드/저장소에 두지 말 것
 //
 // 테스트/운영 구분은 별도 env 없이 키 접두사(test_ / live_)로 결정됩니다.
 // 엔드포인트는 하나이고, 어떤 키로 호출하느냐에 따라 테스트/실거래가 갈립니다.
