@@ -7,13 +7,13 @@ import { cn } from '../design/cn'
 // 개인정보처리방침. 개인정보보호법 제30조 및 표준 개인정보 처리방침(KISA/PIPC) 기준.
 // 실제 수집·처리 현황을 코드 기준으로 반영:
 //   - 문의(inquiries): 회사·성명·직책·연락처·이메일·문의내용
-//   - 결제(payments/payments_kr): 결제자 이름·이메일·금액·통화·결제수단·거래정보
-//                                  (원화는 토스페이먼츠, USD/EUR는 PayPal)
-//   - 저장: Supabase(AWS 서울 리전, 국내) / 위탁: 토스페이먼츠(국내), Resend, PayPal
-//   - 국외이전: PayPal·Resend·Vercel·Cloudflare·Google (토스페이먼츠는 국내라 제외)
+//   - 결제(payments): 결제자 이름·이메일·금액·통화·결제수단·거래정보 (USD/EUR, PayPal)
+//   - 국내 원화 결제: 페이앱((주)유디아이디) 결제 요청 링크 — 담당자가 고객 휴대폰으로 발송
+//   - 저장: Supabase(AWS 서울 리전, 국내) / 위탁: 페이앱(국내), Resend, PayPal
+//   - 국외이전: PayPal·Resend·Vercel·Cloudflare·Google (페이앱은 국내라 제외)
 //
-// 시행일 2026-07-11, 보호책임자 대표 이종화, 문의 데이터 보유 최대 3년.
-// "초안"·"확정 예정" 표기는 토스페이먼츠 가맹 심사 때 걷어냄(2026-11-03).
+// 시행일 2026-11-12(최초 2026-07-11), 보호책임자 대표 이종화, 문의 데이터 보유 최대 3년.
+// 2026-11-12: 토스페이먼츠 계약 해지 → 국내 결제대행사를 페이앱으로 교체.
 // =============================================================================
 
 function H2({ children }) {
@@ -64,13 +64,13 @@ function Table({ head, rows }) {
 // 처리위탁 (수탁자)
 const KO_PROCESSORS = [
   ['Supabase Inc.', '문의·결제 데이터의 저장 및 서버 인프라 운영', '저장 위치: 대한민국(AWS 서울 리전) · 운영사 소재: 미국'],
-  ['토스페이먼츠 주식회사', '국내 원화 결제 처리 및 결제수단 관리', '대한민국'],
+  ['(주)유디아이디 (페이앱)', '국내 원화 카드결제 처리, 결제 요청 문자·알림톡 발송', '대한민국'],
   ['PayPal (PayPal Holdings, Inc.)', '해외 통화(USD/EUR) 결제 처리 및 결제수단 관리', '미국 등'],
   ['Resend (Resend, Inc.)', '문의·결제 접수 시 관리자 알림 이메일 발송', '미국'],
 ]
 const EN_PROCESSORS = [
   ['Supabase Inc.', 'Storage of inquiry/payment data and server infrastructure', 'Data stored in Korea (AWS Seoul) · operator based in the US'],
-  ['Toss Payments Inc.', 'Domestic (KRW) payment processing and payment-method handling', 'Republic of Korea'],
+  ['UDID Co., Ltd. (PayApp)', 'Domestic (KRW) card payment processing and sending payment-request text/KakaoTalk messages', 'Republic of Korea'],
   ['PayPal (PayPal Holdings, Inc.)', 'International (USD/EUR) payment processing and payment-method handling', 'United States, etc.'],
   ['Resend (Resend, Inc.)', 'Sending admin notification emails for inquiries/payments', 'United States'],
 ]
@@ -136,7 +136,7 @@ export default function PrivacyPage() {
             개인정보처리방침
           </h1>
           <p className="text-sm text-gray-400 mt-3">
-            시행일: 2026년 7월 11일 · (주)머스트고 (Mustgo Co., Ltd.) · 사업자등록번호 618-81-35992 ·
+            시행일: 2026년 11월 12일 · (주)머스트고 (Mustgo Co., Ltd.) · 사업자등록번호 618-81-35992 ·
             통신판매업 신고번호 2026-대구수성구-0781
           </p>
           <nav className="mt-4 text-sm text-brand-blue flex gap-4">
@@ -156,13 +156,15 @@ export default function PrivacyPage() {
             <P>회사는 서비스 제공에 필요한 최소한의 개인정보를 다음과 같이 수집합니다.</P>
             <UL>
               <li><strong>문의하기(상담 신청):</strong> 회사명, 담당자 성명, 직책(선택), 연락처, 이메일, 문의 내용, 수집·이용 동의 여부</li>
-              <li><strong>온라인 결제:</strong> 결제자 이름, 결제자 이메일, 결제 금액·통화, 결제수단(카드/간편결제/계좌이체/가상계좌 구분), 결제 식별정보(토스페이먼츠 주문·결제번호 또는 PayPal 주문·거래번호), 고객이 입력한 견적번호/메모</li>
+              <li><strong>국내 결제(결제 요청 링크):</strong> 결제자 휴대폰 번호, 결제자 성명(입력 시), 결제 금액, 상품(견적)명, 결제수단 구분, 승인번호 등 거래 식별정보</li>
+              <li><strong>해외 온라인 결제(PayPal):</strong> 결제자 이름, 결제자 이메일, 결제 금액·통화, 결제수단 구분, 결제 식별정보(PayPal 주문·거래번호), 고객이 입력한 견적번호/메모</li>
               <li><strong>자동 수집:</strong> 서비스 이용 과정에서 접속 IP, 브라우저·기기 정보, 접속 일시 등이 생성·수집될 수 있습니다.</li>
             </UL>
             <P>
-              수집 방법: 사이트의 문의 폼 및 결제 화면을 통한 이용자의 직접 입력, 서비스 이용 중
-              자동 생성. <strong>신용카드 번호 등 결제수단 정보는 결제대행사(토스페이먼츠·PayPal)가
-              처리하며 회사는 저장하지 않습니다.</strong>
+              수집 방법: 사이트의 문의 폼 및 결제 화면을 통한 이용자의 직접 입력, 상담 과정에서 받은
+              연락처로 결제 요청 링크를 보낼 때의 회사 입력, 서비스 이용 중 자동 생성.{' '}
+              <strong>신용카드 번호 등 결제수단 정보는 결제대행사(페이앱·PayPal)가 처리하며 회사는
+              저장하지 않습니다.</strong>
             </P>
 
             <H2>2. 개인정보의 수집·이용 목적</H2>
@@ -232,14 +234,14 @@ export default function PrivacyPage() {
             <UL>
               <li>전송 구간 암호화(HTTPS/TLS)를 통한 데이터 전송 보호</li>
               <li>접근권한 통제 — 문의·결제 데이터는 인증된 관리자만 조회 가능하도록 데이터베이스 접근을 제한(RLS)</li>
-              <li>결제수단(카드) 정보 미저장 — 결제는 토스페이먼츠·PayPal이 처리</li>
+              <li>결제수단(카드) 정보 미저장 — 결제는 페이앱·PayPal이 처리</li>
               <li>개인정보 처리 최소화 및 접근 기록 관리</li>
             </UL>
 
             <H2>10. 쿠키 등 자동수집 장치</H2>
             <P>
               회사는 이용자의 행태정보를 수집하는 자체 광고·분석 쿠키를 사용하지 않습니다. 다만
-              결제(토스페이먼츠·PayPal), 지도(Google Maps), 글꼴(Google Fonts) 등 제3자 서비스가 해당 기능
+              결제(페이앱·PayPal), 지도(Google Maps), 글꼴(Google Fonts) 등 제3자 서비스가 해당 기능
               제공을 위해 쿠키를 설정할 수 있으며, 이용자는 브라우저 설정을 통해 쿠키 저장을 거부할
               수 있습니다(일부 기능 이용이 제한될 수 있음).
             </P>
@@ -262,9 +264,13 @@ export default function PrivacyPage() {
 
             <H2>13. 시행 및 변경</H2>
             <P>
-              본 개인정보처리방침은 2026년 7월 11일부터 적용됩니다. 법령·서비스 변경에 따라 내용이
+              본 개인정보처리방침은 2026년 11월 12일부터 적용됩니다. 법령·서비스 변경에 따라 내용이
               수정될 경우 사이트를 통해 변경 사항을 공지합니다.
             </P>
+            <UL>
+              <li>2026년 7월 11일: 최초 시행</li>
+              <li>2026년 11월 12일: 국내 결제대행사 변경(토스페이먼츠 → 페이앱), 국내 결제 시 수집 항목 정비</li>
+            </UL>
           </article>
 
           <hr className="my-14 border-gray-200" />
@@ -282,13 +288,15 @@ export default function PrivacyPage() {
             <P>We collect the minimum personal information needed to provide our services:</P>
             <UL>
               <li><strong>Inquiry form:</strong> company name, contact person's name, title (optional), phone, email, message, and consent status.</li>
-              <li><strong>Online payment:</strong> payer name, payer email, amount and currency, payment method type (card / easy-pay / bank transfer / virtual account), payment identifiers (Toss Payments order/payment ID or PayPal order/transaction ID), and any quote number/memo you enter.</li>
+              <li><strong>Domestic payment (payment-request link):</strong> payer's mobile number, payer name (if entered), amount, product (quote) name, payment method type, and transaction identifiers such as the approval number.</li>
+              <li><strong>International online payment (PayPal):</strong> payer name, payer email, amount and currency, payment method type, payment identifiers (PayPal order/transaction ID), and any quote number/memo you enter.</li>
               <li><strong>Automatically collected:</strong> access IP, browser/device information, and access time may be generated while using the Site.</li>
             </UL>
             <P>
-              How: direct entry via the Site's inquiry form and payment screen, and automatic
-              generation during use. <strong>Card and other payment-method details are handled by the
-              payment processors (Toss Payments and PayPal); we do not store them.</strong>
+              How: direct entry via the Site's inquiry form and payment screen, entry by the Company
+              when sending a payment-request link to the contact number provided during consultation,
+              and automatic generation during use. <strong>Card and other payment-method details are
+              handled by the payment processors (PayApp and PayPal); we do not store them.</strong>
             </P>
 
             <H2>2. Purposes of collection &amp; use</H2>
@@ -359,14 +367,14 @@ export default function PrivacyPage() {
             <UL>
               <li>Encryption in transit (HTTPS/TLS).</li>
               <li>Access control — inquiry/payment data is restricted so only an authenticated administrator can read it (row-level security).</li>
-              <li>No storage of card details — payment is handled by Toss Payments and PayPal.</li>
+              <li>No storage of card details — payment is handled by PayApp and PayPal.</li>
               <li>Data minimization and access logging.</li>
             </UL>
 
             <H2>10. Cookies &amp; automatic collection</H2>
             <P>
               We do not use our own advertising/analytics cookies to collect behavioral data. However,
-              third-party services — payment (Toss Payments, PayPal), maps (Google Maps), fonts (Google Fonts) — may
+              third-party services — payment (PayApp, PayPal), maps (Google Maps), fonts (Google Fonts) — may
               set cookies to provide their features. You can refuse cookies via your browser settings
               (some features may be limited).
             </P>
@@ -389,9 +397,13 @@ export default function PrivacyPage() {
 
             <H2>13. Effective date &amp; changes</H2>
             <P>
-              This Privacy Policy takes effect on July 11, 2026. If the content changes due to law or
-              service updates, we will announce the changes through the Site.
+              This Privacy Policy takes effect on November 12, 2026. If the content changes due to law
+              or service updates, we will announce the changes through the Site.
             </P>
+            <UL>
+              <li>July 11, 2026: first effective.</li>
+              <li>November 12, 2026: domestic payment processor changed (Toss Payments → PayApp); items collected for domestic payment updated.</li>
+            </UL>
           </article>
         </div>
       </main>

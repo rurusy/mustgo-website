@@ -4,8 +4,10 @@ import { BrandText } from '../components/ui'
 import { cn } from '../design/cn'
 
 // =============================================================================
-// 결제·환불 정책. 시행일 2026-11-03 (사장님 확정 — 토스페이먼츠 가맹 심사 때 "초안"
-// 표기를 걷어냄).
+// 결제·환불 정책. 시행일 2026-11-12 (최초 2026-11-03 사장님 확정).
+// 2026-11-12: 토스페이먼츠 계약 해지 → 국내 원화 결제는 담당자가 보내는 페이앱
+// ((주)유디아이디) 결제 요청 링크로. 가상계좌·/pay-kr 관련 문구 삭제. 페이앱 결제는
+// 카드 명세서·매출전표에 가맹점이 '페이앱'으로 찍혀서 그 안내를 넣었다.
 // 취소수수료는 공정위 소비자분쟁해결기준(국외여행) 값에 맞춤: 0/10/15/20/30/50%.
 // 견적 유효기간 7일, 환불 처리 영업일 5~10일, 서류 발송 영업일 2일은 필요하면 갱신.
 // =============================================================================
@@ -67,9 +69,10 @@ const KO_SCHEDULE = [
   ['당일 / 개시 후 / No-show', '50%'],
 ]
 
-// 상단 "돌아가기". 사이트 안에서 링크를 타고 왔으면(상품 페이지 등) 그 페이지로 되돌아가고,
+// 상단 "돌아가기". 사이트 안에서 링크를 타고 왔으면 그 페이지로 되돌아가고,
 // 새 탭으로 바로 열렸으면(결제 화면의 정책 링크는 target=_blank) 되돌아갈 곳이 없으니
-// 결제 페이지로 보낸다 — 한국어 섹션(#ko)으로 왔으면 /pay-kr, 아니면 /pay.
+// 한국어 섹션(#ko)으로 왔으면 홈으로, 아니면 해외 결제 페이지 /pay 로 보낸다
+// (국내 결제는 페이앱 링크라 사이트에 결제 페이지가 없다).
 // location.key 가 'default' 면 이 탭에서 앱이 처음 연 페이지라는 뜻이다.
 function BackLink() {
   const location = useLocation()
@@ -87,8 +90,8 @@ function BackLink() {
     )
   }
   return (
-    <Link to={ko ? '/pay-kr' : '/pay'} className={cls}>
-      {ko ? '← 결제 페이지로' : '← Back to payment'}
+    <Link to={ko ? '/' : '/pay'} className={cls}>
+      {ko ? '← 홈으로' : '← Back to payment'}
     </Link>
   )
 }
@@ -133,7 +136,7 @@ export default function PolicyPage() {
             Payment &amp; Refund Policy
           </h1>
           <p className="text-sm text-gray-400 mt-3">
-            Effective date: November 3, 2026 (시행일: 2026년 11월 3일) · Mustgo Co., Ltd. ((주)머스트고) · Business Reg. No.
+            Effective date: November 12, 2026 (시행일: 2026년 11월 12일) · Mustgo Co., Ltd. ((주)머스트고) · Business Reg. No.
             618-81-35992 · Mail-Order Business Reg. No. 2026-대구수성구-0781
           </p>
           <nav className="mt-4 text-sm text-brand-blue font-eng flex gap-4">
@@ -147,8 +150,9 @@ export default function PolicyPage() {
             <P>
               This policy applies to payments made to <BrandText /> Co., Ltd. ("Mustgo", "we") for
               custom-quoted travel and related services (inbound tours in Korea, corporate travel
-              arrangements, and similar) via mustgokorea.co.kr/pay (international) or
-              mustgokorea.co.kr/pay-kr (domestic, Korean Won). By making a payment you agree to
+              arrangements, and similar) via mustgokorea.co.kr/pay (international) or a
+              payment-request link sent by your Mustgo consultant (domestic, Korean Won). By making a
+              payment you agree to
               this policy and to the specific quotation provided by your Mustgo consultant.
             </P>
 
@@ -168,17 +172,16 @@ export default function PolicyPage() {
 
             <H2>4. Payment</H2>
             <UL>
-              <li>Domestic (KRW) payments are processed securely by Toss Payments — credit/debit card, easy-pay wallets, bank transfer, or virtual account.</li>
+              <li>Domestic (KRW) payments are made by credit/debit card through a payment-request link (text message or KakaoTalk) sent by your consultant, and processed securely by PayApp (UDID Co., Ltd.), a registered payment gateway. Your card statement and sales slip show the merchant as PayApp, not Mustgo.</li>
               <li>International (USD/EUR) payments are processed securely by PayPal (PayPal balance or credit/debit card).</li>
               <li>Mustgo never stores your card details; they are handled entirely by the payment provider.</li>
-              <li>Virtual account payments are only complete once your deposit is received by the due date shown at checkout. If the deadline passes, the account expires and you will need to pay again.</li>
               <li>Your booking is confirmed only after payment is received and your consultant confirms it in writing.</li>
             </UL>
 
             <H2>5. Service delivery (shipping policy)</H2>
             <UL>
               <li>Mustgo provides travel and business-trip arrangement services; <strong>no physical goods are shipped.</strong></li>
-              <li>Once your payment is confirmed, your consultant will email the necessary documents — booking confirmation, itinerary, e-tickets, and accommodation or ground-service vouchers — to the email address you entered at checkout within 2 business days.</li>
+              <li>Once your payment is confirmed, your consultant will email the necessary documents — booking confirmation, itinerary, e-tickets, and accommodation or ground-service vouchers — to the email address you provided within 2 business days.</li>
               <li>Air tickets are issued as e-tickets and emailed as soon as the airline issues them; no paper tickets are issued.</li>
               <li>Services are delivered at the dates, times and places stated in your confirmation and itinerary (airport meet &amp; greet, vehicles, guides, accommodation, etc.).</li>
               <li>If you have not received your documents or find an error, contact us at +82-2-1551-5992 or wemustgo@mustgokorea.com and we will resend or correct them right away.</li>
@@ -199,9 +202,8 @@ export default function PolicyPage() {
             </UL>
             <UL>
               <li>In addition, non-recoverable third-party costs already incurred on your behalf (airline tickets, hotel/venue deposits, permits, event tickets, guide/vehicle bookings) are non-refundable to the extent Mustgo cannot recover them.</li>
-              <li>Payment processing fees charged by PayPal or Toss Payments may be non-refundable.</li>
-              <li>Approved refunds are returned to the original payment method through the provider used (Toss Payments for KRW, PayPal for USD/EUR), normally within 5–10 business days of approval; posting times may vary by card issuer or bank.</li>
-              <li>For virtual account payments there is no original payment method to reverse, so we will ask you for a bank account in the payer's name to send the refund to.</li>
+              <li>Payment processing fees charged by PayPal or PayApp may be non-refundable.</li>
+              <li>Approved refunds are returned to the original payment method through the provider used (PayApp for KRW, PayPal for USD/EUR), normally within 5–10 business days of approval; posting times may vary by card issuer or bank.</li>
             </UL>
 
             <H2>7. Cancellation or changes by Mustgo</H2>
@@ -263,8 +265,8 @@ export default function PolicyPage() {
             <H2>1. 적용 범위</H2>
             <P>
               본 정책은 <BrandText /> (주)머스트고("머스트고")가 제공하는 맞춤 견적 여행 및 관련
-              서비스(한국 인바운드 투어, 기업 출장 수배 등)에 대해 mustgokorea.co.kr/pay-kr(국내 원화)
-              및 mustgokorea.co.kr/pay(해외 통화)를 통해 이루어지는 결제에 적용됩니다. 결제 시 본
+              서비스(한국 인바운드 투어, 기업 출장 수배 등)에 대해 담당 컨설턴트가 보내는 결제 요청
+              링크(국내 원화) 및 mustgokorea.co.kr/pay(해외 통화)를 통해 이루어지는 결제에 적용됩니다. 결제 시 본
               정책과 담당 컨설턴트가 제시한 견적 조건에 동의한 것으로 봅니다.
             </P>
 
@@ -283,17 +285,17 @@ export default function PolicyPage() {
 
             <H2>4. 결제</H2>
             <UL>
-              <li>국내 원화 결제는 토스페이먼츠를 통해 신용·체크카드, 간편결제, 계좌이체, 가상계좌로 안전하게 처리됩니다.</li>
+              <li>국내 원화 결제는 담당 컨설턴트가 문자·카카오 알림톡으로 보내는 결제 요청 링크에서 신용·체크카드로 하시며, 금융위원회에 등록된 결제대행사 페이앱((주)유디아이디)이 안전하게 처리합니다.</li>
+              <li>페이앱으로 결제하시면 카드 명세서와 매출전표에 가맹점명이 머스트고가 아닌 <strong>'페이앱'</strong>으로 표시됩니다.</li>
               <li>해외 통화(USD/EUR) 결제는 PayPal(PayPal 잔액 또는 신용/체크카드)로 안전하게 처리됩니다.</li>
               <li>머스트고는 카드 정보를 저장하지 않으며, 카드 정보는 결제대행사가 전적으로 처리합니다.</li>
-              <li>가상계좌 결제는 결제창에 안내된 입금 기한까지 입금이 확인되어야 완료됩니다. 기한이 지나면 계좌가 만료되어 다시 결제하셔야 합니다.</li>
               <li>예약은 결제 확인 및 담당 컨설턴트의 서면 확정 이후에만 성립합니다.</li>
             </UL>
 
             <H2>5. 서비스 제공 방법 (배송 정책)</H2>
             <UL>
               <li>머스트고의 상품은 여행·출장 수배 서비스로, <strong>실물 상품의 배송은 없습니다.</strong></li>
-              <li>결제가 확인되면 담당 컨설턴트가 영업일 기준 2일 이내에 예약 확정서, 일정표, 전자항공권(e-ticket), 숙박·현지 서비스 바우처 등 필요한 서류를 결제 시 입력하신 이메일로 발송합니다.</li>
+              <li>결제가 확인되면 담당 컨설턴트가 영업일 기준 2일 이내에 예약 확정서, 일정표, 전자항공권(e-ticket), 숙박·현지 서비스 바우처 등 필요한 서류를 알려주신 이메일로 발송합니다.</li>
               <li>항공권은 항공사 발권 완료 즉시 전자항공권으로 발송되며, 별도의 종이 항공권은 발행하지 않습니다.</li>
               <li>서비스는 확정서·일정표에 기재된 일시와 장소에서 제공됩니다(공항 영접·차량·가이드·숙박 등).</li>
               <li>서류를 받지 못하셨거나 내용에 오류가 있는 경우 1551-5992 또는 wemustgo@mustgokorea.com으로 연락해 주시면 즉시 재발송·정정해 드립니다.</li>
@@ -313,9 +315,8 @@ export default function PolicyPage() {
             </UL>
             <UL>
               <li>또한 고객을 위해 이미 지출된 회수 불가 제3자 비용(항공권, 호텔·행사장 예치금, 허가·입장권, 가이드·차량 예약 등)은 위 표와 무관하게 회수 불가 범위에서 환불되지 않습니다.</li>
-              <li>토스페이먼츠·PayPal 등 결제대행사가 부과하는 결제 수수료는 환불되지 않을 수 있습니다.</li>
-              <li>승인된 환불은 이용하신 결제대행사(원화는 토스페이먼츠, USD/EUR는 PayPal)를 통해 원 결제수단으로 승인일로부터 통상 영업일 5~10일 내 처리되며, 카드사·은행에 따라 반영 시점은 다를 수 있습니다.</li>
-              <li>가상계좌 결제는 되돌릴 원 결제수단이 없으므로, 결제자 명의의 환불 계좌를 별도로 요청드립니다.</li>
+              <li>페이앱·PayPal 등 결제대행사가 부과하는 결제 수수료는 환불되지 않을 수 있습니다.</li>
+              <li>승인된 환불은 이용하신 결제대행사(원화는 페이앱, USD/EUR는 PayPal)를 통해 원 결제수단으로 승인일로부터 통상 영업일 5~10일 내 처리되며, 카드사·은행에 따라 반영 시점은 다를 수 있습니다.</li>
             </UL>
 
             <H2>7. 머스트고의 취소·변경</H2>

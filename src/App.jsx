@@ -1,19 +1,15 @@
 import { useEffect } from 'react'
-import { Route, Routes, useLocation, useNavigate, useNavigationType } from 'react-router-dom'
+import { Navigate, Route, Routes, useLocation, useNavigate, useNavigationType } from 'react-router-dom'
 import { hasPendingRecovery, PASSWORD_RESET_PATH } from './lib/supabase'
 import HomePage from './pages/HomePage'
 import EnHomePage from './pages/EnHomePage'
 import StyleguidePage from './pages/StyleguidePage'
 import PayPage from './pages/PayPage'
-import PayKrPage from './pages/PayKrPage'
-import PayKrResultPage from './pages/PayKrResultPage'
 import PayGuidePage from './pages/PayGuidePage'
 import PolicyPage from './pages/PolicyPage'
 import PrivacyPage from './pages/PrivacyPage'
 import TermsPage from './pages/TermsPage'
 import PrivacyIncidentNoticePage from './pages/PrivacyIncidentNoticePage'
-import ProductPage from './pages/ProductPage'
-import { PRODUCT_PATH } from './data/sampleProduct'
 import { NOTICE_PATH } from './components/layout/PrivacyIncidentBanner'
 import ChecklistPage from './pages/ChecklistPage'
 import AdminLoginPage from './pages/AdminLoginPage'
@@ -101,18 +97,19 @@ export default function App() {
         <Route path="/en" element={<EnHomePage />} />
         <Route path="/styleguide" element={<StyleguidePage />} />
         <Route path="/pay" element={<PayPage />} />
-        {/* 국내 원화 결제(토스페이먼츠). 결제창이 아래 두 URL 로 되돌려보냅니다. */}
-        <Route path="/pay-kr" element={<PayKrPage />} />
-        <Route path="/pay-kr/success" element={<PayKrResultPage outcome="success" />} />
-        <Route path="/pay-kr/fail" element={<PayKrResultPage outcome="fail" />} />
+        {/*
+          국내 원화 결제(토스페이먼츠 /pay-kr)와 토스 심사용 샘플 상품 페이지는 2026-11-12
+          토스 계약 해지로 철거. 국내 고객은 담당자가 보내는 페이앱 결제 요청 링크로 결제한다.
+          예전에 보낸 링크로 들어오면 빈 화면 대신 홈으로 보낸다.
+        */}
+        <Route path="/pay-kr/*" element={<Navigate to="/" replace />} />
+        <Route path="/products/*" element={<Navigate to="/" replace />} />
         <Route path="/how-to-pay" element={<PayGuidePage />} />
         <Route path="/policy" element={<PolicyPage />} />
         <Route path="/privacy" element={<PrivacyPage />} />
         <Route path="/terms" element={<TermsPage />} />
         <Route path={NOTICE_PATH.ko} element={<PrivacyIncidentNoticePage lang="ko" />} />
         <Route path={NOTICE_PATH.en} element={<PrivacyIncidentNoticePage lang="en" />} />
-        {/* 토스 심사용 (샘플) 상품 — 심사 통과 후 삭제 */}
-        <Route path={PRODUCT_PATH} element={<ProductPage />} />
         <Route path="/checklist" element={<ChecklistPage />} />
         <Route path="/admin/login" element={<AdminLoginPage />} />
         {/* 복구 메일 링크의 착지점. Supabase Redirect URLs 에 등록되어 있어야 합니다. */}

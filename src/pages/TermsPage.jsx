@@ -10,6 +10,7 @@ import { cn } from '../design/cn'
 // /privacy 를 참조.
 //
 // "초안" 표기는 토스페이먼츠 가맹 심사 때 걷어냄(2026-11-03).
+// 2026-11-12 개정: 토스페이먼츠 계약 해지 → 제6조 국내 결제를 페이앱 결제 요청 링크로.
 // =============================================================================
 
 function H2({ children }) {
@@ -123,7 +124,7 @@ export default function TermsPage() {
             <H2>제6조 (요금 및 결제)</H2>
             <UL>
               <li>서비스 요금은 건별 견적에 따르며, 결제 금액은 담당 컨설턴트가 안내한 견적 금액입니다.</li>
-              <li>결제는 회사가 제공하는 수단으로 이루어집니다. 국내 결제는 토스페이먼츠를 통해 원화(KRW)로, 해외 결제는 PayPal을 통해 미국 달러(USD) 또는 유로(EUR)로 처리됩니다.</li>
+              <li>결제는 회사가 제공하는 수단으로 이루어집니다. 국내 결제는 담당 컨설턴트가 보내는 결제 요청 링크를 통해 결제대행사 페이앱((주)유디아이디)에서 원화(KRW) 카드결제로, 해외 결제는 PayPal을 통해 미국 달러(USD) 또는 유로(EUR)로 처리됩니다.</li>
               <li>결제·통화·수수료 등 세부 사항은 <Link to="/policy#ko" className={linkCls}>결제·환불 정책</Link>을 따릅니다.</li>
             </UL>
 
@@ -184,6 +185,7 @@ export default function TermsPage() {
 
             <H2>부칙</H2>
             <P>본 약관은 2026년 7월 11일부터 시행합니다.</P>
+            <P>2026년 11월 12일 개정: 제6조의 국내 결제대행사를 페이앱으로 변경.</P>
           </article>
 
           <hr className="my-14 border-gray-200" />
@@ -231,7 +233,7 @@ export default function TermsPage() {
             <H2>Article 6 (Fees &amp; payment)</H2>
             <UL>
               <li>Fees follow each quote; the amount payable is the quoted amount from your consultant.</li>
-              <li>Payment is made through the means the Company provides: domestic payments in Korean Won (KRW) via Toss Payments, and international payments in US Dollars (USD) or Euros (EUR) via PayPal.</li>
+              <li>Payment is made through the means the Company provides: domestic payments by card in Korean Won (KRW) through a payment-request link sent by your consultant, processed by PayApp (UDID Co., Ltd.), and international payments in US Dollars (USD) or Euros (EUR) via PayPal.</li>
               <li>Details of payment, currency, and fees follow the <Link to="/policy" className={linkCls}>Payment &amp; Refund Policy</Link>.</li>
             </UL>
 
@@ -294,6 +296,7 @@ export default function TermsPage() {
 
             <H2>Addendum</H2>
             <P>These Terms take effect on July 11, 2026.</P>
+            <P>Amended November 12, 2026: the domestic payment processor in Article 6 changed to PayApp.</P>
           </article>
         </div>
       </main>

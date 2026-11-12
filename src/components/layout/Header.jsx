@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { cn } from '../../design/cn'
 import { Button } from '../ui'
-import { PRODUCT_PATH } from '../../data/sampleProduct'
 
 // 메뉴는 홈의 섹션 앵커입니다. 관광지·도시 페이지에는 그 섹션이 없으므로 링크는 항상
 // 홈 경로를 붙여(`/#about`, `/en#about`) 만들고, 이미 홈에 있을 때만 그 자리에서 스크롤합니다.
@@ -13,13 +12,11 @@ const navItems = [
   { label: 'Contact', hash: '#contact' },
 ]
 
-// 토스페이먼츠 심사용 (샘플) 상품 링크 — 한국어 메뉴에만. 심사 통과 후 삭제.
-const PRODUCT_NAV = { ko: { to: PRODUCT_PATH, label: '여행상품' } }
-
-// 결제 진입 버튼. 국내 고객은 원화(토스페이먼츠) /pay-kr, 해외 고객은 USD/EUR(PayPal) /pay.
-// 국내 카드는 외국환거래법상 PayPal 로 받을 수 없어 언어별로 경로가 갈립니다.
+// 결제 진입 버튼 — 영어(해외 고객, USD/EUR PayPal /pay)에만 있습니다. 국내 카드는
+// 외국환거래법상 PayPal 로 받을 수 없고, 국내 고객은 담당자가 보내는 페이앱 결제 요청
+// 링크로 결제하므로 한국어 헤더에는 결제 버튼이 없습니다 (토스페이먼츠 /pay-kr 는
+// 2026-11-12 계약 해지로 철거).
 const PAY_ENTRY = {
-  ko: { to: '/pay-kr', label: '결제하기', font: 'sans' },
   en: { to: '/pay', label: 'Pay Online', font: 'eng' },
 }
 
@@ -72,9 +69,8 @@ function LangToggle({ lang, className, onNavigate }) {
 // 따로 두면 가려진다. 앵커 스크롤 오프셋은 헤더 offsetHeight 를 재므로 자동으로 맞는다.
 export function Header({ lang = 'ko', banner = null }) {
   const t = HEADER_COPY[lang]
-  const payEntry = PAY_ENTRY[lang] ?? PAY_ENTRY.ko
+  const payEntry = PAY_ENTRY[lang]
   const home = lang === 'en' ? '/en' : '/'
-  const productNav = PRODUCT_NAV[lang]
   const { pathname } = useLocation()
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
@@ -148,22 +144,19 @@ export function Header({ lang = 'ko', banner = null }) {
                 {item.label}
               </Link>
             ))}
-            {productNav && (
-              <Link to={productNav.to} className="hover:text-brand-blue transition-colors">
-                {productNav.label}
-              </Link>
+            {payEntry && (
+              <Button
+                as={Link}
+                to={payEntry.to}
+                variant="blueSolid"
+                size="pillSm"
+                font={payEntry.font}
+                className="gap-2"
+              >
+                <CardIcon />
+                {payEntry.label}
+              </Button>
             )}
-            <Button
-              as={Link}
-              to={payEntry.to}
-              variant="blueSolid"
-              size="pillSm"
-              font={payEntry.font}
-              className="gap-2"
-            >
-              <CardIcon />
-              {payEntry.label}
-            </Button>
             <LangToggle lang={lang} />
           </nav>
 
@@ -248,27 +241,20 @@ export function Header({ lang = 'ko', banner = null }) {
               {item.label}
             </Link>
           ))}
-          {productNav && (
-            <Link
-              to={productNav.to}
+          {payEntry && (
+            <Button
+              as={Link}
+              to={payEntry.to}
               onClick={() => setMenuOpen(false)}
-              className="py-4 text-lg font-medium text-ink-800 hover:text-brand-blue active:text-brand-blue border-b border-gray-100 transition-colors"
+              variant="blueSolid"
+              size="md"
+              font={payEntry.font}
+              className="w-full gap-2 mt-6"
             >
-              {productNav.label}
-            </Link>
+              <CardIcon />
+              {payEntry.label}
+            </Button>
           )}
-          <Button
-            as={Link}
-            to={payEntry.to}
-            onClick={() => setMenuOpen(false)}
-            variant="blueSolid"
-            size="md"
-            font={payEntry.font}
-            className="w-full gap-2 mt-6"
-          >
-            <CardIcon />
-            {payEntry.label}
-          </Button>
           <LangToggle lang={lang} onNavigate={() => setMenuOpen(false)} className="mt-8" />
         </nav>
       </aside>

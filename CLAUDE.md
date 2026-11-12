@@ -25,18 +25,17 @@ format-on-save (see "index.html head is single-line on purpose" below).
 
 ### Routing
 
-`src/main.jsx` wraps `App` in `<BrowserRouter>`. `src/App.jsx` defines 16 fixed routes in four groups, plus the inbound-content routes it generates from `src/data/attractions.js` (see **Inbound content pages** below). `ScrollToTop` there resets the scroll on every PUSH navigation — React Router keeps the old offset otherwise, and going from the long homepage to a short page lands the visitor near its footer; a `#hash` destination scrolls to that section minus the sticky header's height instead, and POP (back/forward) is left to the browser.
+`src/main.jsx` wraps `App` in `<BrowserRouter>`. `src/App.jsx` defines a set of fixed routes in four groups, plus the inbound-content routes it generates from `src/data/attractions.js` (see **Inbound content pages** below). `ScrollToTop` there resets the scroll on every PUSH navigation — React Router keeps the old offset otherwise, and going from the long homepage to a short page lands the visitor near its footer; a `#hash` destination scrolls to that section minus the sticky header's height instead, and POP (back/forward) is left to the browser.
 
 **Marketing** — the only pages meant to be indexed.
 - `/` → `HomePage` — Korean marketing site (one scrollable page composed of section components)
 - `/en` → `EnHomePage` — English counterpart, assembled from `sections/en/` + `layout/en/` variants plus the `lang`-aware shared components (`Header`, `Contact`, `FloatingCTA`, `HolidayNotice`)
 - `/styleguide` → `StyleguidePage` — live catalog of every UI primitive and marketing card, rendered with the real components
 
-**Payment** — setup notes in `docs/toss-payments-setup.md` and `docs/paypal-sandbox-test.md`.
-- `/pay` → overseas customers, USD/EUR via PayPal
-- `/pay-kr` → domestic customers, KRW via Toss Payments (domestic cards can't be charged through PayPal under 외국환거래법, hence the split)
-- `/pay-kr/success` and `/pay-kr/fail` → both `PayKrResultPage`, distinguished by an `outcome` prop; these are the URLs the Toss checkout redirects back to
+**Payment** — setup notes in `docs/paypal-sandbox-test.md`.
+- `/pay` → overseas customers, USD/EUR via PayPal (only the English header links to it)
 - `/how-to-pay` → `PayGuidePage`, illustrated guide for overseas customers
+- Domestic (KRW) customers have **no payment page**: domestic cards can't be charged through PayPal under 외국환거래법, so the consultant sends a PayApp ((주)유디아이디) payment-request link from the PayApp app — nothing on the site integrates with it, and those payments don't show up in `/admin/payments`. The Toss Payments `/pay-kr` flow and the sample product page were removed on 2026-11-12 when the Toss contract was cancelled; `/pay-kr/*` and `/products/*` redirect to `/` so old links don't land on a blank page. `docs/toss-payments-setup.md`, `supabase/functions/toss-*` and the `payments_kr` table remain for the record.
 
 **Legal / support** — `/policy` (English payment & refund), `/privacy` (개인정보처리방침), `/terms` (이용약관), `/checklist` (확인 요청)
 
