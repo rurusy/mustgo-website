@@ -303,8 +303,9 @@ export default function StyleguidePage() {
                 image="https://images.unsplash.com/photo-1500932334442-8761ee4810a7?auto=format&fit=crop&q=80&w=1200"
                 alt="Golf course"
                 eyebrow="Golf Tour"
-                title="title 있는 카드 (단체여행 섹션)"
+                title="title·to 있는 카드 (단체여행 섹션)"
                 description="일본·동남아 티타임부터 골프백 운송까지"
+                to="/group-travel/#golf"
               />
             </div>
 

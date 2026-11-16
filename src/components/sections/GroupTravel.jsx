@@ -14,34 +14,48 @@ import { ProcessSteps } from '../marketing/ProcessSteps'
 
 const photo = (id) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&q=80&w=1200`
 
+// 카드 설명은 쉼표에서 줄을 나눈다. 앞 구절이 폰 한 줄(390px)에 들어가는 길이라 어느 너비에서나
+// 두 줄로 맞고, 나누지 않으면 폰에서 '되도록'처럼 한 어절만 다음 줄에 남는다.
+const lines = (first, second) => (
+  <>
+    {first}
+    <br />
+    {second}
+  </>
+)
+
 const services = [
   {
     image: photo('1511795409834-ef04bbd61622'),
     alt: 'Long banquet table set with glassware and flowers for a gala dinner',
     eyebrow: 'Incentive Travel',
+    anchor: 'incentive',
     title: '기업 인센티브',
-    description: '성과에 대한 보답이, 오래 기억되는 여행이 되도록',
+    description: lines('성과에 대한 보답이,', '오래 기억되는 여행이 되도록'),
   },
   {
     image: photo('1436491865332-7a61a109cc05'),
     alt: 'Airplane wing above the clouds at sunset',
     eyebrow: 'Group Travel',
+    anchor: 'group',
     title: '단체여행',
-    description: '인원이 많아도, 한 사람처럼 세심하게',
+    description: lines('인원이 많아도,', '한 사람처럼 세심하게'),
   },
   {
     image: photo('1500932334442-8761ee4810a7'),
     alt: 'Aerial view of a golf course green with bunkers',
     eyebrow: 'Golf Tour',
+    anchor: 'golf',
     title: '해외골프여행',
-    description: '일본·동남아 티타임부터 골프백 운송까지, 라운딩에만 집중하실 수 있도록',
+    description: lines('일본·동남아 티타임부터 골프백 운송까지,', '라운딩에만 집중하실 수 있도록'),
   },
   {
     image: photo('1516426122078-c23e76319801'),
     alt: 'Safari vehicle on the savanna at sunset',
     eyebrow: 'Special Destinations',
+    anchor: 'special',
     title: '특수지역여행',
-    description: '아프리카·남미처럼 먼 곳일수록, 준비가 여행의 절반입니다',
+    description: lines('아프리카·남미처럼 먼 곳일수록,', '준비가 여행의 절반입니다'),
   },
 ]
 
@@ -79,9 +93,10 @@ export function GroupTravel() {
       </Fade>
 
       <div className="grid sm:grid-cols-2 gap-4 lg:gap-6 mt-16 max-w-5xl mx-auto">
-        {services.map((s, idx) => (
+        {/* 카드마다 상세 페이지의 해당 서비스 글로 보낸다(anchor = GroupTravelPage 의 article id). */}
+        {services.map(({ anchor, ...s }, idx) => (
           <Fade key={s.eyebrow} delay={idx * 0.1}>
-            <ImageCard {...s} />
+            <ImageCard {...s} to={`${GROUP_TRAVEL_PATH}#${anchor}`} />
           </Fade>
         ))}
       </div>
