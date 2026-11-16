@@ -91,7 +91,7 @@ const radioLabels = {
       <>
         Group &amp; Incentive
         <span className="hidden sm:inline"> — 기업 인센티브·단체여행 문의</span>
-        <span className="sm:hidden"> (기업 인센티브·단체여행 문의)</span>
+        <span className="sm:hidden"> (단체여행 문의)</span>
       </>
     ),
     inbound: (
@@ -141,7 +141,12 @@ const CONTACT_COPY = {
         빠른 회신,<br className="sm:hidden" /> <BrandText />가 드립니다.
       </>
     ),
-    sub: '영업일 기준 1일 이내, 담당 컨설턴트가 직접 회신해 드립니다.',
+    sub: (
+      <>
+        영업일 기준 1일 이내,
+        <br className="sm:hidden" /> 담당 컨설턴트가 직접 회신해 드립니다.
+      </>
+    ),
     inquiryType: '문의 유형',
     company: '회사명',
     companyPh: '소속 회사명',
@@ -154,7 +159,7 @@ const CONTACT_COPY = {
     email: '이메일',
     emailPh: '업무용 이메일 주소',
     message: '문의 내용',
-    messagePh: '출장 인원, 일정, 특이사항 등을 자유롭게 남겨주세요.',
+    messagePh: '인원, 일정, 특이사항 등을 자유롭게 남겨 주세요.',
     consent: (
       <>
         <a

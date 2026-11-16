@@ -8,7 +8,9 @@ const reasons = [
     title: '양방향 전문성',
     description: (
       <>
-        Outbound와 Inbound를 동시에 운영하는 기업 전문 여행사 <BrandText />는 고객사의 든든한 파트너입니다.
+        Outbound와 Inbound를 함께 운영합니다.
+        <br />
+        양쪽에서 쌓은 네트워크가 고객사의 든든한 자산이 됩니다.
       </>
     ),
     badgeTone: 'blueSoft',
@@ -83,7 +85,7 @@ export function About() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 text-center">
           <Stat target={15} suffix="년+" label="Outbound, Inbound 현장 경험" color="green" />
           <Stat target={50000} suffix="+" label="누적 기업 출장 건수" color="green" />
-          <Stat target={10000} suffix="+" label="Inbound Tour 이용 해외VIP 고객수" color="green" />
+          <Stat target={10000} suffix="+" label="Inbound Tour 이용 해외 VIP 고객 수" color="green" />
           <Stat staticValue="24h" label="긴급 대응 체계 가동" color="green" />
         </div>
       </Fade>

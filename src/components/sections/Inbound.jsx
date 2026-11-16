@@ -10,7 +10,13 @@ const audiences = [
   {
     title: '본사 경영진의 한국 방문 책임자',
     subtitle: 'For HQ travel coordinators arranging executive visits',
-    quote: 'CEO·임원·이사회 멤버의 일정을, 단 한 번의 미스도 없이.',
+    quote: (
+      <>
+        CEO·임원·이사회 멤버의 일정을,
+        <br />
+        단 한 번의 실수도 없이.
+      </>
+    ),
     accent: 'green',
   },
   {
@@ -20,7 +26,7 @@ const audiences = [
     accent: 'green',
   },
   {
-    title: 'B2B 미팅·공장 시찰을 동행하시는 분',
+    title: 'B2B 미팅·공장 시찰 동행 담당자',
     subtitle: 'For partners coordinating buyer or vendor visits',
     quote: '비즈니스의 첫인상이, 거래의 흐름을 좌우합니다.',
     accent: 'green',
@@ -44,7 +50,7 @@ const services = [
     image: 'https://images.unsplash.com/photo-1546874177-9e664107314e?auto=format&fit=crop&q=80&w=1200',
     alt: 'Gyeongbokgung Palace, Seoul',
     eyebrow: 'Cultural Tour',
-    description: '한국의 멋과 맛을 동시에 즐기는 K-컬처체험',
+    description: '한국의 멋과 맛을 함께 즐기는 K-컬처 체험',
   },
 ]
 
@@ -66,13 +72,14 @@ export function Inbound() {
         </h3>
         <div className="space-y-4 max-w-3xl mx-auto">
           <p className="text-gray-300 text-[15px] lg:text-base leading-relaxed">
-            해외 본사·파트너사·바이어가 한국을 방문할 때, 공항 영접부터 비즈니스 미팅, 산업 시찰,
-            문화 체험까지 모든 디테일을 <BrandText />가 책임집니다.
+            해외 본사·파트너사·바이어가 한국을 방문할 때,
+            <br className="hidden sm:inline" /> 공항 영접부터 비즈니스 미팅, 산업 시찰, 문화 체험까지 모든 디테일을{' '}
+            <BrandText />가 책임집니다.
           </p>
           <p className="text-amber-500/80 font-eng text-[15px] leading-relaxed">
-            When global headquarters, partners, and buyers visit Korea, <BrandText /> handles every
-            detail from airport arrival to executive meetings, industry tours, and cultural
-            experiences.
+            When global headquarters, partners, and buyers visit Korea,
+            <br className="hidden sm:inline" /> <BrandText /> handles every detail from airport arrival to
+            executive meetings, industry tours, and cultural experiences.
           </p>
         </div>
       </Fade>

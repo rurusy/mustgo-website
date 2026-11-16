@@ -4,11 +4,17 @@ import { ProcessSteps } from '../marketing/ProcessSteps'
 
 const services = [
   {
-    title: '최적의 항공권, 가장 빠르게',
-    description: '전 세계 GDS, 기업 특가, 비즈니스/퍼스트 컨설팅',
+    title: (
+      <>
+        최적의 항공권,
+        <br />
+        가장 빠르게
+      </>
+    ),
+    description: '전 세계 GDS, 기업 특가, 비즈니스·퍼스트석 컨설팅',
     accent: 'blue',
   },
-  { title: '도착 후의 모든 것까지', description: '호텔 기업요금, 의전 차량, 비자, 단체 보험' },
+  { title: '도착 후의 모든 것까지', description: '호텔 기업 요금, 의전 차량, 비자, 단체 보험' },
   {
     title: (
       <>
@@ -25,10 +31,10 @@ const services = [
       <>
         365일,
         <br />
-        어디서든 한 번의 연락으로
+        어디서든 연락 한 번으로
       </>
     ),
-    description: '긴급 변경, 위기 대응, 24/7 비상 콜센터',
+    description: '긴급 변경, 위기 대응, 24시간 비상 콜센터',
   },
 ]
 
@@ -45,10 +51,11 @@ export function Corporate() {
     >
       <Fade className="max-w-3xl mx-auto text-left sm:text-center">
         <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-6 tracking-tight">
-          기업 해외출장, 항공권부터 정산까지 한 번에
+          기업 해외 출장, 항공권부터 정산까지 한 번에
         </h2>
         <p className="text-amber-500 text-lg opacity-90 leading-relaxed">
-          단순 발권을 넘어, 임직원의 출장 경험과 회사의 비용 효율을 동시에 향상시킵니다.
+          단순 발권을 넘어,
+          <br className="sm:hidden" /> 임직원의 출장 경험과 회사의 비용 효율을 함께 높입니다.
         </p>
       </Fade>
 

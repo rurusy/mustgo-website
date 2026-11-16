@@ -58,8 +58,8 @@ export function Hero() {
           Your Trusted Partner for Business Travel — Outbound &amp; Inbound
         </Fade>
         <Fade as="p" delay={0.2} className="max-w-2xl text-gray-200 text-[15px] md:text-base leading-relaxed mb-12">
-          국내 기업의 해외 출장부터, 해외 VIP의 한국 의전까지 —
-          <br className="hidden md:block" /> 양방향 비즈니스 트래블의 모든 디테일을 책임지는 기업 전문 여행사, 머스트고
+          국내 기업의 해외 출장부터 해외 VIP의 한국 의전까지,
+          <br className="hidden sm:inline" /> 양방향 비즈니스 여정의 모든 디테일을 책임지는 기업 전문 여행사입니다.
         </Fade>
         {/*
           버튼마다 누구를 위한 것인지 한 줄을 얹어, 방한 고객이 첫 화면에서 자기 입구를 바로 찾게 합니다.

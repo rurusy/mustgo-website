@@ -5,6 +5,7 @@ const CTA_COPY = {
   ko: {
     heading: '어떤 도움이 필요하세요?',
     corp: '출장 항공 견적이 필요해요',
+    group: '단체여행·인센티브 견적이 필요해요',
     inbound: '해외 VIP 한국 의전 문의예요',
     button: '빠른 상담 요청',
   },
@@ -15,6 +16,17 @@ const CTA_COPY = {
     button: 'Request a Consultation',
   },
 }
+
+// 메뉴 항목. 누르면 문의 폼으로 가면서 문의 유형을 미리 고른다(Contact 의 prefill 이벤트).
+// group 은 한국어 문구에만 있다 — 영문 홈에는 단체여행 섹션도, 그 문의 유형도 없다.
+const ITEMS = [
+  { key: 'corp', type: 'corporate', dot: 'bg-brand-blue', hover: 'hover:bg-brand-blue-dark' },
+  { key: 'group', type: 'group', dot: 'bg-amber-500', hover: 'hover:bg-ink-800' },
+  { key: 'inbound', type: 'inbound', dot: 'bg-brand-green', hover: 'hover:bg-ink-800' },
+]
+
+const prefill = (type) => () =>
+  window.dispatchEvent(new CustomEvent('mustgo:prefill-inquiry', { detail: { type } }))
 
 export function FloatingCTA({ lang = 'ko' }) {
   const t = CTA_COPY[lang]
@@ -64,20 +76,21 @@ export function FloatingCTA({ lang = 'ko' }) {
           <span className={cn('text-xs font-bold text-gray-500', isEn && 'font-eng')}>{t.heading}</span>
         </div>
         <div className="flex flex-col">
-          <a
-            href="#contact"
-            className="px-4 py-3 text-sm text-gray-800 hover:bg-brand-blue-dark hover:text-white transition-colors flex items-center"
-          >
-            <span className="w-1.5 h-1.5 rounded-full bg-brand-blue mr-2" />
-            {t.corp}
-          </a>
-          <a
-            href="#contact"
-            className="px-4 py-3 text-sm text-gray-800 hover:bg-ink-800 hover:text-white transition-colors border-t border-gray-50 flex items-center"
-          >
-            <span className="w-1.5 h-1.5 rounded-full bg-brand-green mr-2" />
-            {t.inbound}
-          </a>
+          {ITEMS.filter((item) => t[item.key]).map((item, idx) => (
+            <a
+              key={item.key}
+              href="#contact"
+              onClick={prefill(item.type)}
+              className={cn(
+                'px-4 py-3 text-sm text-gray-800 hover:text-white transition-colors flex items-center',
+                item.hover,
+                idx > 0 && 'border-t border-gray-50',
+              )}
+            >
+              <span className={cn('w-1.5 h-1.5 rounded-full mr-2', item.dot)} />
+              {t[item.key]}
+            </a>
+          ))}
         </div>
       </div>
 
