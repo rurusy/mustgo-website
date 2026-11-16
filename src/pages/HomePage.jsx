@@ -8,6 +8,7 @@ import { PrivacyIncidentBanner } from '../components/layout/PrivacyIncidentBanne
 import { Hero } from '../components/sections/Hero'
 import { About } from '../components/sections/About'
 import { Corporate } from '../components/sections/Corporate'
+import { GroupTravel } from '../components/sections/GroupTravel'
 import { Inbound } from '../components/sections/Inbound'
 import { Contact } from '../components/sections/Contact'
 
@@ -21,10 +22,16 @@ export default function HomePage() {
   return (
     <>
       <Header banner={<PrivacyIncidentBanner />} />
-      <main>
+      {/*
+        break-keep(word-break: keep-all) — 한국어는 기본값이면 글자 단위로 줄을 끊어
+        "정산까 / 지"처럼 갈라진다. 어절 단위로만 끊도록 바꾼다. 상속되므로 여기 한 번만 건다.
+        AttractionPage·CityPage 와 같은 방식.
+      */}
+      <main className="break-keep">
         <Hero />
         <About />
         <Corporate />
+        <GroupTravel />
         <Inbound />
         <Contact />
       </main>

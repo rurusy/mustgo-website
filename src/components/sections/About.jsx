@@ -42,14 +42,26 @@ const reasons = [
 export function About() {
   return (
     <Section id="about" tone="light">
-      <Fade className="max-w-3xl mx-auto text-left sm:text-center">
+      <Fade className="max-w-4xl mx-auto text-left sm:text-center">
         <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-8 tracking-tight">
           기업 출장의 양방향 전문가, <BrandText />입니다.
         </h2>
-        <p className="text-gray-600 text-base lg:text-lg leading-[1.8] text-justify">
-          <BrandText />는 국내 기업의 해외 출장과, 기업들의 외국 VIP 고객의 한국 방문을 전문적으로
-          다루는 기업 전문 여행사입니다. 해외출장항공 발권부터 호텔, 의전, Inbound tour까지
-          비즈니스 여정의 모든 단계에서 가장 신뢰할 수 있는 파트너가 되겠습니다.
+        {/*
+          줄 나눔은 사용자와 정한 것(2026-11-17): '~한국 방문을' / '~기업 전문 여행사입니다.' /
+          '~Inbound Tour까지' / '비즈니스 여정의 ~'. 문구는 MustGo_디자인_프롬프트_v2.md 의
+          인사말에 인센티브·단체여행을 더한 것. 글 폭(max-w-4xl)은 긴 줄이 PC에서 한 줄에 들어가도록 넓힌 것이다.
+          폰에서는 문장 안의 줄 나눔(<br>)을 숨겨 글이 자연스럽게 흐르게 하고, 문장 사이만 살짝 띄운다
+          — 강제로 나누면 '한국 방문을'처럼 한 어절만 남는 줄이 생긴다.
+        */}
+        <p className="text-gray-600 text-base lg:text-lg leading-[1.8]">
+          <span className="block mb-2 sm:mb-0">
+            <BrandText />는 국내 기업의 해외 출장과, 해외 VIP의 한국 방문을
+            <br className="hidden sm:inline" /> 동시에 책임지는 기업 전문 여행사입니다.
+          </span>
+          <span className="block">
+            항공권 발권부터 호텔, 인센티브·단체여행, 의전, Inbound Tour까지
+            <br className="hidden sm:inline" /> 비즈니스 여정의 모든 단계에서 가장 신뢰할 수 있는 파트너가 되겠습니다.
+          </span>
         </p>
       </Fade>
 

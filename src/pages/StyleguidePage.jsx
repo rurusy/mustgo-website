@@ -281,6 +281,10 @@ export default function StyleguidePage() {
               <ProcessSteps steps={['요청', '제안', '확정', '동행', '정산']} />
             </div>
 
+            <div className="bg-white border border-gray-200 rounded-lg p-8">
+              <ProcessSteps tone="light" steps={['상담', '기획·제안', '확정·준비', '현지 진행', '정산·보고']} />
+            </div>
+
             <div className="grid md:grid-cols-2 gap-6">
               <ImageCard
                 image="https://images.unsplash.com/photo-1549174122-8353e1a66a36?auto=format&fit=crop&q=80"
@@ -293,6 +297,13 @@ export default function StyleguidePage() {
                 alt="MICE"
                 eyebrow="S4. MICE Operation"
                 description="컨퍼런스, 인센티브, 전시회, 갈라 디너"
+              />
+              <ImageCard
+                image="https://images.unsplash.com/photo-1500932334442-8761ee4810a7?auto=format&fit=crop&q=80&w=1200"
+                alt="Golf course"
+                eyebrow="Golf Tour"
+                title="title 있는 카드 (단체여행 섹션)"
+                description="일본·동남아 티타임부터 골프백 운송까지"
               />
             </div>
 

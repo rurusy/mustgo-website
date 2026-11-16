@@ -67,7 +67,7 @@ export function Hero() {
         */}
         <Fade delay={0.3} className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-6 w-full sm:w-auto">
           <div className="flex flex-col items-center gap-2.5">
-            <span className="text-sm text-gray-300">국내 기업의 해외 출장</span>
+            <span className="text-sm text-gray-300">국내 기업의 해외 출장·단체여행</span>
             <Button
               as="a"
               href="#contact"

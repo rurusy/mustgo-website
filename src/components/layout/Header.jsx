@@ -5,9 +5,11 @@ import { Button } from '../ui'
 
 // 메뉴는 홈의 섹션 앵커입니다. 관광지·도시 페이지에는 그 섹션이 없으므로 링크는 항상
 // 홈 경로를 붙여(`/#about`, `/en#about`) 만들고, 이미 홈에 있을 때만 그 자리에서 스크롤합니다.
-const navItems = [
+// langs 가 있는 항목은 그 언어 홈에만 섹션이 있습니다(#group 은 한국어 홈에만).
+const NAV_ITEMS = [
   { label: 'About Mustgo', hash: '#about' },
   { label: 'Corporate Travel', hash: '#corporate' },
+  { label: 'Group & Incentive', hash: '#group', langs: ['ko'] },
   { label: 'Inbound Tour', hash: '#inbound' },
   { label: 'Contact', hash: '#contact' },
 ]
@@ -69,6 +71,7 @@ function LangToggle({ lang, className, onNavigate }) {
 // 따로 두면 가려진다. 앵커 스크롤 오프셋은 헤더 offsetHeight 를 재므로 자동으로 맞는다.
 export function Header({ lang = 'ko', banner = null }) {
   const t = HEADER_COPY[lang]
+  const navItems = NAV_ITEMS.filter((item) => !item.langs || item.langs.includes(lang))
   const payEntry = PAY_ENTRY[lang]
   const home = lang === 'en' ? '/en' : '/'
   const { pathname } = useLocation()

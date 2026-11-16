@@ -73,6 +73,8 @@ function getMapsEmbedSrc(mapQuery, lang = 'ko') {
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const PHONE_DIGITS_MIN = 9 // 02-XXX-XXXX (서울 9자리) 이상 허용
 
+const INQUIRY_TYPES = ['corporate', 'group', 'inbound', 'other']
+
 // Hoisted to module scope so re-renders (status / inquiryType changes) don't
 // re-allocate fragments + spans for static label markup.
 const radioLabels = {
@@ -82,6 +84,14 @@ const radioLabels = {
         Corporate Travel
         <span className="hidden sm:inline"> — 해외 출장 문의</span>
         <span className="sm:hidden"> (해외 출장 문의)</span>
+      </>
+    ),
+    // 한국어에만 있는 유형 — 영문 홈에는 단체여행 섹션이 없다.
+    group: (
+      <>
+        Group &amp; Incentive
+        <span className="hidden sm:inline"> — 기업 인센티브·단체여행 문의</span>
+        <span className="sm:hidden"> (기업 인센티브·단체여행 문의)</span>
       </>
     ),
     inbound: (
@@ -261,14 +271,14 @@ export function Contact({ lang = 'ko' }) {
   useEffect(() => {
     const handler = (e) => {
       const type = e.detail?.type
-      if (type !== 'corporate' && type !== 'inbound' && type !== 'other') return
+      if (!INQUIRY_TYPES.includes(type) || !labels[type]) return
       setInquiryType(type)
       setStatus('idle')
       setErrorMsg('')
     }
     window.addEventListener('mustgo:prefill-inquiry', handler)
     return () => window.removeEventListener('mustgo:prefill-inquiry', handler)
-  }, [])
+  }, [labels])
 
   const onSubmit = async (e) => {
     e.preventDefault()
@@ -368,27 +378,16 @@ export function Contact({ lang = 'ko' }) {
               <div className="mb-8">
                 <FormLabel size="md" required className="mb-4">{t.inquiryType}</FormLabel>
                 <div className="space-y-3">
-                  <Radio
-                    name="inquiry_type"
-                    value="corporate"
-                    label={labels.corporate}
-                    checked={inquiryType === 'corporate'}
-                    onChange={() => setInquiryType('corporate')}
-                  />
-                  <Radio
-                    name="inquiry_type"
-                    value="inbound"
-                    label={labels.inbound}
-                    checked={inquiryType === 'inbound'}
-                    onChange={() => setInquiryType('inbound')}
-                  />
-                  <Radio
-                    name="inquiry_type"
-                    value="other"
-                    label={labels.other}
-                    checked={inquiryType === 'other'}
-                    onChange={() => setInquiryType('other')}
-                  />
+                  {INQUIRY_TYPES.filter((type) => labels[type]).map((type) => (
+                    <Radio
+                      key={type}
+                      name="inquiry_type"
+                      value={type}
+                      label={labels[type]}
+                      checked={inquiryType === type}
+                      onChange={() => setInquiryType(type)}
+                    />
+                  ))}
                 </div>
               </div>
 

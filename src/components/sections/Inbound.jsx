@@ -65,11 +65,11 @@ export function Inbound() {
           Premium Inbound Experience for Your Global VIPs in Korea.
         </h3>
         <div className="space-y-4 max-w-3xl mx-auto">
-          <p className="text-gray-300 text-[15px] lg:text-base leading-relaxed text-justify">
+          <p className="text-gray-300 text-[15px] lg:text-base leading-relaxed">
             해외 본사·파트너사·바이어가 한국을 방문할 때, 공항 영접부터 비즈니스 미팅, 산업 시찰,
             문화 체험까지 모든 디테일을 <BrandText />가 책임집니다.
           </p>
-          <p className="text-amber-500/80 font-eng text-[15px] leading-relaxed text-justify">
+          <p className="text-amber-500/80 font-eng text-[15px] leading-relaxed">
             When global headquarters, partners, and buyers visit Korea, <BrandText /> handles every
             detail from airport arrival to executive meetings, industry tours, and cultural
             experiences.

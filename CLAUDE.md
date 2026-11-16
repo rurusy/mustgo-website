@@ -60,7 +60,7 @@ The component folders are not arbitrary — they encode a layering rule:
 
 1. **`components/ui/`** — generic, headless-ish primitives (`Button`, `Card`, `Container`, `Section`, `Fade`, `IconBadge`, `SectionHeading`, `Stat`, `BrandText`, `FormField`). Each accepts variant/tone/size props with a `variants` lookup object inside the file. **Re-export new primitives from `components/ui/index.js`** — that's the public surface that pages and marketing cards import from.
 2. **`components/marketing/`** — composed cards built *from* `ui/` primitives (`FeatureCard`, `ServiceCard`, `AudienceCard`, `ImageCard`, `ProcessSteps`, `ContactInfoItem`). These encode marketing-page patterns and should not contain raw Tailwind layout that belongs in a primitive.
-3. **`components/sections/`** — full-width page sections (`Hero`, `About`, `Corporate`, `Inbound`, `Contact`). Each is a self-contained `<section>` with its own copy. The page is just an ordered list of these.
+3. **`components/sections/`** — full-width page sections (`Hero`, `About`, `Corporate`, `GroupTravel`, `Inbound`, `Contact`). `GroupTravel` (기업 인센티브·단체여행) is Korean-only — `/en` has no `#group`, so its header item carries `langs: ['ko']` and the `group` inquiry type only renders in the Korean form. Each is a self-contained `<section>` with its own copy. The page is just an ordered list of these.
 
 `components/layout/` (`Header`, `Footer`, `FloatingCTA`) is the chrome that wraps the page outside `<main>`.
 
@@ -96,7 +96,7 @@ Two custom animations are wired up in `src/index.css` and triggered by JS:
 
 ### Smooth-scroll anchor navigation
 
-`Header.jsx` intercepts `#`-prefixed nav clicks and scrolls with an offset equal to the header's own `offsetHeight`, so anchored sections aren't hidden under the sticky header. Section IDs (`#about`, `#corporate`, `#inbound`, `#contact`) must match what `Header` and the hero CTAs link to.
+`Header.jsx` intercepts `#`-prefixed nav clicks and scrolls with an offset equal to the header's own `offsetHeight`, so anchored sections aren't hidden under the sticky header. Section IDs (`#about`, `#corporate`, `#group`, `#inbound`, `#contact`) must match what `Header` and the hero CTAs link to.
 
 ### Brand wordmark
 
@@ -132,5 +132,7 @@ Step 5 used to drive headless Chrome through puppeteer. It worked locally and **
 Step 3 runs after step 2 so `/en` inherits the inlined CSS. `EN.title` there must stay **15–45 characters** (the diagnostic checks title length) and match `document.title` in `src/pages/EnHomePage.jsx`, which re-applies it once React Router mounts.
 
 ## Korean / English mixing
+
+The `<main>` of `HomePage`, `CityPage` and `AttractionPage` carries `break-keep` (`word-break: keep-all`) so Korean wraps between words, not mid-word — give a new page's `<main>` the same. Don't pair it with `text-justify` on Korean paragraphs — keep-all leaves justify only word gaps to stretch, and on a phone the spaces balloon. Where a paragraph's line breaks are chosen by hand (About, GroupTravel), each sentence is its own `block` span and breaks *inside* a sentence are `<br className="hidden sm:inline" />`, so a phone reflows the sentence instead of stranding one word on a line.
 
 Body copy is Korean; marketing taglines and labels mix in English. Two font families are loaded from Google Fonts via `index.html` and exposed as Tailwind utilities: `font-sans` (Noto Sans KR, the default) and `font-eng` (Inter). Apply `font-eng` to English-only runs of text.
