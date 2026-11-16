@@ -70,6 +70,9 @@ export function useSeo({
     if (alternates) {
       if (alternates.ko) upsertLink('alternate', abs(alternates.ko), 'ko')
       if (alternates.en) upsertLink('alternate', abs(alternates.en), 'en')
+      // 영문 짝이 없는 페이지(/group-travel/). index.html 이나 앞 페이지가 남긴 en 태그가
+      // 그대로 있으면 엉뚱한 페이지를 영문판이라고 알리게 된다.
+      else document.head.querySelector('link[rel="alternate"][hreflang="en"]')?.remove()
       // x-default 는 언어를 특정하지 못한 사용자가 받을 기본 페이지. 사이트의
       // 기본 언어가 한국어(루트)라서 한국어 경로를 가리킨다.
       if (alternates.ko) upsertLink('alternate', abs(alternates.ko), 'x-default')

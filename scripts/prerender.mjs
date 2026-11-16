@@ -23,8 +23,10 @@
 //    hydrateRoot 로 바꿔야 한다.
 //  - <head> 의 모든 태그는 한 줄로 유지한다. 네이버 ADVoost 진단이 줄 단위로 파싱해서,
 //    줄이 나뉜 태그를 "없는 것"으로 읽는다 (index.html 상단 주석 참고).
-//  - 라우트 목록과 head 내용은 src/data/attractions.js 와 src/data/seo.js 가 유일한
-//    출처다. 여기에 경로나 문구를 다시 적지 않는다.
+//  - 라우트 목록과 head 내용은 src/data/attractions.js·groupTravel.js 와 src/data/seo.js 가
+//    유일한 출처다. 여기에 경로나 문구를 다시 적지 않는다.
+//  - 영문 짝이 없는 페이지(/group-travel/)는 alternates.en 이 비어 있다. 그때는
+//    hreflang="en" 태그를 지운다 — 없는 영문 페이지(=영문 홈)를 짝이라고 알리면 안 된다.
 //
 // Fail-fast: 치환이 하나라도 빗나가면 빌드를 세운다. index.html 머리말이 바뀌었는데
 // 조용히 옛 메타를 단 페이지를 배포하는 것보다 낫다.
@@ -33,7 +35,8 @@ import { readFile, writeFile, mkdir, stat } from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import { contentRoutes } from '../src/data/attractions.js'
-import { seoForAttraction, seoForCity } from '../src/data/seo.js'
+import { groupTravelRoutes } from '../src/data/groupTravel.js'
+import { seoForAttraction, seoForCity, seoForGroupTravel } from '../src/data/seo.js'
 import { SITE } from '../src/data/site.js'
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..')
@@ -80,7 +83,8 @@ function substitutions(seo) {
   const url = abs(seo.path)
   const title = escapeAttr(seo.title)
   const description = escapeAttr(seo.description)
-  const image = seo.image ? abs(seo.image) : null
+  // 외부 사진 URL(Unsplash)은 쿼리에 & 가 있어 속성값으로 넣기 전에 이스케이프한다.
+  const image = seo.image ? escapeAttr(abs(seo.image)) : null
   const imageAlt = seo.imageAlt ? escapeAttr(seo.imageAlt) : null
 
   const subs = [
@@ -93,11 +97,9 @@ function substitutions(seo) {
       /(hreflang="ko" href=")[^"]*(")/,
       `$1${abs(seo.alternates.ko)}$2`,
     ],
-    [
-      'hreflang en',
-      /(hreflang="en" href=")[^"]*(")/,
-      `$1${abs(seo.alternates.en)}$2`,
-    ],
+    seo.alternates.en
+      ? ['hreflang en', /(hreflang="en" href=")[^"]*(")/, `$1${abs(seo.alternates.en)}$2`]
+      : ['hreflang en 제거', /\s*<link rel="alternate" hreflang="en"[^>]*>/, ''],
     [
       'hreflang x-default',
       /(hreflang="x-default" href=")[^"]*(")/,
@@ -131,7 +133,13 @@ function substitutions(seo) {
   return subs
 }
 
-const routes = contentRoutes()
+const routes = [...contentRoutes(), ...groupTravelRoutes()]
+
+const SEO_FOR = {
+  city: (route) => seoForCity(route.city, route.lang),
+  attraction: (route) => seoForAttraction(route.attraction, route.lang),
+  group: () => seoForGroupTravel(),
+}
 let written = 0
 
 for (const route of routes) {
@@ -141,10 +149,9 @@ for (const route of routes) {
     throw new Error(`prerender: ${rel} 은 보호 대상입니다. 라우트 경로를 확인하세요.`)
   }
 
-  const seo =
-    route.kind === 'city'
-      ? seoForCity(route.city, route.lang)
-      : seoForAttraction(route.attraction, route.lang)
+  const seoFor = SEO_FOR[route.kind]
+  if (!seoFor) throw new Error(`prerender: ${route.path} 의 kind "${route.kind}" 에 맞는 head 서술자가 없습니다.`)
+  const seo = seoFor(route)
 
   let html = template
   for (const [label, re, replacement] of substitutions(seo)) {

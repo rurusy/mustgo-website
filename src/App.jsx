@@ -18,6 +18,8 @@ import AdminPage from './pages/AdminPage'
 import AdminPaymentsPage from './pages/AdminPaymentsPage'
 import CityPage from './pages/CityPage'
 import AttractionPage from './pages/AttractionPage'
+import GroupTravelPage from './pages/GroupTravelPage'
+import { GROUP_TRAVEL_PATH } from './data/groupTravel'
 import { LANGS, attractionPath, attractions, cities, cityPath } from './data/attractions'
 
 // 경로 상수는 canonical·sitemap 과 맞추려고 뒤에 슬래시를 붙여 둔다. 라우트 정의에는
@@ -116,6 +118,12 @@ export default function App() {
         <Route path={PASSWORD_RESET_PATH} element={<AdminResetPasswordPage />} />
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/admin/payments" element={<AdminPaymentsPage />} />
+
+        {/*
+          기업 인센티브·단체여행 상세. 한국어 전용이고, 경로는 src/data/groupTravel.js 에
+          있다 — 같은 값을 scripts/prerender.mjs 와 gen-sitemap.mjs 도 읽는다.
+        */}
+        <Route path={routePath(GROUP_TRAVEL_PATH)} element={<GroupTravelPage />} />
 
         {/*
           방한 VIP 의전 투어 콘텐츠. 라우트는 src/data/attractions.js 하나에서

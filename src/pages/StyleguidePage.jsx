@@ -149,6 +149,7 @@ export default function StyleguidePage() {
             <div className="bg-ink-900 p-3 rounded">
               <Button variant="outlineLight">Outline Light</Button>
             </div>
+            <Button variant="outlineDark">Outline Dark</Button>
             <Button variant="ghost">Ghost</Button>
             <Button size="pill" variant="blue">
               빠른 견적 요청

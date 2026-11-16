@@ -13,6 +13,9 @@ const variants = {
   green: 'bg-brand-green text-white hover:bg-brand-green-light',
   outlineLight:
     'bg-transparent border border-white/40 text-white hover:bg-white/10 hover:border-white backdrop-blur-sm shadow-none',
+  // outlineLight 의 밝은 배경용 짝. 주 버튼 옆의 보조 동작(예: 홈 단체여행 섹션의 '자세히 보기').
+  outlineDark:
+    'bg-transparent border border-gray-300 text-gray-800 hover:border-brand-blue hover:text-brand-blue shadow-none',
   ghost: 'bg-transparent text-gray-700 hover:text-amber-600 shadow-none',
   // Admin/utility variants — flat, no shadow, used in tab strips and inline filters.
   pillFilter:

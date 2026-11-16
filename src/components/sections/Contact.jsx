@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import { Section, Fade, FormLabel, Input, Textarea, Radio, Checkbox, Button, Card, BrandText } from '../ui'
 import { ContactInfoItem } from '../marketing/ContactInfoItem'
 import { PhoneIcon, AlertIcon, MailIcon, PinIcon } from '../icons.jsx'
@@ -269,7 +270,14 @@ export function Contact({ lang = 'ko' }) {
   )
   const [status, setStatus] = useState('idle') // idle | submitting | success | error
   const [errorMsg, setErrorMsg] = useState('')
-  const [inquiryType, setInquiryType] = useState('corporate')
+  // 다른 페이지에서 홈 문의 폼으로 넘어올 때는(예: /group-travel/ 의 견적 버튼) Contact 가
+  // 아직 없어서 prefill 이벤트를 받을 수 없다. 그래서 링크가 라우터 state 로 유형을 실어
+  // 보내고, 여기서 첫 값으로 쓴다 — <Link to="/#contact" state={{ inquiryType: 'group' }}>
+  const { state: navState } = useLocation()
+  const [inquiryType, setInquiryType] = useState(() => {
+    const type = navState?.inquiryType
+    return INQUIRY_TYPES.includes(type) && labels[type] ? type : 'corporate'
+  })
 
   // Hero CTA 등 외부에서 dispatch 한 prefill 이벤트를 수신해서 문의 유형 자동 선택.
   // 이전 제출이 success 상태였다면 폼을 다시 보여주도록 idle 로 리셋.

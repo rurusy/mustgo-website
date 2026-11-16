@@ -14,6 +14,7 @@ import {
   homePath,
   pathAlternates,
 } from './attractions.js'
+import { GROUP_FAQ, GROUP_SERVICES, GROUP_TRAVEL, GROUP_TRAVEL_PATH } from './groupTravel.js'
 
 const abs = (p) => `${SITE}${p}`
 
@@ -114,6 +115,58 @@ export function seoForAttraction(attraction, lang) {
           name: crumb.name,
           item: abs(crumb.path),
         })),
+      },
+    ],
+  }
+}
+
+// 기업 인센티브·단체여행 상세 페이지. 한국어 전용이라 alternates 에 en 이 없다 —
+// useSeo 와 prerender 는 en 이 없으면 hreflang="en" 태그를 지운다.
+export function seoForGroupTravel() {
+  const path = GROUP_TRAVEL_PATH
+  const first = GROUP_SERVICES[0]
+
+  return {
+    lang: 'ko',
+    title: GROUP_TRAVEL.title,
+    description: GROUP_TRAVEL.description,
+    path,
+    alternates: { ko: path },
+    image: first.image,
+    imageAlt: first.imageAlt,
+    type: 'website',
+    jsonLd: [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'Service',
+        name: GROUP_TRAVEL.name,
+        description: GROUP_TRAVEL.description,
+        url: abs(path),
+        serviceType: GROUP_SERVICES.map((s) => s.name),
+        provider: {
+          '@type': 'TravelAgency',
+          name: '머스트고',
+          alternateName: 'Mustgo',
+          url: abs('/'),
+        },
+        areaServed: { '@type': 'Country', name: 'South Korea' },
+      },
+      {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: GROUP_FAQ.map((f) => ({
+          '@type': 'Question',
+          name: f.q,
+          acceptedAnswer: { '@type': 'Answer', text: f.a },
+        })),
+      },
+      {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: breadcrumbHome('ko'), item: abs(homePath('ko')) },
+          { '@type': 'ListItem', position: 2, name: GROUP_TRAVEL.name, item: abs(path) },
+        ],
       },
     ],
   }

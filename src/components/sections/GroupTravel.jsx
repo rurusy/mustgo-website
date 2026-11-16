@@ -1,4 +1,6 @@
+import { Link } from 'react-router-dom'
 import { Section, Fade, Button } from '../ui'
+import { GROUP_TRAVEL_PATH } from '../../data/groupTravel'
 import { ImageCard } from '../marketing/ImageCard'
 import { ProcessSteps } from '../marketing/ProcessSteps'
 
@@ -32,7 +34,7 @@ const services = [
     alt: 'Aerial view of a golf course green with bunkers',
     eyebrow: 'Golf Tour',
     title: '해외골프여행',
-    description: '일본·동남아 티타임부터 골프백 운송까지, 라운딩에만 집중하시도록',
+    description: '일본·동남아 티타임부터 골프백 운송까지, 라운딩에만 집중하실 수 있도록',
   },
   {
     image: photo('1516426122078-c23e76319801'),
@@ -98,9 +100,18 @@ export function GroupTravel() {
           인원과 목적만 알려 주시면,
           <br className="sm:hidden" /> 전담 직원이 일정안과 견적을 준비합니다.
         </p>
-        <Button as="a" href="#contact" variant="blue" onClick={prefillGroup}>
-          단체여행 견적 문의하기 →
-        </Button>
+        {/*
+          '자세히 보기'는 상세 페이지(/group-travel/)로 가는 홈의 유일한 링크다. 빠지면 그 페이지는
+          sitemap 에만 있고 사이트 안에서는 고립된다 — Inbound 섹션의 도시 버튼과 같은 이유.
+        */}
+        <div className="flex flex-col sm:flex-row justify-center gap-3">
+          <Button as="a" href="#contact" variant="blue" onClick={prefillGroup}>
+            단체여행 견적 문의하기 →
+          </Button>
+          <Button as={Link} to={GROUP_TRAVEL_PATH} variant="outlineDark">
+            서비스 자세히 보기
+          </Button>
+        </div>
       </Fade>
     </Section>
   )
