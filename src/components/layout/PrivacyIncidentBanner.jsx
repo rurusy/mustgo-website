@@ -15,11 +15,13 @@ const COPY = {
   ko: {
     tag: '[공지]',
     text: '항공예약시스템(GDS) 운영사 아마데우스의 개인정보 유출 관련 안내드립니다.',
+    short: '아마데우스 개인정보 유출 안내',
     more: '자세히 보기 →',
   },
   en: {
     tag: '[Notice]',
     text: 'Personal data breach at Amadeus, operator of the global airline reservation system (GDS).',
+    short: 'Amadeus data breach',
     more: 'Read more →',
   },
 }
@@ -29,18 +31,22 @@ export function PrivacyIncidentBanner({ lang = 'ko' }) {
   return (
     // 띠는 헤더 안(<main> 밖)이라 main 의 break-keep 을 받지 못한다. 폰에서 '개인정/보'처럼
     // 단어 중간에서 끊기지 않도록 한국어 띠에도 따로 단다.
-    <div className={cn('bg-ink-900 text-white', lang === 'en' ? 'font-eng' : 'break-keep')}>
-      <div className="max-w-layout mx-auto px-6 lg:px-12 py-2.5 flex flex-col sm:flex-row sm:items-center sm:justify-center gap-1 sm:gap-3 text-sm">
-        <p className="text-gray-200">
-          <span className="font-semibold text-amber-500">{c.tag}</span> {c.text}
+    // 폰에서는 짧은 문구로 한 줄만 쓴다. 긴 문구는 세 줄로 접혀 고정 헤더를 160px 넘게 키웠고,
+    // 첫 화면의 제목이 그 뒤로 가려졌다(2026-11-18). 띠 전체를 링크로 두어 어디를 눌러도 공지로 간다.
+    <Link
+      to={NOTICE_PATH[lang]}
+      className={cn('group block bg-ink-900 text-white', lang === 'en' ? 'font-eng' : 'break-keep')}
+    >
+      <div className="max-w-layout mx-auto px-6 lg:px-12 py-2 sm:py-2.5 flex items-center justify-center gap-2 sm:gap-3 text-[13px] sm:text-sm">
+        <p className="min-w-0 truncate sm:whitespace-normal text-gray-200">
+          <span className="font-semibold text-amber-500">{c.tag}</span>{' '}
+          <span className="sm:hidden">{c.short}</span>
+          <span className="hidden sm:inline">{c.text}</span>
         </p>
-        <Link
-          to={NOTICE_PATH[lang]}
-          className="shrink-0 font-semibold underline underline-offset-4 decoration-white/40 hover:text-amber-500 hover:decoration-amber-500 transition-colors"
-        >
+        <span className="shrink-0 font-semibold underline underline-offset-4 decoration-white/40 group-hover:text-amber-500 group-hover:decoration-amber-500 transition-colors">
           {c.more}
-        </Link>
+        </span>
       </div>
-    </div>
+    </Link>
   )
 }
