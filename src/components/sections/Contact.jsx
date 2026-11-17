@@ -74,7 +74,8 @@ function getMapsEmbedSrc(mapQuery, lang = 'ko') {
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const PHONE_DIGITS_MIN = 9 // 02-XXX-XXXX (서울 9자리) 이상 허용
 
-const INQUIRY_TYPES = ['corporate', 'group', 'inbound', 'other']
+// btms·group 은 한국어 폼에만 있다(radioLabels.en 에 키가 없으면 그 언어에서는 안 보인다).
+const INQUIRY_TYPES = ['corporate', 'btms', 'group', 'inbound', 'other']
 
 // Hoisted to module scope so re-renders (status / inquiryType changes) don't
 // re-allocate fragments + spans for static label markup.
@@ -85,6 +86,15 @@ const radioLabels = {
         Corporate Travel
         <span className="hidden sm:inline"> — 해외 출장 문의</span>
         <span className="sm:hidden"> (해외 출장 문의)</span>
+      </>
+    ),
+    // MUSTGO BTMS 도입 상담 — /btms/ 와 홈 #corporate 의 BTMS 블록에서 이 유형으로 연다.
+    // 한국어에만 있는 유형(BTMS 는 국내 기업 대상).
+    btms: (
+      <>
+        MUSTGO BTMS
+        <span className="hidden sm:inline"> — 출장관리시스템 도입 상담</span>
+        <span className="sm:hidden"> (도입 상담)</span>
       </>
     ),
     // 한국어에만 있는 유형 — 영문 홈에는 단체여행 섹션이 없다.
@@ -161,6 +171,10 @@ const CONTACT_COPY = {
     emailPh: '업무용 이메일 주소',
     message: '문의 내용',
     messagePh: '인원, 일정, 특이사항 등을 자유롭게 남겨 주세요.',
+    // 유형별 안내 문구. 없는 유형은 messagePh 를 쓴다.
+    messagePhByType: {
+      btms: '임직원 수, 한 해 출장 규모, 지금의 출장 결재 방식 등을 남겨 주세요.',
+    },
     consent: (
       <>
         <a
@@ -430,7 +444,7 @@ export function Contact({ lang = 'ko' }) {
 
               <div className="mb-8">
                 <FormLabel htmlFor="message">{t.message}</FormLabel>
-                <Textarea id="message" name="message" placeholder={t.messagePh} />
+                <Textarea id="message" name="message" placeholder={t.messagePhByType?.[inquiryType] ?? t.messagePh} />
               </div>
 
               <Checkbox

@@ -15,6 +15,7 @@ import {
   pathAlternates,
 } from './attractions.js'
 import { GROUP_FAQ, GROUP_SERVICES, GROUP_TRAVEL, GROUP_TRAVEL_PATH } from './groupTravel.js'
+import { BTMS, BTMS_FAQ, BTMS_HERO_SHOT, BTMS_OG_IMAGE, BTMS_PATH } from './btms.js'
 
 const abs = (p) => `${SITE}${p}`
 
@@ -166,6 +167,57 @@ export function seoForGroupTravel() {
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: breadcrumbHome('ko'), item: abs(homePath('ko')) },
           { '@type': 'ListItem', position: 2, name: GROUP_TRAVEL.name, item: abs(path) },
+        ],
+      },
+    ],
+  }
+}
+
+// MUSTGO BTMS 소개 페이지. 단체여행과 같이 한국어 전용이라 alternates 에 en 이 없다.
+export function seoForBtms() {
+  const path = BTMS_PATH
+  const name = `${BTMS.fullName} ${BTMS.name}`
+
+  return {
+    lang: 'ko',
+    title: BTMS.title,
+    description: BTMS.description,
+    path,
+    alternates: { ko: path },
+    image: BTMS_OG_IMAGE,
+    imageAlt: BTMS_HERO_SHOT.alt,
+    type: 'website',
+    jsonLd: [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'Service',
+        name,
+        description: BTMS.description,
+        url: abs(path),
+        serviceType: '기업출장 관리시스템',
+        provider: {
+          '@type': 'TravelAgency',
+          name: '머스트고',
+          alternateName: 'Mustgo',
+          url: abs('/'),
+        },
+        areaServed: { '@type': 'Country', name: 'South Korea' },
+      },
+      {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: BTMS_FAQ.map((f) => ({
+          '@type': 'Question',
+          name: f.q,
+          acceptedAnswer: { '@type': 'Answer', text: f.a },
+        })),
+      },
+      {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: breadcrumbHome('ko'), item: abs(homePath('ko')) },
+          { '@type': 'ListItem', position: 2, name, item: abs(path) },
         ],
       },
     ],

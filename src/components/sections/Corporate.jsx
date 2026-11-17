@@ -1,6 +1,9 @@
+import { Link } from 'react-router-dom'
 import { Section, Fade, Button } from '../ui'
 import { ServiceCard } from '../marketing/ServiceCard'
 import { ProcessSteps } from '../marketing/ProcessSteps'
+import { ScreenshotFrame } from '../marketing/ScreenshotFrame'
+import { BTMS, BTMS_HERO_SHOT, BTMS_HOME, BTMS_LAUNCH, BTMS_PATH } from '../../data/btms'
 
 const services = [
   {
@@ -40,6 +43,19 @@ const services = [
 
 const steps = ['요청', '제안', '확정', '진행', '정산']
 
+// 'BTMS 도입 상담' 링크 — 같은 페이지의 문의 폼으로 내려가면서 문의 유형을 BTMS 도입 상담으로 고른다.
+// Hero 의 goToContactWithType 과 같은 방식(고정 헤더 높이만큼 덜 내려간다).
+function goToBtmsInquiry(e) {
+  e.preventDefault()
+  const target = document.getElementById('contact')
+  if (target) {
+    const header = document.getElementById('main-header')
+    const top = target.getBoundingClientRect().top + window.pageYOffset - (header ? header.offsetHeight : 0)
+    window.scrollTo({ top, behavior: 'smooth' })
+  }
+  window.dispatchEvent(new CustomEvent('mustgo:prefill-inquiry', { detail: { type: 'btms' } }))
+}
+
 export function Corporate() {
   return (
     <Section
@@ -64,6 +80,64 @@ export function Corporate() {
           <ServiceCard key={idx} {...s} delay={idx * 0.1} />
         ))}
       </div>
+
+      {/* MUSTGO BTMS 요약. 자세한 내용은 /btms/ — 문안은 src/data/btms.js. */}
+      <Fade className="mt-16 rounded-lg border border-white/10 bg-white/5 p-6 sm:p-8 lg:p-12">
+        <div className="grid lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] gap-8 lg:gap-12 items-center">
+          <div>
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-2 mb-4">
+              <p className="text-sm font-bold text-amber-500">
+                <span className="font-eng tracking-wider">{BTMS.name}</span> · {BTMS.fullName}
+              </p>
+              <span className="rounded-sm bg-white/10 px-2 py-1 text-xs font-bold text-white">{BTMS_LAUNCH}</span>
+            </div>
+            <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight mb-4">
+              {BTMS.headline.map((line) => (
+                <span key={line} className="block">
+                  {line}
+                </span>
+              ))}
+            </h3>
+            <p className="text-sm sm:text-base text-gray-400 leading-relaxed mb-6 [text-wrap:pretty]">
+              {BTMS.intro.map((sentence) => (
+                <span key={sentence} className="block">
+                  {sentence}
+                </span>
+              ))}
+            </p>
+            <ul className="space-y-2 mb-8">
+              {BTMS_HOME.points.map((point) => (
+                <li key={point} className="flex gap-2 text-[15px] text-white">
+                  <svg
+                    className="w-4 h-4 mt-1 shrink-0 text-brand-green"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={2.5}
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>{point}</span>
+                </li>
+              ))}
+            </ul>
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-4">
+              <Button as={Link} to={BTMS_PATH}>
+                BTMS 자세히 보기 →
+              </Button>
+              <a
+                href="#contact"
+                onClick={goToBtmsInquiry}
+                className="text-sm font-medium text-gray-300 underline underline-offset-4 hover:text-white transition-colors"
+              >
+                도입 상담 요청
+              </a>
+            </div>
+          </div>
+          <ScreenshotFrame {...BTMS_HERO_SHOT} tone="dark" />
+        </div>
+      </Fade>
 
       <Fade className="mt-24 pt-16 border-t border-white/10">
         <h3 className="text-xl font-bold text-center mb-16">출장 1건이 처리되는 5단계</h3>

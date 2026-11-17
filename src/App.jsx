@@ -20,6 +20,8 @@ import CityPage from './pages/CityPage'
 import AttractionPage from './pages/AttractionPage'
 import GroupTravelPage from './pages/GroupTravelPage'
 import { GROUP_TRAVEL_PATH } from './data/groupTravel'
+import BtmsPage from './pages/BtmsPage'
+import { BTMS_PATH } from './data/btms'
 import { LANGS, attractionPath, attractions, cities, cityPath } from './data/attractions'
 
 // 경로 상수는 canonical·sitemap 과 맞추려고 뒤에 슬래시를 붙여 둔다. 라우트 정의에는
@@ -124,6 +126,9 @@ export default function App() {
           있다 — 같은 값을 scripts/prerender.mjs 와 gen-sitemap.mjs 도 읽는다.
         */}
         <Route path={routePath(GROUP_TRAVEL_PATH)} element={<GroupTravelPage />} />
+
+        {/* MUSTGO BTMS(AI 기업출장 관리시스템) 소개. 한국어 전용, 경로와 내용은 src/data/btms.js. */}
+        <Route path={routePath(BTMS_PATH)} element={<BtmsPage />} />
 
         {/*
           방한 VIP 의전 투어 콘텐츠. 라우트는 src/data/attractions.js 하나에서

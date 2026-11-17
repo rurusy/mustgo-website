@@ -16,6 +16,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { SITE, contentRoutes } from '../src/data/attractions.js'
 import { groupTravelRoutes } from '../src/data/groupTravel.js'
+import { btmsRoutes } from '../src/data/btms.js'
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..')
 const out = path.join(root, 'dist', 'sitemap.xml')
@@ -39,13 +40,13 @@ const STATIC = [
   },
 ]
 
-const PRIORITY = { group: '0.8', city: '0.8', attraction: '0.7' }
+const PRIORITY = { group: '0.8', btms: '0.8', city: '0.8', attraction: '0.7' }
 
 const abs = (p) => `${SITE}${p}`
 
 const entries = [
   ...STATIC,
-  ...[...contentRoutes(), ...groupTravelRoutes()].map((r) => ({
+  ...[...contentRoutes(), ...groupTravelRoutes(), ...btmsRoutes()].map((r) => ({
     path: r.path,
     alternates: r.alternates,
     lastmod: r.lastmod,

@@ -7,6 +7,7 @@ import { AdminHeader } from './AdminPaymentsPage'
 
 const TYPE_LABEL = {
   corporate: 'Corporate',
+  btms: 'BTMS 도입',
   group: '단체·인센티브',
   inbound: 'Inbound',
   other: '기타',
@@ -14,6 +15,7 @@ const TYPE_LABEL = {
 
 const TYPE_TONE = {
   corporate: 'bg-amber-50 text-amber-700 border-amber-200',
+  btms: 'bg-violet-50 text-violet-700 border-violet-200',
   group: 'bg-green-50 text-green-700 border-green-200',
   inbound: 'bg-blue-50 text-blue-700 border-blue-200',
   other: 'bg-gray-100 text-gray-700 border-gray-200',

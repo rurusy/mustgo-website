@@ -17,6 +17,7 @@ const WEBHOOK_SECRET = Deno.env.get('WEBHOOK_SECRET')!
 
 const TYPE_LABELS: Record<string, string> = {
   corporate: '기업 출장 (Corporate Travel)',
+  btms: 'MUSTGO BTMS 도입 상담',
   group: '기업 인센티브·단체여행 (Group & Incentive)',
   inbound: 'Inbound Tour (해외 VIP 한국 방문)',
   other: '기타 문의',

@@ -23,7 +23,7 @@
 //    hydrateRoot 로 바꿔야 한다.
 //  - <head> 의 모든 태그는 한 줄로 유지한다. 네이버 ADVoost 진단이 줄 단위로 파싱해서,
 //    줄이 나뉜 태그를 "없는 것"으로 읽는다 (index.html 상단 주석 참고).
-//  - 라우트 목록과 head 내용은 src/data/attractions.js·groupTravel.js 와 src/data/seo.js 가
+//  - 라우트 목록과 head 내용은 src/data/attractions.js·groupTravel.js·btms.js 와 src/data/seo.js 가
 //    유일한 출처다. 여기에 경로나 문구를 다시 적지 않는다.
 //  - 영문 짝이 없는 페이지(/group-travel/)는 alternates.en 이 비어 있다. 그때는
 //    hreflang="en" 태그를 지운다 — 없는 영문 페이지(=영문 홈)를 짝이라고 알리면 안 된다.
@@ -36,7 +36,8 @@ import path from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import { contentRoutes } from '../src/data/attractions.js'
 import { groupTravelRoutes } from '../src/data/groupTravel.js'
-import { seoForAttraction, seoForCity, seoForGroupTravel } from '../src/data/seo.js'
+import { btmsRoutes } from '../src/data/btms.js'
+import { seoForAttraction, seoForBtms, seoForCity, seoForGroupTravel } from '../src/data/seo.js'
 import { SITE } from '../src/data/site.js'
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..')
@@ -133,12 +134,13 @@ function substitutions(seo) {
   return subs
 }
 
-const routes = [...contentRoutes(), ...groupTravelRoutes()]
+const routes = [...contentRoutes(), ...groupTravelRoutes(), ...btmsRoutes()]
 
 const SEO_FOR = {
   city: (route) => seoForCity(route.city, route.lang),
   attraction: (route) => seoForAttraction(route.attraction, route.lang),
   group: () => seoForGroupTravel(),
+  btms: () => seoForBtms(),
 }
 let written = 0
 

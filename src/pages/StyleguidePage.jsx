@@ -21,6 +21,7 @@ import { ImageCard } from '../components/marketing/ImageCard'
 import { AttractionCard } from '../components/marketing/AttractionCard'
 import { ProcessSteps } from '../components/marketing/ProcessSteps'
 import { ContactInfoItem } from '../components/marketing/ContactInfoItem'
+import { ScreenshotFrame } from '../components/marketing/ScreenshotFrame'
 import { PrivacyIncidentBanner } from '../components/layout/PrivacyIncidentBanner'
 import { GlobeIcon, StarIcon, ClockIcon, PhoneIcon, MailIcon, PinIcon } from '../components/icons.jsx'
 import { colors } from '../design/tokens'
@@ -324,6 +325,35 @@ export default function StyleguidePage() {
                 name="Gyeongbokgung Palace"
                 tagline="The main palace of the Joseon dynasty — where a Seoul itinerary begins"
                 font="eng"
+              />
+            </div>
+
+            {/* ScreenshotFrame — 제품 화면 캡처 + '예시' 캡션 (BTMS 소개). light / dark / narrow */}
+            <div className="grid md:grid-cols-3 gap-6 items-start">
+              <ScreenshotFrame
+                src="/photos/btms/search-results.webp"
+                width={1265}
+                height={720}
+                alt="항공권 검색 결과 화면 예시"
+                caption="tone=light · 화면 예시"
+              />
+              <div className="bg-ink-800 rounded-lg p-6">
+                <ScreenshotFrame
+                  src="/photos/btms/ai-booking.webp"
+                  width={1600}
+                  height={873}
+                  alt="AI 예약 화면 구성 예시"
+                  caption="tone=dark · 홈 기업출장 섹션"
+                  tone="dark"
+                />
+              </div>
+              <ScreenshotFrame
+                src="/photos/btms/approval-panel.webp"
+                width={336}
+                height={746}
+                alt="결재 패널 화면 예시"
+                caption="narrow · 세로로 긴 패널"
+                narrow
               />
             </div>
 
