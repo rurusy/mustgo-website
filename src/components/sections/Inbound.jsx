@@ -1,8 +1,8 @@
 import { Fragment } from 'react'
-import { Link } from 'react-router-dom'
 import { cn } from '../../design/cn'
 import { Section, Fade, Button, BrandText, SectionLabel } from '../ui'
-import { CITY_GROUPS, citiesInGroup, cityPath } from '../../data/attractions'
+import { CITY_GROUPS, citiesInGroup, cityPath, attractionsInCity } from '../../data/attractions'
+import { CityLinkCard } from '../marketing/CityLinkCard'
 import { AudienceCard } from '../marketing/AudienceCard'
 import { ImageCard } from '../marketing/ImageCard'
 
@@ -107,18 +107,22 @@ export function Inbound() {
         </div>
       </Fade>
 
+      {/*
+        관광지 허브로 들어가는 유일한 내부 링크. 새 페이지가 발견되는 경로가
+        홈 → 도시 허브 → 관광지 상세이므로, 이 링크가 빠지면 sitemap 에만 있고
+        사이트 안에서는 고립된 페이지가 된다. 도시는 데이터에서 읽으므로
+        cities/*.js 를 추가한 것만으로 타일이 늘어난다 — 줄은 도시의 group 으로 정해진다.
+        두 줄을 한 그리드에 넣어 타일 폭이 줄 사이에서도 맞는다. 폰에서는 라벨이 타일 위로 올라간다.
+        상담 문구와는 따로 둔다 — 문구 바로 밑에 있으면 도시 타일이 상담 버튼으로 읽힌다(2026-11-18).
+      */}
       <Fade className="mt-24 text-center">
-        <p className="text-gray-300 mb-6 text-lg">
-          해외 VIP의 한국 방문,<br className="sm:hidden" /> <BrandText />와 상담하세요.
-        </p>
-        {/*
-          관광지 허브로 들어가는 유일한 내부 링크. 새 페이지가 발견되는 경로가
-          홈 → 도시 허브 → 관광지 상세이므로, 이 링크가 빠지면 sitemap 에만 있고
-          사이트 안에서는 고립된 페이지가 된다. 도시는 데이터에서 읽으므로
-          cities/*.js 를 추가한 것만으로 여기 버튼이 늘어난다 — 줄은 도시의 group 으로 정해진다.
-          두 줄을 한 그리드에 넣어 버튼 폭이 줄 사이에서도 맞는다. 폰에서는 라벨이 버튼 위로 올라간다.
-        */}
-        <div className="grid grid-cols-3 sm:grid-cols-[auto_repeat(3,minmax(0,1fr))] items-center gap-x-2 sm:gap-x-3 gap-y-3 max-w-2xl mx-auto mb-10">
+        <div className="mb-8">
+          <h3 className="text-xl font-bold text-white mb-3">도시별 추천 명소</h3>
+          <p className="text-gray-400 text-[15px] leading-relaxed">
+            도시를 누르면 추천 명소를 사진과 함께 볼 수 있습니다.
+          </p>
+        </div>
+        <div className="grid grid-cols-3 sm:grid-cols-[auto_repeat(3,minmax(0,1fr))] items-center gap-x-2 sm:gap-x-3 gap-y-3 max-w-2xl mx-auto">
           {CITY_GROUPS.map((group, gi) => (
             <Fragment key={group.key}>
               <span
@@ -130,20 +134,22 @@ export function Inbound() {
                 {group.ko}
               </span>
               {citiesInGroup(group.key).map((city) => (
-                <Button
+                <CityLinkCard
                   key={city.slug}
-                  as={Link}
                   to={cityPath('ko', city.slug)}
-                  variant="blue"
-                  size="cell"
-                  className="w-full"
-                >
-                  {city.ko.name}
-                </Button>
+                  name={city.ko.name}
+                  meta={`명소 ${attractionsInCity(city.slug).length}곳`}
+                />
               ))}
             </Fragment>
           ))}
         </div>
+      </Fade>
+
+      <Fade className="mt-20 text-center">
+        <p className="text-gray-300 mb-6 text-lg">
+          해외 VIP의 한국 방문,<br className="sm:hidden" /> <BrandText />와 상담하세요.
+        </p>
         <div className="flex justify-center">
           <Button
             as="a"

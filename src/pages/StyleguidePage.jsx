@@ -20,6 +20,7 @@ import { ServiceCard } from '../components/marketing/ServiceCard'
 import { AudienceCard } from '../components/marketing/AudienceCard'
 import { ImageCard } from '../components/marketing/ImageCard'
 import { AttractionCard } from '../components/marketing/AttractionCard'
+import { CityLinkCard } from '../components/marketing/CityLinkCard'
 import { ProcessSteps } from '../components/marketing/ProcessSteps'
 import { ContactInfoItem } from '../components/marketing/ContactInfoItem'
 import { ScreenshotFrame } from '../components/marketing/ScreenshotFrame'
@@ -337,6 +338,13 @@ export default function StyleguidePage() {
                 tagline="The main palace of the Joseon dynasty — where a Seoul itinerary begins"
                 font="eng"
               />
+            </div>
+
+            {/* CityLinkCard — 홈 Inbound 섹션의 도시 타일. 도시 허브로 가는 길이라 행동 버튼(파랑 꽉 찬)과 모양을 달리한다. */}
+            <div className="bg-ink-900 rounded-lg p-8 grid grid-cols-3 gap-3 max-w-xl">
+              <CityLinkCard to="/korea/seoul/" name="서울" meta="명소 9곳" />
+              <CityLinkCard to="/korea/busan/" name="부산" meta="명소 8곳" />
+              <CityLinkCard to="/en/korea/jeju/" name="Jeju" meta="8 places" font="eng" />
             </div>
 
             {/* ScreenshotFrame — 제품 화면 캡처 + '예시' 캡션 (BTMS 소개). light / dark / narrow */}
