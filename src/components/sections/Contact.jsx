@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import { Section, Fade, FormLabel, Input, Textarea, Radio, Checkbox, Button, Card, BrandText } from '../ui'
+import { Section, Fade, FormLabel, Input, Textarea, Radio, Checkbox, Button, Card, BrandText, SectionLabel } from '../ui'
 import { ContactInfoItem } from '../marketing/ContactInfoItem'
 import { PhoneIcon, AlertIcon, MailIcon, PinIcon } from '../icons.jsx'
 import { supabase } from '../../lib/supabase'
@@ -370,6 +370,7 @@ export function Contact({ lang = 'ko' }) {
   return (
     <Section id="contact" tone="soft">
       <Fade className="max-w-3xl mx-auto mb-16 text-left sm:text-center">
+        <SectionLabel>Contact</SectionLabel>
         <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4 tracking-tight">
           {t.heading}
         </h2>

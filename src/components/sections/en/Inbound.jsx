@@ -1,7 +1,7 @@
 import { Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import { cn } from '../../../design/cn'
-import { Section, Fade, Button, BrandText } from '../../ui'
+import { Section, Fade, Button, BrandText, SectionLabel } from '../../ui'
 import { CITY_GROUPS, citiesInGroup, cityPath } from '../../../data/attractions'
 import { AudienceCard } from '../../marketing/AudienceCard'
 import { ImageCard } from '../../marketing/ImageCard'
@@ -58,6 +58,7 @@ export function Inbound() {
       bgImageClassName="opacity-10 mix-blend-luminosity"
     >
       <Fade className="max-w-4xl mx-auto text-left sm:text-center">
+        <SectionLabel tone="dark">Inbound Tour</SectionLabel>
         <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 tracking-tight text-white">
           Premium Protocol Tours for Global VIPs Visiting Korea
         </h2>

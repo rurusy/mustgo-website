@@ -1,4 +1,4 @@
-import { Section, Fade, Button } from '../../ui'
+import { Section, Fade, Button, SectionLabel } from '../../ui'
 import { ServiceCard } from '../../marketing/ServiceCard'
 import { ProcessSteps } from '../../marketing/ProcessSteps'
 
@@ -47,6 +47,7 @@ export function Corporate() {
       overlay="bg-gradient-to-b from-ink-900/95 via-ink-900/80 to-ink-900/95"
     >
       <Fade className="max-w-3xl mx-auto text-left sm:text-center">
+        <SectionLabel tone="dark">Corporate Travel</SectionLabel>
         <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-6 tracking-tight">
           Corporate Travel Abroad — From Ticketing to Settlement, All in One
         </h2>

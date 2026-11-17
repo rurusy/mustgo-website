@@ -1,4 +1,4 @@
-import { Section, Fade, BrandText, Stat } from '../ui'
+import { Section, Fade, BrandText, Stat, SectionLabel } from '../ui'
 import { FeatureCard } from '../marketing/FeatureCard'
 import { GlobeIcon, StarIcon, ClockIcon } from '../icons.jsx'
 
@@ -45,6 +45,7 @@ export function About() {
   return (
     <Section id="about" tone="light">
       <Fade className="max-w-4xl mx-auto text-left sm:text-center">
+        <SectionLabel>About Mustgo</SectionLabel>
         <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-8 tracking-tight">
           기업 출장의 양방향 전문가, <BrandText />입니다.
         </h2>

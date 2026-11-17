@@ -11,6 +11,7 @@ import {
   Checkbox,
   IconBadge,
   SectionHeading,
+  SectionLabel,
   Stat,
   BrandText,
 } from '../components/ui'
@@ -235,6 +236,16 @@ export default function StyleguidePage() {
             subtitle="Premium Inbound Experience"
             description="영업일 기준 1일 이내, 담당 컨설턴트가 직접 회신해 드립니다."
           />
+        </Block>
+
+        <Block title="Section Label">
+          <p className="text-sm text-gray-500 mb-6">
+            섹션 큰 제목 위의 작은 라벨. 문구는 헤더 메뉴 이름과 같게 둔다. 폰에서는 왼쪽, sm 이상에서는 가운데.
+          </p>
+          <SectionLabel>Group &amp; Incentive</SectionLabel>
+          <div className="mt-6 bg-ink-900 p-6 rounded-lg">
+            <SectionLabel tone="dark">Inbound Tour</SectionLabel>
+          </div>
         </Block>
 
         <Block title="Cards">

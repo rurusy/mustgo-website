@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Section, Fade, Button } from '../ui'
+import { Section, Fade, Button, SectionLabel } from '../ui'
 import { GROUP_TRAVEL_PATH } from '../../data/groupTravel'
 import { ImageCard } from '../marketing/ImageCard'
 import { ProcessSteps } from '../marketing/ProcessSteps'
@@ -74,6 +74,7 @@ export function GroupTravel() {
   return (
     <Section id="group" tone="light">
       <Fade className="max-w-4xl mx-auto text-left sm:text-center">
+        <SectionLabel>Group &amp; Incentive</SectionLabel>
         <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4 tracking-tight">
           기업 인센티브·단체여행,
           <br /> 한 명의 전담 직원이 처음부터 끝까지
