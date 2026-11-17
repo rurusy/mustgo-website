@@ -27,7 +27,9 @@ const COPY = {
 export function PrivacyIncidentBanner({ lang = 'ko' }) {
   const c = COPY[lang]
   return (
-    <div className={cn('bg-ink-900 text-white', lang === 'en' && 'font-eng')}>
+    // 띠는 헤더 안(<main> 밖)이라 main 의 break-keep 을 받지 못한다. 폰에서 '개인정/보'처럼
+    // 단어 중간에서 끊기지 않도록 한국어 띠에도 따로 단다.
+    <div className={cn('bg-ink-900 text-white', lang === 'en' ? 'font-eng' : 'break-keep')}>
       <div className="max-w-layout mx-auto px-6 lg:px-12 py-2.5 flex flex-col sm:flex-row sm:items-center sm:justify-center gap-1 sm:gap-3 text-sm">
         <p className="text-gray-200">
           <span className="font-semibold text-amber-500">{c.tag}</span> {c.text}
