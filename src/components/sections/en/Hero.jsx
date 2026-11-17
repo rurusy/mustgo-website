@@ -31,7 +31,9 @@ function goToSection(id) {
 
 export function Hero() {
   return (
-    <section id="hero" className="relative w-full h-screen min-h-[700px] flex items-center justify-center overflow-hidden bg-ink-900 mt-20 lg:mt-0">
+    // 헤더가 fixed 라 그 높이(--header-h, Header 가 잰다)만큼 위를 비워, 가려지지 않은 영역 한가운데에
+    // 내용을 둔다. 배경은 헤더 뒤까지 깔린다. 비우지 않으면 화면 전체 기준 가운데라 내용이 위로 붙어 보인다.
+    <section id="hero" className="relative w-full h-screen min-h-[700px] pt-[var(--header-h,5rem)] flex items-center justify-center overflow-hidden bg-ink-900">
       <div className="absolute inset-0 z-0">
         {heroImages.map((img, idx) => (
           <div

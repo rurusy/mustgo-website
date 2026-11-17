@@ -1,7 +1,10 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { cn } from '../../design/cn'
 import { Button } from '../ui'
+
+// 서버 렌더링(prerender)에서는 useLayoutEffect 가 경고만 내고 돌지 않으므로 useEffect 로 바꿔 둔다.
+const useIsoLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect
 
 // 메뉴는 홈의 섹션 앵커입니다. 관광지·도시 페이지에는 그 섹션이 없으므로 링크는 항상
 // 홈 경로를 붙여(`/#about`, `/en#about`) 만들고, 이미 홈에 있을 때만 그 자리에서 스크롤합니다.
@@ -79,6 +82,21 @@ export function Header({ lang = 'ko', banner = null }) {
   const [menuOpen, setMenuOpen] = useState(false)
   const triggerRef = useRef(null)
   const closeRef = useRef(null)
+  const headerRef = useRef(null)
+
+  // 헤더 높이를 --header-h 로 내보낸다. 헤더가 fixed 라 첫 화면(Hero)은 이 높이만큼 위를 비워야
+  // 가려지지 않은 영역 한가운데에 내용이 놓인다. 공지 띠가 붙거나 폰에서 띠가 여러 줄로 접히면
+  // 높이가 바뀌므로 고정값 대신 ResizeObserver 로 잰다. 그리기 전에 재야 내용이 튀지 않는다.
+  useIsoLayoutEffect(() => {
+    const el = headerRef.current
+    if (!el) return
+    const root = document.documentElement
+    const apply = () => root.style.setProperty('--header-h', `${el.offsetHeight}px`)
+    apply()
+    const ro = new ResizeObserver(apply)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [])
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50)
@@ -124,6 +142,7 @@ export function Header({ lang = 'ko', banner = null }) {
     <>
       <header
         id="main-header"
+        ref={headerRef}
         className={cn(
           'fixed top-0 left-0 w-full z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 transition-all duration-300',
           scrolled && 'shadow-sm',
