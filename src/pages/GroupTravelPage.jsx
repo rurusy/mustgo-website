@@ -1,3 +1,4 @@
+import { Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import { Header } from '../components/layout/Header'
 import { Footer } from '../components/layout/Footer'
@@ -146,7 +147,18 @@ export default function GroupTravelPage() {
                   </ul>
                   {s.note && (
                     <p className="mt-6 inline-block rounded-sm bg-white border border-gray-200 px-3 py-2 text-sm font-medium text-gray-700">
-                      {s.note}
+                      {/* 폰에서는 구절 사이에서 줄을 나눈다 — 한 줄에 다 안 들어가 '가능합니다'만 넘어가던 자리 */}
+                      {s.note.map((part, i) => (
+                        <Fragment key={part}>
+                          {i > 0 && (
+                            <>
+                              <span className="hidden sm:inline"> · </span>
+                              <br className="sm:hidden" />
+                            </>
+                          )}
+                          {part}
+                        </Fragment>
+                      ))}
                     </p>
                   )}
                 </Fade>

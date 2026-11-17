@@ -304,7 +304,7 @@ export default function StyleguidePage() {
                 alt="Golf course"
                 eyebrow="Golf Tour"
                 title="title·to 있는 카드 (단체여행 섹션)"
-                description="일본·동남아 티타임부터 골프백 운송까지"
+                description="티타임부터 골프백 운송까지"
                 to="/group-travel/#golf"
               />
             </div>
