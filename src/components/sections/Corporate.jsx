@@ -106,34 +106,30 @@ export function Corporate() {
                 </span>
               ))}
             </p>
-            <ul className="space-y-2 mb-8">
+            <ul className="space-y-2.5 mb-8">
               {BTMS_HOME.points.map((point) => (
-                <li key={point} className="flex gap-2 text-[15px] text-white">
-                  <svg
-                    className="w-4 h-4 mt-1 shrink-0 text-brand-green"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={2.5}
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                  </svg>
+                // 체크는 상세 카드(DetailCard 의 CheckList)와 같은 둥근 파란 체크 — 어두운 바탕이라 원을 조금 밝게.
+                <li key={point} className="flex gap-3 text-[15px] text-white leading-relaxed">
+                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand-blue/20 text-brand-blue-light">
+                    <svg className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth={3} viewBox="0 0 24 24" aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                  </span>
                   <span>{point}</span>
                 </li>
               ))}
             </ul>
-            <div className="flex flex-wrap items-center gap-x-6 gap-y-4">
+            <div className="flex flex-col sm:flex-row gap-3">
               <Button as={Link} to={BTMS_PATH}>
                 BTMS 자세히 보기 →
               </Button>
-              <a
-                href="#contact"
-                onClick={goToBtmsInquiry}
-                className="text-sm font-medium text-gray-300 underline underline-offset-4 hover:text-white transition-colors"
-              >
-                도입 상담 요청
-              </a>
+              {/*
+                보조 동작은 테두리 버튼(outlineLight) + → 로 통일(2026-11-20). 예전 밑줄 글씨는
+                눌리는 버튼으로 잘 안 읽혔다 — 단체여행 섹션·골프 배너와 같은 '주 버튼 + 테두리 버튼' 짝.
+              */}
+              <Button as="a" href="#contact" variant="outlineLight" onClick={goToBtmsInquiry}>
+                도입 상담 요청 →
+              </Button>
             </div>
           </div>
           <ScreenshotFrame {...BTMS_HERO_SHOT} tone="dark" />

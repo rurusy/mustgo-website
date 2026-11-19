@@ -1,9 +1,10 @@
-import { Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import { Header } from '../components/layout/Header'
 import { Footer } from '../components/layout/Footer'
 import { Section, Button, Card, Fade } from '../components/ui'
 import { cn } from '../design/cn'
+import { DetailCard, DetailLabel, CheckList } from '../components/marketing/DetailCard'
+import { JumpNav } from '../components/marketing/JumpNav'
 import { useSeo } from '../hooks/useSeo'
 import { breadcrumbHome, seoForGroupTravel } from '../data/seo'
 import { homePath } from '../data/attractions'
@@ -27,28 +28,33 @@ import {
 // 이벤트를 쏠 수 없으므로, 라우터 state 로 문의 유형을 실어 보낸다(Contact.jsx 참고).
 const QUOTE_LINK = { to: `${homePath('ko')}#contact`, state: { inquiryType: 'group' } }
 
-function CheckIcon() {
+// 서비스 글 카드. 모양은 marketing/DetailCard(/btms/ 와 같은 카드), 여기서는 내용만 채운다.
+function ServiceText({ s }) {
   return (
-    <svg
-      className="w-4 h-4 mt-1 shrink-0 text-brand-green"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2.5}
-      viewBox="0 0 24 24"
-      aria-hidden="true"
+    <DetailCard
+      eyebrow={s.eyebrow}
+      title={s.name}
+      lead={s.tagline}
+      back={{ href: '#service-jump', label: '서비스 목록으로' }}
     >
-      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-    </svg>
-  )
-}
-
-// 서비스 바로가기 버튼의 아래 화살표 — '누르면 아래로 내려간다'를 보여 준다.
-// 돌려서(rotate-180) '서비스 목록으로' 위 화살표로도 쓴다.
-function ArrowDownIcon({ className }) {
-  return (
-    <svg className={cn('w-3.5 h-3.5 shrink-0', className)} fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24" aria-hidden="true">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M12 5v14m0 0l-6-6m6 6l6-6" />
-    </svg>
+      <DetailLabel className="mb-1.5">이런 분께</DetailLabel>
+      <p className="text-[15px] text-gray-800 leading-relaxed mb-6">{s.forWhom}</p>
+      <DetailLabel className="mb-2.5">준비해 드리는 것</DetailLabel>
+      <CheckList items={s.prepares} />
+      {s.note && (
+        // note 는 [모든 지역 가능, 주력 지역] — 주력 쪽만 주황으로 짚는다.
+        <div className="flex flex-wrap gap-2 mt-7">
+          {s.note.map((part, i) => (
+            <span
+              key={part}
+              className={cn('rounded-full px-3 py-1 text-[13px]', i === 0 ? 'bg-gray-100 text-gray-700' : 'bg-amber-50 text-amber-700')}
+            >
+              {part}
+            </span>
+          ))}
+        </div>
+      )}
+    </DetailCard>
   )
 }
 
@@ -94,25 +100,13 @@ export default function GroupTravelPage() {
                 ))}
               </p>
 
-              {/*
-                서비스 바로가기. 아래 각 서비스 글의 id 로 이동한다.
-                위에 '서비스별 자세히 보기' 이름을 달고 버튼마다 아래 화살표를 붙인다 — 이름만 있으면
-                눌리는 버튼인지 그냥 상자인지 구분이 안 됐다(2026-11-20 지적).
-              */}
-              {/* id — 각 서비스 글 끝의 '서비스 목록으로' 버튼이 여기로 돌아온다. */}
-              <nav id="service-jump" aria-labelledby="service-jump-label" className="mt-10 scroll-mt-28">
-                <p id="service-jump-label" className="text-sm font-bold text-gray-500 mb-3">
-                  서비스별 자세히 보기
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {GROUP_SERVICES.map((s) => (
-                    <Button key={s.id} as="a" href={`#${s.id}`} variant="jump" size="pillSm">
-                      {s.name}
-                      <ArrowDownIcon />
-                    </Button>
-                  ))}
-                </div>
-              </nav>
+              {/* 서비스 바로가기. 각 서비스 글 끝의 '서비스 목록으로'가 이 줄(#service-jump)로 돌아온다. */}
+              <JumpNav
+                id="service-jump"
+                label="서비스별 자세히 보기"
+                items={GROUP_SERVICES.map((s) => ({ href: `#${s.id}`, label: s.name }))}
+                className="mt-10"
+              />
             </Fade>
 
             <Fade delay={0.1} className="order-last lg:order-none lg:col-start-2 lg:row-start-1">
@@ -179,48 +173,7 @@ export default function GroupTravelPage() {
                   )}
                 </Fade>
                 <Fade delay={0.1}>
-                  <p className="text-sm font-eng font-bold text-amber-600 tracking-wider mb-2">{s.eyebrow}</p>
-                  <h2 className="text-2xl lg:text-3xl font-bold tracking-tight text-gray-900 mb-3">{s.name}</h2>
-                  <p className="text-lg text-gray-600 mb-8">{s.tagline}</p>
-
-                  <h3 className="text-sm font-bold text-gray-500 mb-2">이런 분께</h3>
-                  <p className="text-[15px] text-gray-800 leading-relaxed mb-6">{s.forWhom}</p>
-
-                  <h3 className="text-sm font-bold text-gray-500 mb-3">준비해 드리는 것</h3>
-                  <ul className="space-y-2">
-                    {s.prepares.map((item) => (
-                      <li key={item} className="flex gap-2 text-[15px] text-gray-800 leading-relaxed">
-                        <CheckIcon />
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  {s.note && (
-                    <p className="mt-6 inline-block rounded-sm bg-white border border-gray-200 px-3 py-2 text-sm font-medium text-gray-700">
-                      {/* 폰에서는 구절 사이에서 줄을 나눈다 — 한 줄에 다 안 들어가 '가능합니다'만 넘어가던 자리 */}
-                      {s.note.map((part, i) => (
-                        <Fragment key={part}>
-                          {i > 0 && (
-                            <>
-                              <span className="hidden sm:inline"> · </span>
-                              <br className="sm:hidden" />
-                            </>
-                          )}
-                          {part}
-                        </Fragment>
-                      ))}
-                    </p>
-                  )}
-                  {/* 바로가기로 내려온 뒤 다른 서비스를 고르러 돌아가는 길(2026-11-20 요청). */}
-                  <div className="mt-8">
-                    <a
-                      href="#service-jump"
-                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-gray-500 hover:text-brand-blue transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 rounded-sm"
-                    >
-                      <ArrowDownIcon className="rotate-180" />
-                      서비스 목록으로
-                    </a>
-                  </div>
+                  <ServiceText s={s} />
                 </Fade>
               </article>
             ))}

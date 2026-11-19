@@ -201,17 +201,22 @@ export default function CityPage({ city, lang = 'ko' }) {
         */}
         {others.length > 0 && (
           <Section tone="light" pad="flush" className="pb-20 lg:pb-28">
-            <h2 className="text-sm font-bold text-gray-500 mb-4">{c.otherCities}</h2>
-            <div className="flex flex-wrap gap-3">
+            {/*
+              다른 도시로 가는 링크. 예전 필터형(pillFilter) 상자는 눌리는지 헷갈려서(2026-11-20)
+              바로가기 버튼(jump)과 같은 모양에 → 를 붙였다. 위쪽 도시 탭은 '지금 보는 도시'를 칠하는
+              탭이라 필터형 그대로 둔다.
+            */}
+            <h2 className="text-sm font-bold text-brand-blue-ink mb-3">{c.otherCities}</h2>
+            <div className="flex flex-wrap gap-2">
               {others.map((other) => (
                 <Button
                   key={other.slug}
                   as={Link}
                   to={cityPath(lang, other.slug)}
-                  variant="pillFilter"
+                  variant="jump"
                   size="pillSm"
                 >
-                  {other[lang].name}
+                  {other[lang].name} →
                 </Button>
               ))}
             </div>

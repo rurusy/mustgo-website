@@ -4,7 +4,7 @@ import { cn } from '../../design/cn'
 // 사진 위에 eyebrow·설명을 얹는 카드.
 //   title — 선택. 영문 eyebrow 만으로는 서비스 이름이 안 읽히는 카드(단체여행 섹션)에서 한글 이름을 얹는다.
 //   to    — 선택. 주면 카드 전체가 링크가 되고 linkLabel(기본 '자세히 보기 →')을 보여 준다.
-//           폰에는 hover 가 없으므로 늘 보이고, sm 이상에서는 hover·키보드 포커스 때만 나타난다.
+//           어느 화면에서나 늘 보인다(아래 렌더 주석 참고).
 //           없으면 지금처럼 장식용 카드다(방한 VIP 섹션).
 export function ImageCard({ image, alt, eyebrow, title, description, to, linkLabel = '자세히 보기 →' }) {
   const Tag = to ? Link : 'div'
@@ -30,8 +30,12 @@ export function ImageCard({ image, alt, eyebrow, title, description, to, linkLab
         </span>
         {title && <h4 className="text-lg font-bold text-white mb-1">{title}</h4>}
         <p className="text-[15px] text-gray-200 leading-relaxed">{description}</p>
+        {/*
+          링크 카드는 '자세히 보기 →'를 늘 보여 준다. 예전엔 PC 에서 마우스를 올려야 나타나서 카드가 장식 사진처럼
+          보였다(2026-11-20 지적). 마우스를 올리면 주황으로 바뀌어 눌린다는 걸 한 번 더 알린다.
+        */}
         {to && (
-          <span className="mt-3 text-sm font-semibold text-white transition-opacity sm:opacity-0 sm:group-hover:opacity-100 sm:group-focus-visible:opacity-100">
+          <span className="mt-3 self-start text-sm font-semibold text-white border-b border-white/50 pb-0.5 transition-colors group-hover:text-amber-500 group-hover:border-amber-500 group-focus-visible:text-amber-500">
             {linkLabel}
           </span>
         )}

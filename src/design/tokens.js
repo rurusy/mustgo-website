@@ -4,7 +4,8 @@
 
 export const colors = {
   brand: {
-    blue: { DEFAULT: '#42b2e6', dark: '#3aa8dc', light: '#5ac4f0' },
+    // ink — 작은 글씨용 진한 파랑(흰 바탕 13px 에서도 읽히게).
+    blue: { DEFAULT: '#42b2e6', dark: '#3aa8dc', light: '#5ac4f0', ink: '#1f8fc4' },
     green: { DEFAULT: '#6cbd45', light: '#82c95f' },
   },
   amber: { 500: '#F59E0B', 600: '#D97706', 700: '#B45309' },

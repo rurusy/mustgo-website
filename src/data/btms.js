@@ -101,6 +101,7 @@ export const BTMS_FLOW = [
 export const BTMS_FEATURES = [
   {
     id: 'ai-booking',
+    short: 'AI 항공권 검색', // /btms/ 의 기능 바로가기 버튼 이름
     role: '출장자',
     name: '문장으로 찾는 출장 항공권',
     lead: '출장 조건을 문장으로 입력하면 AI가 빠진 조건을 되묻고, 정리한 조건으로 항공편을 검색합니다.',
@@ -113,6 +114,7 @@ export const BTMS_FEATURES = [
   },
   {
     id: 'policy',
+    short: '규정 맞춤 검색', // /btms/ 의 기능 바로가기 버튼 이름
     role: '출장자',
     name: '회사 규정에 맞는 항공편을 한눈에',
     lead: '검색 결과 위에 우리 회사 출장규정이 그대로 나오고, 항공편마다 규정에 맞는지 표시됩니다.',
@@ -132,6 +134,7 @@ export const BTMS_FEATURES = [
   },
   {
     id: 'approval',
+    short: '결재', // /btms/ 의 기능 바로가기 버튼 이름
     role: '출장관리자',
     name: '규정과 사유를 보고 바로 결재',
     lead: '출장자가 고른 항공편이 규정에 맞는지, 최저가와 얼마나 차이 나는지 보고 결재합니다.',
@@ -152,6 +155,7 @@ export const BTMS_FEATURES = [
   },
   {
     id: 'dashboard',
+    short: '출장 현황·통계', // /btms/ 의 기능 바로가기 버튼 이름
     role: '출장관리자',
     name: '출장 현황과 출장비 통계를 한눈에',
     lead: '지금 누가 어디로 출장 중인지, 올해 출장비가 얼마인지 관리자 화면에서 바로 확인합니다.',

@@ -74,7 +74,7 @@ export function About() {
         </Fade>
         <div className="grid md:grid-cols-3 gap-12 lg:gap-16">
           {reasons.map((r, idx) => (
-            <FeatureCard key={r.title} {...r} delay={idx * 0.1} />
+            <FeatureCard key={r.title} {...r} delay={idx * 0.1} layout="inline" />
           ))}
         </div>
       </div>

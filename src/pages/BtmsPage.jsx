@@ -3,6 +3,8 @@ import { Header } from '../components/layout/Header'
 import { Footer } from '../components/layout/Footer'
 import { Section, Button, Card, Fade } from '../components/ui'
 import { ScreenshotFrame } from '../components/marketing/ScreenshotFrame'
+import { DetailCard, DetailLabel, CheckList } from '../components/marketing/DetailCard'
+import { JumpNav } from '../components/marketing/JumpNav'
 import { useSeo } from '../hooks/useSeo'
 import { breadcrumbHome, seoForBtms } from '../data/seo'
 import { homePath } from '../data/attractions'
@@ -28,26 +30,11 @@ import {
 // 상담 버튼은 홈의 문의 폼으로 보낸다. GroupTravelPage 와 같은 이유로 라우터 state 로 유형을 싣는다.
 const CONSULT_LINK = { to: `${homePath('ko')}#contact`, state: { inquiryType: 'btms' } }
 
-function CheckIcon() {
-  return (
-    <svg
-      className="w-4 h-4 mt-1 shrink-0 text-brand-green"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2.5}
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-    >
-      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-    </svg>
-  )
-}
-
 function SectionTitle({ eyebrow, title, lead }) {
   return (
     <Fade className="text-left sm:text-center mb-12">
       {eyebrow && (
-        <p className="text-sm font-eng font-bold text-amber-600 tracking-wider mb-2">{eyebrow}</p>
+        <p className="text-xs font-eng font-semibold text-amber-600 uppercase tracking-wide2 mb-3">{eyebrow}</p>
       )}
       <h2 className="text-2xl lg:text-3xl font-bold tracking-tight text-gray-900">{title}</h2>
       {lead && <p className="mt-3 text-gray-600">{lead}</p>}
@@ -87,7 +74,7 @@ export default function BtmsPage() {
                 <span className="block text-lg lg:text-2xl text-gray-500 font-bold mb-2">{BTMS.fullName}</span>
                 <span className="font-eng">{BTMS.name}</span>
               </h1>
-              <p className="inline-block rounded-sm bg-sky-50 text-sky-800 text-sm font-bold px-3 py-1 mb-6">
+              <p className="inline-block rounded-sm bg-brand-blue/10 text-brand-blue-ink text-sm font-bold px-3 py-1 mb-6">
                 {BTMS_LAUNCH}
               </p>
               <p className="text-xl lg:text-2xl font-bold text-gray-900 mb-6">
@@ -119,8 +106,8 @@ export default function BtmsPage() {
                 <Button as={Link} {...CONSULT_LINK}>
                   도입 상담 요청하기
                 </Button>
-                <Button as="a" href="#features" variant="outlineDark">
-                  기능 살펴보기
+                <Button as="a" href="#feature-jump" variant="outlineDark">
+                  기능 살펴보기 ↓
                 </Button>
               </div>
             </Fade>
@@ -138,7 +125,7 @@ export default function BtmsPage() {
               <Fade key={r.name} delay={idx * 0.05}>
                 <Card className="h-full">
                   <h3 className="text-lg font-bold text-gray-900 mb-1">{r.name}</h3>
-                  <p className="text-xs font-medium text-sky-800 mb-4">{r.env}</p>
+                  <p className="text-xs font-medium text-brand-blue-ink mb-4">{r.env}</p>
                   <p className="text-[15px] text-gray-600 leading-relaxed">{r.does}</p>
                 </Card>
               </Fade>
@@ -166,33 +153,42 @@ export default function BtmsPage() {
           </ol>
         </Section>
 
-        {/* 역할별 기능. 화면과 글을 번갈아 좌우에 둔다(폰에서는 화면이 위). */}
-        <Section tone="soft" id="features" className="scroll-mt-20">
+        {/*
+          역할별 기능. 화면과 글을 번갈아 좌우에 둔다(폰에서는 화면이 위).
+          /group-travel/ 의 서비스 글과 같은 모양(2026-11-20 요청): 위에 기능 바로가기 줄(JumpNav),
+          글은 흰 카드(DetailCard). 화면 캡처와 카드의 위아래 선을 맞춘다(grid 기본값 stretch): 캡처는
+          줄이거나 자르지 않고 액자만 늘인다(ScreenshotFrame fill). 캡처가 더 긴 줄(결재 패널)은 카드가 늘어난다.
+        */}
+        <Section tone="soft" id="features">
+          <SectionTitle eyebrow="Features" title="역할별 주요 기능" />
+          <JumpNav
+            id="feature-jump"
+            label="기능별 자세히 보기"
+            items={BTMS_FEATURES.map((f) => ({ href: `#${f.id}`, label: f.short }))}
+            className="mb-16 lg:mb-20 flex flex-col items-start sm:items-center [&>div]:sm:justify-center"
+          />
           <div className="space-y-20 lg:space-y-28">
             {BTMS_FEATURES.map((f, idx) => (
               <article
                 key={f.id}
                 id={f.id}
-                className="scroll-mt-28 grid lg:grid-cols-2 gap-8 lg:gap-16 items-center"
+                className="scroll-mt-28 grid lg:grid-cols-2 gap-8 lg:gap-16"
               >
                 <Fade className={idx % 2 === 1 ? 'lg:order-last' : undefined}>
-                  <ScreenshotFrame {...f.shot} />
+                  <ScreenshotFrame {...f.shot} fill />
                 </Fade>
                 <Fade delay={0.1}>
-                  <p className="text-sm font-bold text-amber-600 mb-2">{f.role}</p>
-                  <h2 className="text-2xl lg:text-3xl font-bold tracking-tight text-gray-900 mb-3">{f.name}</h2>
-                  <p className="text-lg text-gray-600 mb-8">{f.lead}</p>
-                  <ul className="space-y-4">
-                    {f.points.map((p) => (
-                      <li key={p.name} className="flex gap-2">
-                        <CheckIcon />
-                        <span>
-                          <span className="block text-[15px] font-bold text-gray-900">{p.name}</span>
-                          <span className="block text-[15px] text-gray-600 leading-relaxed">{p.detail}</span>
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
+                  <DetailCard
+                    className="h-full"
+                    eyebrow={f.role}
+                    eyebrowEng={false}
+                    title={f.name}
+                    lead={f.lead}
+                    back={{ href: '#feature-jump', label: '기능 목록으로' }}
+                  >
+                    <DetailLabel className="mb-2.5">주요 기능</DetailLabel>
+                    <CheckList items={f.points} />
+                  </DetailCard>
                 </Fade>
               </article>
             ))}
@@ -201,7 +197,7 @@ export default function BtmsPage() {
 
         <Section tone="charcoal">
           <Fade className="text-left sm:text-center mb-12">
-            <p className="text-sm font-eng font-bold text-amber-500 tracking-wider mb-2">Mustgo Ticketing</p>
+            <p className="text-xs font-eng font-semibold text-amber-500 uppercase tracking-wide2 mb-3">Mustgo Ticketing</p>
             <h2 className="text-2xl lg:text-3xl font-bold tracking-tight text-white">
               결재가 끝나면 머스트고가 바로 이어받습니다
             </h2>
@@ -219,21 +215,21 @@ export default function BtmsPage() {
         <Section tone="light">
           <SectionTitle eyebrow="Setup" title="공통 시스템 위에 우리 회사 기준을 그대로" />
           <Fade className="mb-16">
-            <h3 className="text-sm font-bold text-gray-500 text-left sm:text-center mb-4">회사마다 따로 설정하는 항목</h3>
+            <h3 className="text-[13px] font-bold text-brand-blue-ink text-left sm:text-center mb-4">회사마다 따로 설정하는 항목</h3>
             <ul className="flex flex-wrap sm:justify-center gap-2">
               {BTMS_SETTINGS.map((s) => (
-                <li key={s} className="rounded-full bg-sky-50 text-sky-800 text-sm font-bold px-4 py-2">
+                <li key={s} className="rounded-full bg-brand-blue/10 text-brand-blue-ink text-sm font-bold px-4 py-2">
                   {s}
                 </li>
               ))}
             </ul>
           </Fade>
-          <h3 className="text-sm font-bold text-gray-500 text-left sm:text-center mb-4">도입 절차</h3>
+          <h3 className="text-[13px] font-bold text-brand-blue-ink text-left sm:text-center mb-4">도입 절차</h3>
           <ol className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {BTMS_ROLLOUT.map((step, idx) => (
               <Fade as="li" key={step.name} delay={idx * 0.05}>
                 <Card pad="none" className="h-full p-6">
-                  <p className="text-xs font-eng font-bold text-sky-800 mb-2">STEP {idx + 1}</p>
+                  <p className="text-xs font-eng font-bold text-brand-blue-ink mb-2">STEP {idx + 1}</p>
                   <h4 className="text-lg font-bold text-gray-900 mb-2">{step.name}</h4>
                   <p className="text-sm text-gray-600 leading-relaxed">{step.detail}</p>
                 </Card>

@@ -154,7 +154,7 @@ export function GroupTravel() {
                   골프투어 문의하기 →
                 </Button>
                 <Button as={Link} to={`${GROUP_TRAVEL_PATH}#golf`} variant="outlineLight">
-                  골프투어 자세히 보기
+                  골프투어 자세히 보기 →
                 </Button>
               </div>
             </div>
@@ -185,7 +185,7 @@ export function GroupTravel() {
             단체여행 견적 문의하기 →
           </Button>
           <Button as={Link} to={GROUP_TRAVEL_PATH} variant="outlineDark">
-            서비스 자세히 보기
+            서비스 자세히 보기 →
           </Button>
         </div>
       </Fade>

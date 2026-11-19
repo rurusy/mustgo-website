@@ -10,6 +10,9 @@ export default {
             DEFAULT: '#42b2e6',
             dark: '#3aa8dc',
             light: '#5ac4f0',
+            // 작은 글씨용 진한 파랑. DEFAULT(#42b2e6)는 흰 바탕의 13px 글씨에서 흐려서
+            // 같은 계열을 진하게 내렸다(/group-travel/ 서비스 라벨, 2026-11-20).
+            ink: '#1f8fc4',
           },
           green: {
             DEFAULT: '#6cbd45',

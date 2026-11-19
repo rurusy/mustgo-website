@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { cn } from '../../design/cn'
 import { Button } from '../ui'
+import { anchorScrollTop } from '../../lib/anchorScroll'
 
 // 서버 렌더링(prerender)에서는 useLayoutEffect 가 경고만 내고 돌지 않으므로 useEffect 로 바꿔 둔다.
 const useIsoLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect
@@ -129,9 +130,8 @@ export function Header({ lang = 'ko', banner = null }) {
     const target = document.querySelector(hash)
     if (!target) return
     e.preventDefault()
-    const headerEl = document.getElementById('main-header')
-    const offset = headerEl ? headerEl.offsetHeight : 0
-    const top = target.getBoundingClientRect().top + window.pageYOffset - offset
+    // 멈출 자리 계산은 lib/anchorScroll.js — 섹션 위 여백을 지나쳐 제목이 헤더 가까이 오게 한다.
+    const top = anchorScrollTop(target)
     // 드로어 닫힘 트랜지션이 시작된 다음 스크롤해야 시각적으로 부드러움.
     requestAnimationFrame(() => {
       window.scrollTo({ top, behavior: 'smooth' })

@@ -11,11 +11,14 @@ const variants = {
   // Solid blue CTA that darkens on hover (used for the header "Pay Online" entry).
   blueSolid: 'bg-brand-blue text-white hover:bg-brand-blue-dark shadow-none',
   green: 'bg-brand-green text-white hover:bg-brand-green-light',
+  // 보조 버튼 두 가지. 예전엔 투명 바탕에 옅은 테두리 한 줄이라 '그냥 상자'로 보였다(2026-11-20 지적) —
+  // 바탕을 살짝 채우고 테두리를 진하게 해서 눌리는 것으로 읽히게 했다. 링크 문구 끝에는 → (페이지 안
+  // 아래로 내려가는 것은 ↓)를 붙인다.
   outlineLight:
-    'bg-transparent border border-white/40 text-white hover:bg-white/10 hover:border-white backdrop-blur-sm shadow-none',
+    'bg-white/10 border-2 border-white text-white hover:bg-white hover:text-ink-900 backdrop-blur-sm shadow-none',
   // outlineLight 의 밝은 배경용 짝. 주 버튼 옆의 보조 동작(예: 홈 단체여행 섹션의 '자세히 보기').
   outlineDark:
-    'bg-transparent border border-gray-300 text-gray-800 hover:border-brand-blue hover:text-brand-blue shadow-none',
+    'bg-white border-2 border-ink-900 text-ink-900 shadow-none hover:bg-ink-900 hover:text-white',
   ghost: 'bg-transparent text-gray-700 hover:text-amber-600 shadow-none',
   // 같은 페이지 아래 내용으로 내려가는 바로가기(예: /group-travel/ 의 서비스 바로가기).
   // pillFilter 와 생김새가 비슷하면 '그냥 이름표'로 읽혀서(2026-11-20 지적) 테두리를 진하게 하고

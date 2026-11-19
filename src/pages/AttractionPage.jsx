@@ -2,7 +2,8 @@ import { Link } from 'react-router-dom'
 import { Header } from '../components/layout/Header'
 import { Footer } from '../components/layout/Footer'
 import { Footer as EnFooter } from '../components/layout/en/Footer'
-import { Section, Card, Button, Fade } from '../components/ui'
+import { Section, Button, Fade } from '../components/ui'
+import { CheckList } from '../components/marketing/DetailCard'
 import { useSeo } from '../hooks/useSeo'
 import { breadcrumbHome, seoForAttraction } from '../data/seo'
 import { cityBySlug, cityPath, homePath } from '../data/attractions'
@@ -12,21 +13,23 @@ import { cityBySlug, cityPath, homePath } from '../data/attractions'
 // 수정이 두 곳으로 번진다 (sections/en/ 과 달리 이 페이지는 구조가 완전히 동일).
 const COPY = {
   ko: {
+    about: '명소 소개',
     info: '방문 정보',
     planning: '의전 투어 설계 포인트',
     checkedPrefix: '운영 정보 기준',
     quoteLead: '이 관광지를 포함한 일정을 원하시면, 인원과 날짜만 알려주셔도 됩니다. 영업일 1일 안에 담당자가 초안 일정과 견적을 보내드립니다.',
     quoteTitle: '맞춤 견적 요청',
-    backToCity: (city) => `${city} 전체 보기`,
+    backToCity: (city) => `${city} 전체 보기 →`,
     photoPrefix: '사진',
   },
   en: {
+    about: 'About',
     info: 'Visitor information',
     planning: 'Private tour planning notes',
     checkedPrefix: 'Information verified',
     quoteLead: 'Tell us the dates and the size of your party — that is enough to start. We reply with a draft itinerary and a quote within one business day.',
     quoteTitle: 'Request a custom quote',
-    backToCity: (city) => `See all of ${city}`,
+    backToCity: (city) => `See all of ${city} →`,
     photoPrefix: 'Photo',
   },
 }
@@ -84,11 +87,20 @@ export default function AttractionPage({ attraction, lang = 'ko' }) {
       <main className="break-keep">
         <Section tone="light" pad="flush" className="pt-32 pb-12 lg:pt-36 lg:pb-16">
           <Breadcrumb items={crumbs} />
+          {/*
+            제목 줄은 /group-travel/·/btms/ 의 상세 카드(DetailCard)와 같은 짜임으로 맞췄다(2026-11-20):
+            주황 영문 라벨(도시) → 제목 → 작은 회색 부제 + 주황 세로선. 부제를 크게 두면 제목과 다퉜다.
+          */}
           <Fade className="max-w-3xl">
+            <p className="text-xs font-eng font-semibold text-amber-600 uppercase tracking-wide2 mb-3">
+              {city.en.name}
+            </p>
             <h1 className="text-3xl lg:text-5xl font-bold tracking-tight text-gray-900 mb-4">
               {t.name}
             </h1>
-            <p className="text-base lg:text-lg text-gray-600 leading-[1.8]">{t.tagline}</p>
+            <p className="text-[15px] lg:text-base text-gray-500 leading-relaxed border-l-2 border-amber-500 pl-3">
+              {t.tagline}
+            </p>
           </Fade>
         </Section>
 
@@ -116,30 +128,39 @@ export default function AttractionPage({ attraction, lang = 'ko' }) {
         </Section>
 
         <Section tone="light" pad="tight">
-          <div className="grid lg:grid-cols-[minmax(0,1fr)_340px] gap-12 lg:gap-16 items-start">
-            <Fade as="div" className="max-w-2xl">
-              {t.body.map((para) => (
-                <p key={para.slice(0, 24)} className="text-[15px] lg:text-base text-gray-600 leading-[1.9] mb-6">
-                  {para}
-                </p>
-              ))}
+          {/*
+            본문과 방문 정보를 같은 흰 카드 두 장으로 나란히 두고 높이를 맞춘다(grid 기본값 stretch + h-full).
+            예전엔 본문이 맨살 글이라 카드와 윗선(카드 안 제목만큼)·아랫선(본문이 짧음)이 어긋났고,
+            본문 폭을 max-w-2xl 로 묶어 두 칸 사이가 크게 비었다(2026-11-20 지적).
+          */}
+          <div className="grid lg:grid-cols-[minmax(0,1fr)_340px] gap-6 lg:gap-8">
+            <Fade as="div">
+              <div className="h-full bg-white rounded-lg border border-gray-100 shadow-sm p-6 sm:p-8">
+                <h2 className="text-lg font-bold text-gray-900 mb-5">{c.about}</h2>
+                {t.body.map((para) => (
+                  <p key={para.slice(0, 24)} className="text-[15px] lg:text-base text-gray-600 leading-[1.9] mb-5 last:mb-0">
+                    {para}
+                  </p>
+                ))}
+              </div>
             </Fade>
 
-            <Fade as="aside" delay={0.1} className="lg:sticky lg:top-28">
-              <Card>
-                <h2 className="text-sm font-bold text-gray-900 mb-5">{c.info}</h2>
-                <dl className="space-y-4">
+            <Fade as="aside" delay={0.1}>
+              {/* 상세 카드와 같은 흰 카드. 항목 이름은 진한 파랑(marketing/DetailCard 의 DetailLabel 과 같은 글씨) — 연회색은 안 읽혔다. */}
+              <div className="h-full flex flex-col bg-white rounded-lg border border-gray-100 shadow-sm p-6 sm:p-8">
+                <h2 className="text-lg font-bold text-gray-900 mb-5">{c.info}</h2>
+                <dl className="space-y-4 mb-6">
                   {t.facts.map(([label, value]) => (
                     <div key={label}>
-                      <dt className="text-xs text-gray-400 mb-1">{label}</dt>
-                      <dd className="text-sm text-gray-700 leading-relaxed">{value}</dd>
+                      <dt className="text-[13px] font-bold text-brand-blue-ink mb-1">{label}</dt>
+                      <dd className="text-[15px] text-gray-800 leading-relaxed">{value}</dd>
                     </div>
                   ))}
                 </dl>
-                <p className="mt-6 pt-4 border-t border-gray-100 text-[11px] text-gray-400">
+                <p className="mt-auto pt-4 border-t border-gray-100 text-xs text-gray-400">
                   {c.checkedPrefix} {attraction.checkedOn}
                 </p>
-              </Card>
+              </div>
             </Fade>
           </div>
         </Section>
@@ -149,16 +170,10 @@ export default function AttractionPage({ attraction, lang = 'ko' }) {
             <h2 className="text-2xl lg:text-3xl font-bold tracking-tight text-gray-900 mb-8">
               {c.planning}
             </h2>
-            <ul className="space-y-4">
-              {t.planning.map((item) => (
-                <li key={item.slice(0, 24)} className="flex gap-3 text-[15px] text-gray-600 leading-[1.8]">
-                  <span aria-hidden="true" className="text-amber-600 flex-shrink-0">
-                    —
-                  </span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
+            {/* 흰 카드 안 파란 체크 목록(CheckList) — /group-travel/ '준비해 드리는 것'과 같은 모양. */}
+            <div className="bg-white rounded-lg border border-gray-100 shadow-sm p-6 sm:p-8">
+              <CheckList items={t.planning} />
+            </div>
           </Fade>
         </Section>
 

@@ -16,6 +16,8 @@ import {
   BrandText,
 } from '../components/ui'
 import { FeatureCard } from '../components/marketing/FeatureCard'
+import { DetailCard, DetailLabel, CheckList } from '../components/marketing/DetailCard'
+import { JumpNav } from '../components/marketing/JumpNav'
 import { ServiceCard } from '../components/marketing/ServiceCard'
 import { AudienceCard } from '../components/marketing/AudienceCard'
 import { ImageCard } from '../components/marketing/ImageCard'
@@ -285,6 +287,21 @@ export default function StyleguidePage() {
               <FeatureCard icon={<GlobeIcon />} title="P1. 양방향 전문성" description="Outbound와 Inbound를 동시에 운영." />
               <FeatureCard icon={<StarIcon />} title="P2. VIP 디테일" description="임원 출장과 해외 의전 투어로 다져진 디테일." />
               <FeatureCard icon={<ClockIcon />} title="P3. 24/7 컨시어지" badgeTone="amberSoft" description="시차에 관계없이 즉시 응답." />
+            </div>
+            {/* JumpNav + DetailCard — /group-travel/ 서비스 글, /btms/ 기능 글 */}
+            <div className="bg-surface-soft rounded-lg p-8 space-y-8">
+              <JumpNav id="sg-jump" label="서비스별 자세히 보기" items={[{ href: '#sg-detail', label: '해외골프여행' }, { href: '#sg-detail', label: '특수지역여행' }]} />
+              <div id="sg-detail" className="max-w-xl">
+                <DetailCard eyebrow="Golf Tour" title="해외골프여행" lead="티타임부터 골프백 운송까지" back={{ href: '#sg-jump', label: '서비스 목록으로' }}>
+                  <DetailLabel className="mb-2.5">준비해 드리는 것</DetailLabel>
+                  <CheckList items={['희망 날짜 티타임 확보', { name: '이름 + 설명', detail: '두 줄짜리 항목도 됩니다.' }]} />
+                </DetailCard>
+              </div>
+            </div>
+            {/* layout="inline" — 아이콘 옆 제목(홈 About 의 세 가지 이유) */}
+            <div className="grid md:grid-cols-3 gap-12">
+              <FeatureCard layout="inline" icon={<GlobeIcon />} title="양방향 전문성" description="Outbound와 Inbound를 동시에 운영." />
+              <FeatureCard layout="inline" icon={<ClockIcon />} title="24/7 컨시어지" badgeTone="amberSoft" description="시차에 관계없이 즉시 응답." />
             </div>
 
             <div className="bg-ink-800 rounded-lg p-8">
