@@ -59,8 +59,17 @@ const services = [
   },
 ]
 
+// 골프투어 배너. 2026-11-19 키워드 광고 대행사 요청 — 골프투어를 한다는 게 홈에서 잘 안 보인다.
+// 카드 4장 중 하나로만 있던 골프를 카드 아래 넓은 배너로 한 번 더 세운다. 문구는 상세 페이지
+// (groupTravel.js 의 golf 항목)에 이미 있는, 사장님 확인을 받은 사실만 쓴다.
+const GOLF_BANNER = {
+  image: photo('1774905175014-5f9de3e9c2d1'),
+  alt: '야자수 사이 리조트 골프장에 늘어선 골프 카트',
+  regions: ['주력 지역: 일본·동남아', '원하시는 모든 지역 가능'],
+}
+
 const INTRO = [
-  '포상 여행과 임직원 연수, 해외 골프, 아프리카·남미 같은 특수 지역까지.',
+  '포상 여행과 임직원 연수, 해외 골프투어, 아프리카·남미 같은 특수 지역까지.',
   '기획 상담부터 귀국 후 정산까지 전담 직원 한 명이 맡아 진행합니다.',
   '담당자가 바뀌지 않으니, 처음 말씀하신 요청이 마지막 날까지 그대로 이어집니다.',
 ]
@@ -100,6 +109,57 @@ export function GroupTravel() {
             <ImageCard {...s} to={`${GROUP_TRAVEL_PATH}#${anchor}`} />
           </Fade>
         ))}
+      </div>
+
+      {/*
+        id — 골프 키워드 광고가 이 배너로 바로 보낼 수 있도록(/#golf-tour). Fade 바깥 div 에 둔다 —
+        Fade 는 떠오르며 위치가 바뀌어서, 안쪽에 두면 도착 위치를 잰 뒤 배너가 헤더 밑으로 밀려 올라간다.
+      */}
+      <div id="golf-tour" className="scroll-mt-28 mt-4 lg:mt-6 max-w-5xl mx-auto">
+        <Fade>
+          <div className="relative overflow-hidden rounded-lg bg-ink-800">
+            <img
+              src={GOLF_BANNER.image}
+              alt={GOLF_BANNER.alt}
+              loading="lazy"
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+            {/* 폰에서는 글이 사진 아래쪽을 덮으므로 아래에서 위로, 넓은 화면에서는 글이 왼쪽에 있으므로 왼쪽에서 오른쪽으로 어둡게. */}
+            <div className="absolute inset-0 bg-gradient-to-t sm:bg-gradient-to-r from-ink-900/90 via-ink-900/60 to-ink-900/10" />
+            <div className="relative px-6 pt-48 pb-8 sm:p-10 lg:p-14 sm:max-w-xl">
+              <span className="text-amber-500 font-eng font-bold text-sm mb-3 block tracking-wider">Golf Tour</span>
+              <h3 className="text-2xl lg:text-3xl font-bold text-white tracking-tight mb-4">
+                해외 골프투어,
+                <br /> 라운딩에만 집중하세요
+              </h3>
+              <p className="text-[15px] lg:text-base text-gray-200 leading-relaxed mb-5">
+                <span className="block">
+                  티타임 확보부터 골프장·숙소·차량 묶음 구성,
+                  <br className="hidden sm:inline" /> 골프백 항공 위탁 안내까지 준비해 드립니다.
+                </span>
+                <span className="block mt-2">
+                  거래처 접대 골프, 임원 라운딩, 사내 동호회 골프 여행까지
+                  <br className="hidden sm:inline" /> 모두 맡겨 주세요.
+                </span>
+              </p>
+              <ul className="flex flex-wrap gap-2 mb-8">
+                {GOLF_BANNER.regions.map((r) => (
+                  <li key={r} className="rounded-sm border border-white/30 bg-white/10 px-3 py-1.5 text-sm text-white backdrop-blur-sm">
+                    {r}
+                  </li>
+                ))}
+              </ul>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Button as="a" href="#contact" variant="blue" onClick={prefillGroup}>
+                  골프투어 문의하기 →
+                </Button>
+                <Button as={Link} to={`${GROUP_TRAVEL_PATH}#golf`} variant="outlineLight">
+                  골프투어 자세히 보기
+                </Button>
+              </div>
+            </div>
+          </div>
+        </Fade>
       </div>
 
       <Fade className="mt-24 pt-16 border-t border-gray-100">

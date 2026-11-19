@@ -127,6 +127,15 @@ export default function GroupTravelPage() {
                       className="absolute inset-0 w-full h-full object-cover"
                     />
                   </div>
+                  {s.gallery && (
+                    <div className="grid grid-cols-2 gap-3 mt-3">
+                      {s.gallery.map((g) => (
+                        <div key={g.image} className="relative overflow-hidden rounded-lg aspect-[4/3] bg-ink-800">
+                          <img src={g.image} alt={g.alt} loading="lazy" className="absolute inset-0 w-full h-full object-cover" />
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </Fade>
                 <Fade delay={0.1}>
                   <p className="text-sm font-eng font-bold text-amber-600 tracking-wider mb-2">{s.eyebrow}</p>

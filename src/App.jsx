@@ -35,20 +35,28 @@ const routePath = (p) => p.replace(/\/$/, '')
 //  - 해시가 붙어 있으면(/#contact) 그 섹션으로 보낸다. 고정 헤더 높이만큼 빼는 건
 //    Header 의 앵커 처리와 같은 계산이다.
 //  - 뒤로/앞으로 이동(POP)은 건드리지 않는다. 브라우저가 복원한 위치를 덮어쓰면
-//    "뒤로 갔더니 맨 위"가 되어 더 불편하다. 첫 로드도 POP 이라 해시 앵커는
-//    브라우저 기본 동작에 맡겨진다.
+//    "뒤로 갔더니 맨 위"가 되어 더 불편하다.
+//  - 단, 첫 로드도 POP 인데 해시가 붙어 있으면(광고·메일에서 /#golf-tour 로 바로 들어온 경우)
+//    그 섹션으로 보낸다. 브라우저 기본 동작에 맡겼더니 실제로는 맨 위에 머물렀다
+//    (2026-11-19 확인 — /#contact 도 마찬가지였다).
+const ANCHOR_HASH = /^#[A-Za-z][\w-]*$/ // 복구 메일의 #access_token=… 같은 조각은 앵커가 아니다
+
 function ScrollToTop() {
-  const { pathname, hash } = useLocation()
+  const { pathname, hash, key } = useLocation()
   const navigationType = useNavigationType()
 
   useEffect(() => {
-    if (navigationType === 'POP') return
+    // 첫 로드의 location.key 는 React Router 가 'default' 로 둔다. 뒤로/앞으로 이동한 POP 은
+    // 실제 키를 갖는다. ref 로 세면 StrictMode(개발 서버)의 effect 두 번 실행에 걸린다.
+    const isFirst = key === 'default'
+    const anchor = ANCHOR_HASH.test(hash) ? hash : ''
+    if (navigationType === 'POP' && !(isFirst && anchor)) return
 
     const apply = () => {
       // behavior 를 반드시 명시한다. index.html 의 <html class="scroll-smooth"> 때문에
       // 생략하면 페이지를 넘길 때마다 화면이 길게 미끄러진다.
-      if (hash) {
-        const target = document.querySelector(hash)
+      if (anchor) {
+        const target = document.querySelector(anchor)
         if (target) {
           const headerEl = document.getElementById('main-header')
           const offset = headerEl ? headerEl.offsetHeight : 0
@@ -68,8 +76,13 @@ function ScrollToTop() {
     // 밀린다. 실제로 홈(높이 6400)에서 허브(1400)로 넘어가면 리셋 직후 스크롤이
     // 페이지 맨 아래로 끌려갔다 — "눌렀더니 맞춤 견적 버튼이 보인다"가 그 증상이다.
     const raf = requestAnimationFrame(() => requestAnimationFrame(apply))
-    return () => cancelAnimationFrame(raf)
-  }, [pathname, hash, navigationType])
+    // 첫 로드는 웹폰트·사진이 늦게 들어오며 위쪽 높이가 더 바뀐다 — 조금 뒤에 한 번 더 맞춘다.
+    const late = isFirst ? setTimeout(apply, 400) : 0
+    return () => {
+      cancelAnimationFrame(raf)
+      clearTimeout(late)
+    }
+  }, [pathname, hash, key, navigationType])
 
   return null
 }

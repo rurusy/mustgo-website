@@ -174,6 +174,7 @@ const CONTACT_COPY = {
     // 유형별 안내 문구. 없는 유형은 messagePh 를 쓴다.
     messagePhByType: {
       btms: '임직원 수, 한 해 출장 규모, 지금의 출장 결재 방식 등을 남겨 주세요.',
+      group: '인원, 목적(포상·연수·골프투어 등), 희망 시기와 지역을 남겨 주세요.',
     },
     consent: (
       <>
