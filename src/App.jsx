@@ -59,7 +59,12 @@ function ScrollToTop() {
         const target = document.querySelector(anchor)
         if (target) {
           const headerEl = document.getElementById('main-header')
-          const offset = headerEl ? headerEl.offsetHeight : 0
+          // 목적지에 scroll-mt 가 있으면 '헤더 아래 여유가 필요한 곳'으로 보고 헤더 밑으로 32px 더
+          // 띄운다. 헤더 높이만 빼면 /group-travel/ 의 서비스 사진이 헤더 선에 딱 붙었다
+          // (2026-11-20 지적). 값 자체 대신 유무만 보는 건, 홈은 공지 띠 때문에 헤더가 더 높아서
+          // scroll-mt 값을 넘어 버리기 때문이다. 홈 섹션들은 scroll-mt 가 없고 위 여백을 스스로 갖는다.
+          const wantsGap = (parseFloat(getComputedStyle(target).scrollMarginTop) || 0) > 0
+          const offset = (headerEl ? headerEl.offsetHeight : 0) + (wantsGap ? 32 : 0)
           window.scrollTo({
             top: target.getBoundingClientRect().top + window.scrollY - offset,
             behavior: 'instant',

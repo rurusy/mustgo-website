@@ -17,6 +17,11 @@ const variants = {
   outlineDark:
     'bg-transparent border border-gray-300 text-gray-800 hover:border-brand-blue hover:text-brand-blue shadow-none',
   ghost: 'bg-transparent text-gray-700 hover:text-amber-600 shadow-none',
+  // 같은 페이지 아래 내용으로 내려가는 바로가기(예: /group-travel/ 의 서비스 바로가기).
+  // pillFilter 와 생김새가 비슷하면 '그냥 이름표'로 읽혀서(2026-11-20 지적) 테두리를 진하게 하고
+  // 아래 화살표를 붙이며, 마우스를 올리면 파랗게 바뀐다. 화살표는 호출하는 쪽에서 넣는다.
+  jump:
+    'gap-1.5 bg-white text-gray-800 border border-gray-300 hover:border-brand-blue hover:text-brand-blue hover:bg-brand-blue/5 shadow-sm font-medium',
   // Admin/utility variants — flat, no shadow, used in tab strips and inline filters.
   pillFilter:
     'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 shadow-none font-medium',

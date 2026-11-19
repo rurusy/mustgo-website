@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { Header } from '../components/layout/Header'
 import { Footer } from '../components/layout/Footer'
 import { Section, Button, Card, Fade } from '../components/ui'
+import { cn } from '../design/cn'
 import { useSeo } from '../hooks/useSeo'
 import { breadcrumbHome, seoForGroupTravel } from '../data/seo'
 import { homePath } from '../data/attractions'
@@ -37,6 +38,16 @@ function CheckIcon() {
       aria-hidden="true"
     >
       <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+    </svg>
+  )
+}
+
+// 서비스 바로가기 버튼의 아래 화살표 — '누르면 아래로 내려간다'를 보여 준다.
+// 돌려서(rotate-180) '서비스 목록으로' 위 화살표로도 쓴다.
+function ArrowDownIcon({ className }) {
+  return (
+    <svg className={cn('w-3.5 h-3.5 shrink-0', className)} fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24" aria-hidden="true">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 5v14m0 0l-6-6m6 6l6-6" />
     </svg>
   )
 }
@@ -83,13 +94,24 @@ export default function GroupTravelPage() {
                 ))}
               </p>
 
-              {/* 서비스 바로가기. 아래 각 서비스 글의 id 로 이동한다. */}
-              <nav aria-label="서비스 바로가기" className="flex flex-wrap gap-2 mt-10">
-                {GROUP_SERVICES.map((s) => (
-                  <Button key={s.id} as="a" href={`#${s.id}`} variant="pillFilter" size="pillSm">
-                    {s.name}
-                  </Button>
-                ))}
+              {/*
+                서비스 바로가기. 아래 각 서비스 글의 id 로 이동한다.
+                위에 '서비스별 자세히 보기' 이름을 달고 버튼마다 아래 화살표를 붙인다 — 이름만 있으면
+                눌리는 버튼인지 그냥 상자인지 구분이 안 됐다(2026-11-20 지적).
+              */}
+              {/* id — 각 서비스 글 끝의 '서비스 목록으로' 버튼이 여기로 돌아온다. */}
+              <nav id="service-jump" aria-labelledby="service-jump-label" className="mt-10 scroll-mt-28">
+                <p id="service-jump-label" className="text-sm font-bold text-gray-500 mb-3">
+                  서비스별 자세히 보기
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {GROUP_SERVICES.map((s) => (
+                    <Button key={s.id} as="a" href={`#${s.id}`} variant="jump" size="pillSm">
+                      {s.name}
+                      <ArrowDownIcon />
+                    </Button>
+                  ))}
+                </div>
               </nav>
             </Fade>
 
@@ -108,7 +130,12 @@ export default function GroupTravelPage() {
           </div>
         </Section>
 
-        {/* 서비스 4개. 사진과 글을 번갈아 좌우에 둔다(폰에서는 사진이 위). */}
+        {/*
+          서비스 4개. 사진과 글을 번갈아 좌우에 둔다(폰에서는 사진이 위).
+          넓은 화면에서는 사진 칸을 글 높이에 맞춰 늘이고 줄인다(grid 기본값 stretch + lg:h-full).
+          예전엔 사진을 4:3 고정에 세로 가운데 정렬이라, 글이 짧거나(인센티브) 사진이 길면(골프 3장)
+          글이 어중간한 높이에서 시작했다(2026-11-20 지적). 이제 사진과 글의 위·아래 선이 늘 맞는다.
+        */}
         <Section tone="soft">
           <div className="space-y-20 lg:space-y-28">
             {GROUP_SERVICES.map((s, idx) => (
@@ -116,24 +143,38 @@ export default function GroupTravelPage() {
                 key={s.id}
                 id={s.id}
                 // 바로가기로 들어올 때 고정 헤더(높이 80px)에 제목이 가리지 않도록.
-                className="scroll-mt-28 grid lg:grid-cols-2 gap-8 lg:gap-16 items-center"
+                className="scroll-mt-28 grid lg:grid-cols-2 gap-8 lg:gap-16"
               >
                 <Fade className={idx % 2 === 1 ? 'lg:order-last' : undefined}>
-                  <div className="relative overflow-hidden rounded-lg aspect-[4/3] bg-ink-800">
-                    <img
-                      src={s.image}
-                      alt={s.imageAlt}
-                      loading={idx === 0 ? 'eager' : 'lazy'}
-                      className="absolute inset-0 w-full h-full object-cover"
-                    />
-                  </div>
-                  {s.gallery && (
-                    <div className="grid grid-cols-2 gap-3 mt-3">
-                      {s.gallery.map((g) => (
-                        <div key={g.image} className="relative overflow-hidden rounded-lg aspect-[4/3] bg-ink-800">
-                          <img src={g.image} alt={g.alt} loading="lazy" className="absolute inset-0 w-full h-full object-cover" />
+                  {s.gallery ? (
+                    // 사진 여러 장은 한 상자 안에 모은다 — 큰 사진 1장 + 오른쪽 작은 사진 2장(위아래).
+                    // 아래로 쌓으면 이 칸만 길어져 다른 서비스와 크기가 어긋난다.
+                    <div className="grid grid-cols-3 grid-rows-2 gap-2 sm:gap-3 aspect-[4/3] lg:aspect-auto lg:h-full lg:min-h-[340px]">
+                      {[{ image: s.image, alt: s.imageAlt }, ...s.gallery].map((g, i) => (
+                        <div
+                          key={g.image}
+                          className={cn(
+                            'relative overflow-hidden rounded-lg bg-ink-800',
+                            i === 0 && 'col-span-2 row-span-2',
+                          )}
+                        >
+                          <img
+                            src={g.image}
+                            alt={g.alt}
+                            loading={idx === 0 && i === 0 ? 'eager' : 'lazy'}
+                            className="absolute inset-0 w-full h-full object-cover"
+                          />
                         </div>
                       ))}
+                    </div>
+                  ) : (
+                    <div className="relative overflow-hidden rounded-lg aspect-[4/3] lg:aspect-auto lg:h-full lg:min-h-[340px] bg-ink-800">
+                      <img
+                        src={s.image}
+                        alt={s.imageAlt}
+                        loading={idx === 0 ? 'eager' : 'lazy'}
+                        className="absolute inset-0 w-full h-full object-cover"
+                      />
                     </div>
                   )}
                 </Fade>
@@ -170,6 +211,16 @@ export default function GroupTravelPage() {
                       ))}
                     </p>
                   )}
+                  {/* 바로가기로 내려온 뒤 다른 서비스를 고르러 돌아가는 길(2026-11-20 요청). */}
+                  <div className="mt-8">
+                    <a
+                      href="#service-jump"
+                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-gray-500 hover:text-brand-blue transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 rounded-sm"
+                    >
+                      <ArrowDownIcon className="rotate-180" />
+                      서비스 목록으로
+                    </a>
+                  </div>
                 </Fade>
               </article>
             ))}

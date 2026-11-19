@@ -154,6 +154,9 @@ export default function StyleguidePage() {
             </div>
             <Button variant="outlineDark">Outline Dark</Button>
             <Button variant="ghost">Ghost</Button>
+            <Button as="a" href="#" variant="jump" size="pillSm">
+              해외골프여행 ↓
+            </Button>
             <Button size="pill" variant="blue">
               빠른 견적 요청
             </Button>
