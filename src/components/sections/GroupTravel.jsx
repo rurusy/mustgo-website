@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { Section, Fade, Button, SectionLabel } from '../ui'
 import { GROUP_TRAVEL_PATH } from '../../data/groupTravel'
-import { ImageCard } from '../marketing/ImageCard'
+import { ServiceBanner } from '../marketing/ServiceBanner'
 import { ProcessSteps } from '../marketing/ProcessSteps'
 
 // 아웃바운드 기업 인센티브·단체여행. 기업 출장(어두운 배경)과 방한 VIP(어두운 배경) 사이에
@@ -9,57 +9,64 @@ import { ProcessSteps } from '../marketing/ProcessSteps'
 // 영문 홈(/en)에는 넣지 않는다.
 //
 // 문안의 사실(골프·특수지역 주력 지역, 인솔 여부, 박람회·세미나 가능)은 2026-11-17 사장님 확인을
-// 받은 것만 쓴다. 실적 숫자·최소 인원·실제 행사 사진은 쓰지 않기로 했다. 골프는 어느 지역이든
-// 가능해서 카드 문구에 지역을 적지 않는다(주력 지역은 상세 페이지에). 사진은 무료 사진(Unsplash)만 쓴다(참가자 얼굴 노출 불가).
+// 받은 것만 쓴다. 실적 숫자·최소 인원·실제 행사 사진은 쓰지 않기로 했다. 사진은 무료 사진(Unsplash)만
+// 쓴다(참가자 얼굴 노출 불가).
 
 const photo = (id) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&q=80&w=1200`
 
-// 카드 설명은 쉼표에서 줄을 나눈다. 앞 구절이 폰 한 줄(390px)에 들어가는 길이라 어느 너비에서나
-// 두 줄로 맞고, 나누지 않으면 폰에서 '되도록'처럼 한 어절만 다음 줄에 남는다.
-const lines = (first, second) => (
-  <>
-    {first}
-    <br />
-    {second}
-  </>
-)
-
-const services = [
+// 서비스 4개를 같은 모양의 넓은 배너로 둔다(2026-11-20).
+//   11-19 광고 대행사 요청으로 골프만 카드 아래 큰 배너로 세웠더니 '골프 전문 회사'처럼 보여서,
+//   카드 대신 네 서비스를 모두 배너로 맞췄다. 한 서비스만 크게 다시 꾸미지 말 것.
+// 문구는 groupTravel.js(상세 페이지)의 사장님 확인 사실만 줄여 쓴다. 지역 태그는 그 파일 규칙대로
+// '모든 지역 가능'을 앞에 둔다.
+// id — 키워드 광고가 배너로 바로 보낼 수 있는 홈 앵커(/#golf-tour 는 골프 광고가 이미 쓴다 — 바꾸지 말 것).
+// anchor — '자세히 보기'가 가는 상세 페이지 글(GroupTravelPage 의 article id).
+const SERVICES = [
   {
-    image: photo('1511795409834-ef04bbd61622'),
-    alt: 'Long banquet table set with glassware and flowers for a gala dinner',
-    eyebrow: 'Incentive Travel',
+    id: 'incentive-travel',
     anchor: 'incentive',
+    image: photo('1511795409834-ef04bbd61622'),
+    alt: '갈라 디너를 위해 꽃과 잔으로 차려진 긴 연회 테이블',
+    eyebrow: 'Incentive Travel',
     title: '기업 인센티브',
-    description: lines('성과에 대한 보답이,', '오래 기억되는 여행이 되도록'),
+    inquiryName: '인센티브',
+    tagline: ['성과에 대한 보답이,', '오래 기억되는 여행이 되도록'],
+    tags: ['우수 임직원 포상', '대리점·판매 우수자'],
   },
   {
-    image: photo('1436491865332-7a61a109cc05'),
-    alt: 'Airplane wing above the clouds at sunset',
-    eyebrow: 'Group Travel',
+    id: 'group-tour',
     anchor: 'group',
+    image: photo('1436491865332-7a61a109cc05'),
+    alt: '노을 진 구름 위를 나는 비행기 날개',
+    eyebrow: 'Group Travel',
     title: '단체여행',
-    description: lines('인원이 많아도,', '한 사람처럼 세심하게'),
+    inquiryName: '단체여행',
+    tagline: ['인원이 많아도,', '한 사람처럼 세심하게'],
+    tags: ['워크숍·해외 연수', '박람회·세미나 참가', '협회·단체 시찰'],
   },
   {
-    image: photo('1516426122078-c23e76319801'),
-    alt: 'Safari vehicle on the savanna at sunset',
-    eyebrow: 'Special Destinations',
+    id: 'golf-tour',
+    anchor: 'golf',
+    image: photo('1774905175014-5f9de3e9c2d1'),
+    alt: '야자수 사이 리조트 골프장에 늘어선 골프 카트',
+    eyebrow: 'Golf Tour',
+    title: '해외 골프투어',
+    inquiryName: '골프투어',
+    tagline: ['티타임부터 골프백 운송까지,', '라운딩에만 집중하세요'],
+    tags: ['원하시는 모든 지역 가능', '주력 지역: 일본·동남아'],
+  },
+  {
+    id: 'special-travel',
     anchor: 'special',
+    image: photo('1516426122078-c23e76319801'),
+    alt: '해 질 녘 초원 위의 사파리 차량',
+    eyebrow: 'Special Destinations',
     title: '특수지역여행',
-    description: lines('아프리카·남미처럼 먼 곳일수록,', '준비가 여행의 절반입니다'),
+    inquiryName: '특수지역',
+    tagline: ['아프리카·남미처럼 먼 곳일수록,', '준비가 여행의 절반입니다'],
+    tags: ['원하시는 모든 지역 가능', '주력 지역: 탄자니아·페루'],
   },
 ]
-
-// 골프투어 배너. 2026-11-19 키워드 광고 대행사 요청 — 골프투어를 한다는 게 홈에서 잘 안 보인다.
-// 카드 4장 중 하나로만 있던 골프를 카드 아래 넓은 배너로 세운다. 처음엔 카드도 남겨 두었는데
-// 같은 내용이 두 번 보여서(폰에서는 거의 붙어서) 2026-11-20 카드를 빼고 배너만 둔다 — 위 카드 목록에
-// 골프를 다시 넣지 말 것. 문구는 상세 페이지(groupTravel.js 의 golf 항목)에 이미 있는, 사장님 확인을 받은 사실만 쓴다.
-const GOLF_BANNER = {
-  image: photo('1774905175014-5f9de3e9c2d1'),
-  alt: '야자수 사이 리조트 골프장에 늘어선 골프 카트',
-  regions: ['주력 지역: 일본·동남아', '원하시는 모든 지역 가능'],
-}
 
 const INTRO = [
   '포상 여행과 임직원 연수, 해외 골프투어, 아프리카·남미 같은 특수 지역까지.',
@@ -95,68 +102,15 @@ export function GroupTravel() {
         </p>
       </Fade>
 
-      {/*
-        카드 3장. 2열로 두면 마지막 한 장이 혼자 남으므로 넓은 화면에서 한 줄 3열, 그보다 좁으면 한 장씩.
-        태블릿 폭(sm~md)에서 3열은 카드가 좁아 글이 사진 밖으로 넘친다.
-      */}
-      <div className="grid lg:grid-cols-3 gap-4 lg:gap-6 mt-16 max-w-5xl mx-auto">
-        {/* 카드마다 상세 페이지의 해당 서비스 글로 보낸다(anchor = GroupTravelPage 의 article id). */}
-        {services.map(({ anchor, ...s }, idx) => (
-          <Fade key={s.eyebrow} delay={idx * 0.1}>
-            <ImageCard {...s} to={`${GROUP_TRAVEL_PATH}#${anchor}`} />
-          </Fade>
+      <div className="mt-16 max-w-5xl mx-auto space-y-4 lg:space-y-6">
+        {SERVICES.map(({ anchor, ...service }) => (
+          <ServiceBanner
+            key={service.id}
+            {...service}
+            onInquiry={prefillGroup}
+            detailTo={`${GROUP_TRAVEL_PATH}#${anchor}`}
+          />
         ))}
-      </div>
-
-      {/*
-        id — 골프 키워드 광고가 이 배너로 바로 보낼 수 있도록(/#golf-tour). Fade 바깥 div 에 둔다 —
-        Fade 는 떠오르며 위치가 바뀌어서, 안쪽에 두면 도착 위치를 잰 뒤 배너가 헤더 밑으로 밀려 올라간다.
-      */}
-      <div id="golf-tour" className="scroll-mt-28 mt-4 lg:mt-6 max-w-5xl mx-auto">
-        <Fade>
-          <div className="relative overflow-hidden rounded-lg bg-ink-800">
-            <img
-              src={GOLF_BANNER.image}
-              alt={GOLF_BANNER.alt}
-              loading="lazy"
-              className="absolute inset-0 w-full h-full object-cover"
-            />
-            {/* 폰에서는 글이 사진 아래쪽을 덮으므로 아래에서 위로, 넓은 화면에서는 글이 왼쪽에 있으므로 왼쪽에서 오른쪽으로 어둡게. */}
-            <div className="absolute inset-0 bg-gradient-to-t sm:bg-gradient-to-r from-ink-900/90 via-ink-900/60 to-ink-900/10" />
-            <div className="relative px-6 pt-48 pb-8 sm:p-10 lg:p-14 sm:max-w-xl">
-              <span className="text-amber-500 font-eng font-bold text-sm mb-3 block tracking-wider">Golf Tour</span>
-              <h3 className="text-2xl lg:text-3xl font-bold text-white tracking-tight mb-4">
-                해외 골프투어,
-                <br /> 라운딩에만 집중하세요
-              </h3>
-              <p className="text-[15px] lg:text-base text-gray-200 leading-relaxed mb-5">
-                <span className="block">
-                  티타임 확보부터 골프장·숙소·차량 묶음 구성,
-                  <br className="hidden sm:inline" /> 골프백 항공 위탁 안내까지 준비해 드립니다.
-                </span>
-                <span className="block mt-2">
-                  거래처 접대 골프, 임원 라운딩, 사내 동호회 골프 여행까지
-                  <br className="hidden sm:inline" /> 모두 맡겨 주세요.
-                </span>
-              </p>
-              <ul className="flex flex-wrap gap-2 mb-8">
-                {GOLF_BANNER.regions.map((r) => (
-                  <li key={r} className="rounded-sm border border-white/30 bg-white/10 px-3 py-1.5 text-sm text-white backdrop-blur-sm">
-                    {r}
-                  </li>
-                ))}
-              </ul>
-              <div className="flex flex-col sm:flex-row gap-3">
-                <Button as="a" href="#contact" variant="blue" onClick={prefillGroup}>
-                  골프투어 문의하기 →
-                </Button>
-                <Button as={Link} to={`${GROUP_TRAVEL_PATH}#golf`} variant="outlineLight">
-                  골프투어 자세히 보기 →
-                </Button>
-              </div>
-            </div>
-          </div>
-        </Fade>
       </div>
 
       <Fade className="mt-24 pt-16 border-t border-gray-100">
@@ -174,8 +128,8 @@ export function GroupTravel() {
           <br className="sm:hidden" /> 전담 직원이 일정안과 견적을 준비합니다.
         </p>
         {/*
-          '자세히 보기'는 상세 페이지(/group-travel/)로 가는 홈의 유일한 링크다. 빠지면 그 페이지는
-          sitemap 에만 있고 사이트 안에서는 고립된다 — Inbound 섹션의 도시 버튼과 같은 이유.
+          '서비스 자세히 보기'는 상세 페이지(/group-travel/) 맨 위로 가는 홈의 유일한 링크다(배너 버튼은
+          각 서비스 글로 바로 간다). 빼지 말 것 — Inbound 섹션의 도시 버튼과 같은 이유.
         */}
         <div className="flex flex-col sm:flex-row justify-center gap-3">
           <Button as="a" href="#contact" variant="blue" onClick={prefillGroup}>

@@ -21,6 +21,7 @@ import { JumpNav } from '../components/marketing/JumpNav'
 import { ServiceCard } from '../components/marketing/ServiceCard'
 import { AudienceCard } from '../components/marketing/AudienceCard'
 import { ImageCard } from '../components/marketing/ImageCard'
+import { ServiceBanner } from '../components/marketing/ServiceBanner'
 import { AttractionCard } from '../components/marketing/AttractionCard'
 import { CityLinkCard } from '../components/marketing/CityLinkCard'
 import { ProcessSteps } from '../components/marketing/ProcessSteps'
@@ -336,9 +337,24 @@ export default function StyleguidePage() {
                 image="https://images.unsplash.com/photo-1500932334442-8761ee4810a7?auto=format&fit=crop&q=80&w=1200"
                 alt="Golf course"
                 eyebrow="Golf Tour"
-                title="title·to 있는 카드 (단체여행 섹션)"
+                title="title·to 있는 카드"
                 description="티타임부터 골프백 운송까지"
                 to="/group-travel/#golf"
+              />
+            </div>
+
+            {/* ServiceBanner — 홈 단체여행 섹션의 서비스 배너(네 장 모두 같은 모양). */}
+            <div className="max-w-5xl">
+              <ServiceBanner
+                id="styleguide-service-banner"
+                image="https://images.unsplash.com/photo-1774905175014-5f9de3e9c2d1?auto=format&fit=crop&q=80&w=1200"
+                alt="야자수 사이 리조트 골프장에 늘어선 골프 카트"
+                eyebrow="Golf Tour"
+                title="해외 골프투어"
+                inquiryName="골프투어"
+                tagline={['티타임부터 골프백 운송까지,', '라운딩에만 집중하세요']}
+                tags={['원하시는 모든 지역 가능', '주력 지역: 일본·동남아']}
+                detailTo="/group-travel/#golf"
               />
             </div>
 
