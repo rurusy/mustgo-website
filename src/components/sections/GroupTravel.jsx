@@ -42,14 +42,6 @@ const services = [
     description: lines('인원이 많아도,', '한 사람처럼 세심하게'),
   },
   {
-    image: photo('1500932334442-8761ee4810a7'),
-    alt: 'Aerial view of a golf course green with bunkers',
-    eyebrow: 'Golf Tour',
-    anchor: 'golf',
-    title: '해외골프여행',
-    description: lines('티타임부터 골프백 운송까지,', '라운딩에만 집중하실 수 있도록'),
-  },
-  {
     image: photo('1516426122078-c23e76319801'),
     alt: 'Safari vehicle on the savanna at sunset',
     eyebrow: 'Special Destinations',
@@ -60,8 +52,9 @@ const services = [
 ]
 
 // 골프투어 배너. 2026-11-19 키워드 광고 대행사 요청 — 골프투어를 한다는 게 홈에서 잘 안 보인다.
-// 카드 4장 중 하나로만 있던 골프를 카드 아래 넓은 배너로 한 번 더 세운다. 문구는 상세 페이지
-// (groupTravel.js 의 golf 항목)에 이미 있는, 사장님 확인을 받은 사실만 쓴다.
+// 카드 4장 중 하나로만 있던 골프를 카드 아래 넓은 배너로 세운다. 처음엔 카드도 남겨 두었는데
+// 같은 내용이 두 번 보여서(폰에서는 거의 붙어서) 2026-11-20 카드를 빼고 배너만 둔다 — 위 카드 목록에
+// 골프를 다시 넣지 말 것. 문구는 상세 페이지(groupTravel.js 의 golf 항목)에 이미 있는, 사장님 확인을 받은 사실만 쓴다.
 const GOLF_BANNER = {
   image: photo('1774905175014-5f9de3e9c2d1'),
   alt: '야자수 사이 리조트 골프장에 늘어선 골프 카트',
@@ -102,7 +95,11 @@ export function GroupTravel() {
         </p>
       </Fade>
 
-      <div className="grid sm:grid-cols-2 gap-4 lg:gap-6 mt-16 max-w-5xl mx-auto">
+      {/*
+        카드 3장. 2열로 두면 마지막 한 장이 혼자 남으므로 넓은 화면에서 한 줄 3열, 그보다 좁으면 한 장씩.
+        태블릿 폭(sm~md)에서 3열은 카드가 좁아 글이 사진 밖으로 넘친다.
+      */}
+      <div className="grid lg:grid-cols-3 gap-4 lg:gap-6 mt-16 max-w-5xl mx-auto">
         {/* 카드마다 상세 페이지의 해당 서비스 글로 보낸다(anchor = GroupTravelPage 의 article id). */}
         {services.map(({ anchor, ...s }, idx) => (
           <Fade key={s.eyebrow} delay={idx * 0.1}>
